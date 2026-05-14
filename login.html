@@ -152,7 +152,6 @@ function cleanPhone(phone){
   if (digits.length === 12 && digits.startsWith("91") && /^[6-9]/.test(digits.slice(2))) return digits.slice(2);
   return "";
 }
-function makeOtp(){ return String(Math.floor(100000 + Math.random() * 900000)); }
 function panelByRole(role){
   const map = {
     user: "user-panel.html",
@@ -173,25 +172,36 @@ function checkAlreadyLoggedIn(){
     window.location.href = panelByRole(savedRole);
   }
 }
-async function sendOtpViaSupabase(phone, otp, purpose){
-  /*
-    Production:
-    Create Supabase Edge Function "send-otp", connect SMS provider,
-    then uncomment this block.
-
-    if (supabaseClient) {
-      await supabaseClient.functions.invoke("send-otp", {
-        body: { phone: "+91" + phone, otp, purpose }
-      });
+async function sendOtpViaSupabase(phone, purpose){
+  const response = await fetch(
+    "https://mpuwfytcyjrsdkgaqaip.supabase.co/functions/v1/send-otp",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "apikey": GP_SUPABASE_ANON_KEY
+      },
+      body: JSON.stringify({
+        phone: phone,
+        purpose: purpose || "login"
+      })
     }
-  */
+  );
+
+  const result = await response.json();
+
+  if (!response.ok || !result.success) {
+    throw new Error(result.message || "OTP sending failed.");
+  }
+
+  return result;
 }
 document.addEventListener("DOMContentLoaded", () => {
   bindMegaMenus();
   checkAlreadyLoggedIn();
 });
 
-let currentOtp = "";
+
 let currentPhone = "";
 
 async function startLoginOtp(){
@@ -203,29 +213,23 @@ async function startLoginOtp(){
     return;
   }
 
-  if(!supabaseClient){
-    status.textContent = "Supabase is not connected. Check your config.";
-    return;
-  }
+  try {
+    currentPhone = phone;
+    status.textContent = "Sending OTP...";
 
-  currentPhone = phone;
-  status.textContent = "Sending OTP...";
+    await sendOtpViaSupabase(phone, "login");
 
-  const { error } = await supabaseClient.auth.signInWithOtp({
-    phone: "+91" + phone
-  });
+    document.getElementById("phone-step").classList.add("hidden");
+    document.getElementById("otp-step").classList.remove("hidden");
+    document.getElementById("otp-phone-text").textContent = "+91 " + phone;
 
-  if(error){
+    status.textContent = "OTP sent to your phone number.";
+    document.getElementById("login-otp").focus();
+
+  } catch(error) {
     console.error(error);
-    status.textContent = "OTP sending failed: " + error.message;
-    return;
+    status.textContent = error.message || "OTP sending failed.";
   }
-
-  document.getElementById("phone-step").classList.add("hidden");
-  document.getElementById("otp-step").classList.remove("hidden");
-  document.getElementById("otp-phone-text").textContent = "+91 " + phone;
-  status.textContent = "OTP sent to your phone number.";
-  document.getElementById("login-otp").focus();
 }
 
 async function verifyLoginOtp(){
@@ -237,44 +241,44 @@ async function verifyLoginOtp(){
     return;
   }
 
-  if(!supabaseClient){
-    status.textContent = "Supabase is not connected. Check your config.";
-    return;
-  }
+  try {
+    status.textContent = "Verifying OTP...";
 
-  status.textContent = "Verifying OTP...";
+    const response = await fetch(
+      "https://mpuwfytcyjrsdkgaqaip.supabase.co/functions/v1/verify-otp",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "apikey": GP_SUPABASE_ANON_KEY
+        },
+        body: JSON.stringify({
+          phone: currentPhone,
+          otp: otp,
+          purpose: "login"
+        })
+      }
+    );
 
-  const { data, error } = await supabaseClient.auth.verifyOtp({
-    phone: "+91" + currentPhone,
-    token: otp,
-    type: "sms"
-  });
+    const result = await response.json();
 
-  if(error){
+    if(!response.ok || !result.success){
+      throw new Error(result.message || "Invalid OTP or OTP expired.");
+    }
+
+    localStorage.setItem("gp_auth_phone", result.phone);
+    localStorage.setItem("gp_auth_role", result.role || "user");
+
+    status.textContent = "Login successful. Redirecting...";
+
+    setTimeout(() => {
+      window.location.href = panelByRole(result.role || "user");
+    }, 500);
+
+  } catch(error) {
     console.error(error);
-    status.textContent = "Invalid OTP or OTP expired.";
-    return;
+    status.textContent = error.message || "Invalid OTP or OTP expired.";
   }
-
-  let role = "user";
-
-  try{
-    const { data: profile } = await supabaseClient
-      .from("profiles")
-      .select("role")
-      .eq("phone", currentPhone)
-      .maybeSingle();
-
-    role = profile?.role || "user";
-  }catch(e){
-    console.warn(e);
-  }
-
-  localStorage.setItem("gp_auth_phone", currentPhone);
-  localStorage.setItem("gp_auth_role", role);
-
-  status.textContent = "Login successful. Redirecting...";
-  setTimeout(() => window.location.href = panelByRole(role), 500);
 }
 
 document.getElementById("continue-btn").addEventListener("click", startLoginOtp);
