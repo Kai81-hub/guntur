@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Owner Panel | Guntur Properties</title>
+<meta name="robots" content="noindex, nofollow"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+<style>
+:root{--gold:#d4af37;--primary:#735c00;--dark:#151c27;--secondary:#476080;--outline:#7f7663;--line:#d0c5af;--surface:#f9f9ff;--green:#22c55e;--red:#ef4444;--blue:#3b82f6}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Manrope',sans-serif;background:#f9f9ff;color:#151c27;-webkit-font-smoothing:antialiased}
+.material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 430,'GRAD' 0,'opsz' 24}
+.btn-gold{background:linear-gradient(180deg,#ffe088,#d4af37);color:#241a00;transition:.2s}.btn-gold:hover{transform:translateY(-1px);box-shadow:0 12px 26px rgba(212,175,55,.24)}
+.sidebar-link{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:16px;color:#476080;font-weight:800;transition:.18s}
+.sidebar-link:hover,.sidebar-link.active{background:rgba(212,175,55,.13);color:#735c00}
+.panel-card{background:#fff;border:1px solid rgba(208,197,175,.45);border-radius:26px;box-shadow:0 15px 38px rgba(15,23,42,.06)}
+.table-wrap{overflow:auto}
+table{width:100%;border-collapse:collapse;min-width:820px}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#7f7663;text-align:left;padding:14px;border-bottom:1px solid rgba(208,197,175,.45)}
+td{padding:14px;border-bottom:1px solid rgba(208,197,175,.32);font-size:14px;color:#151c27}
+.status{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:6px 10px;font-size:12px;font-weight:900}
+.status.pending{background:#fff7d6;color:#8a6500}.status.approved{background:#dcfce7;color:#166534}.status.rejected{background:#fee2e2;color:#991b1b}.status.new{background:#dbeafe;color:#1d4ed8}
+.mobile-menu{display:none}
+@media(max-width:1023px){.layout{grid-template-columns:1fr!important}.sidebar{position:fixed;inset:0 auto 0 0;width:280px;z-index:60;transform:translateX(-105%);transition:.25s}.sidebar.open{transform:translateX(0)}.mobile-menu{display:inline-flex}.content{padding:18px!important}.desktop-spacer{display:none}}
+</style>
+</head>
+<body>
+<div class="layout grid grid-cols-[280px_1fr] min-h-screen">
+  <aside class="sidebar bg-white border-r border-[#d0c5af]/40 p-5">
+    <div class="flex items-center justify-between gap-3 mb-8">
+      <a href="index.html" class="flex items-center gap-3">
+        <img src="assets/images/WhatsApp Image 2026-05-12 at 13.33.30.jpeg" onerror="this.src='https://placehold.co/80x80/d4af37/ffffff?text=GP'" class="w-10 h-10 rounded-xl object-cover" alt="Guntur Properties"/>
+        <div>
+          <p class="font-black text-[#d4af37] leading-tight">Guntur<br/>Properties</p>
+          <p class="text-[10px] text-[#7f7663] font-bold">Owner role</p>
+        </div>
+      </a>
+      <button id="close-sidebar-btn" class="lg:hidden w-9 h-9 rounded-full bg-[#f0f3ff]"><span class="material-symbols-outlined">close</span></button>
+    </div>
+    <nav class="space-y-2"><a class="sidebar-link active" href="owner-panel.html"><span class="material-symbols-outlined">dashboard</span>Dashboard</a>
+<a class="sidebar-link " href="owner-panel.html#add"><span class="material-symbols-outlined">add_home</span>Add Property</a>
+<a class="sidebar-link " href="owner-panel.html#properties"><span class="material-symbols-outlined">home_work</span>My Properties</a>
+<a class="sidebar-link " href="owner-panel.html#leads"><span class="material-symbols-outlined">contact_phone</span>Leads</a>
+<a class="sidebar-link " href="owner-panel.html#chats"><span class="material-symbols-outlined">forum</span>Chats</a>
+<a class="sidebar-link " href="owner-panel.html#profile"><span class="material-symbols-outlined">verified_user</span>Verification</a></nav>
+    <div class="mt-8 rounded-3xl bg-[#151c27] text-white p-5">
+      <p class="text-xs text-white/60 font-bold uppercase">Logged in</p>
+      <p id="auth-phone" class="font-black mt-1">Checking...</p>
+      <button id="logout-btn" class="mt-4 w-full py-3 rounded-2xl bg-white/10 hover:bg-white/15 font-extrabold">Logout</button>
+    </div>
+  </aside>
+
+  <main class="content p-8">
+    <header class="panel-card p-5 flex items-center justify-between gap-4 mb-8">
+      <div class="flex items-center gap-3">
+        <button id="mobile-menu-btn" class="mobile-menu w-10 h-10 rounded-xl bg-[#f0f3ff] items-center justify-center"><span class="material-symbols-outlined">menu</span></button>
+        <div>
+          <h1 class="text-2xl md:text-3xl font-black">Owner Panel</h1>
+          <p class="text-[#476080] text-sm font-semibold">Owner role dashboard for Guntur Properties</p>
+        </div>
+      </div>
+      <a href="index.html" class="hidden sm:inline-flex px-4 py-3 rounded-2xl border border-[#d0c5af]/60 font-extrabold text-[#735c00]">View Site</a>
+    </header>
+    
+<section class="grid sm:grid-cols-3 gap-5 mb-8">
+  <div class="panel-card p-6"><p class="text-[#476080] font-bold">My Properties</p><h2 id="stat-properties" class="text-4xl font-black mt-2">0</h2></div>
+  <div class="panel-card p-6"><p class="text-[#476080] font-bold">Leads</p><h2 id="stat-leads" class="text-4xl font-black mt-2">0</h2></div>
+  <div class="panel-card p-6"><p class="text-[#476080] font-bold">Approval</p><h2 id="stat-status" class="text-2xl font-black mt-2">Pending</h2></div>
+</section>
+
+<section id="add" class="panel-card p-6 mb-8">
+  <h2 class="text-2xl font-black mb-5">Add Property</h2>
+  <form id="property-form" class="grid md:grid-cols-3 gap-4">
+    <input name="title" class="rounded-xl border-[#d0c5af]" placeholder="Property title" required/>
+    <select name="property_type" class="rounded-xl border-[#d0c5af]"><option>apartment</option><option>house</option><option>villa</option><option>plot</option><option>commercial</option></select>
+    <input name="price" class="rounded-xl border-[#d0c5af]" placeholder="Price"/>
+    <input name="location" class="rounded-xl border-[#d0c5af]" placeholder="Location" required/>
+    <input name="district" class="rounded-xl border-[#d0c5af]" value="Guntur" placeholder="District"/>
+    <input
+  name="map_url"
+  class="rounded-xl border-[#d0c5af] md:col-span-2"
+  placeholder="Google Maps link"
+/>
+    <input name="area_sqft" class="rounded-xl border-[#d0c5af]" placeholder="Area sqft"/>
+    <input name="bedrooms" class="rounded-xl border-[#d0c5af]" placeholder="Bedrooms"/>
+    <input name="bathrooms" class="rounded-xl border-[#d0c5af]" placeholder="Bathrooms"/>
+    <input name="facing" class="rounded-xl border-[#d0c5af]" placeholder="Facing"/>
+    <input name="contact_phone" class="rounded-xl border-[#d0c5af]" placeholder="Contact phone"/>
+    <div class="md:col-span-3 rounded-2xl border border-[#d0c5af] p-4 bg-[#f9f9ff]">
+  <label class="font-black text-[#735c00] block mb-2">Upload Photos</label>
+  <input
+    id="property-photos"
+    name="photos"
+    type="file"
+    accept="image/*"
+    multiple
+    class="w-full rounded-xl border-[#d0c5af] bg-white"
+  />
+  <p class="text-sm text-[#476080] mt-2">Upload maximum 15 photos.</p>
+</div>
+
+<div class="md:col-span-3 rounded-2xl border border-[#d0c5af] p-4 bg-[#f9f9ff]">
+  <label class="font-black text-[#735c00] block mb-2">Upload Video</label>
+  <input
+    id="property-video"
+    name="video"
+    type="file"
+    accept="video/*"
+    class="w-full rounded-xl border-[#d0c5af] bg-white"
+  />
+  <p class="text-sm text-[#476080] mt-2">Upload 1 video only. Maximum duration: 1 minute.</p>
+</div>
+    <textarea name="description" class="rounded-xl border-[#d0c5af] md:col-span-3" rows="4" placeholder="Description"></textarea>
+<button class="btn-gold md:col-span-3 py-4 rounded-2xl font-black">Upload Property</button>
+  </form>
+  <p id="property-status" class="text-[#476080] text-sm mt-3"></p>
+</section>
+
+<section id="properties" class="panel-card p-6 mb-8"><h2 class="text-2xl font-black mb-5">My Properties</h2><div class="table-wrap"><table><thead><tr><th>Title</th><th>Type</th><th>Price</th><th>Status</th><th>Date</th></tr></thead><tbody id="my-properties-body"><tr><td colspan="5">Connect Supabase to load data.</td></tr></tbody></table></div></section>
+<section id="leads" class="panel-card p-6"><h2 class="text-2xl font-black mb-5">Leads</h2><div class="table-wrap"><table><thead><tr><th>Name</th><th>Phone</th><th>Property</th><th>Status</th></tr></thead><tbody id="leads-body"><tr><td colspan="4">Connect Supabase to load data.</td></tr></tbody></table></div></section>
+
+  </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+ const GP_SUPABASE_URL = "https://mpuwfytcyjrsdkgaqaip.supabase.co";
+    const GP_SUPABASE_ANON_KEY = "sb_publishable_Cw3RO0xumC7MRdfOt16HBQ_Ae6PpWOK";
+    const CLOUDINARY_CLOUD_NAME = "dlzmuyuxo";
+const CLOUDINARY_UPLOAD_PRESET = "guntur_unsigned";
+let supabaseClient = null;
+if (window.supabase && GP_SUPABASE_URL.startsWith("http") && GP_SUPABASE_ANON_KEY !== "PASTE_YOUR_SUPABASE_ANON_KEY") {
+  supabaseClient = window.supabase.createClient(GP_SUPABASE_URL, GP_SUPABASE_ANON_KEY);
+}
+function getAuthRole(){return localStorage.getItem("gp_auth_role") || "user"}
+function getAuthPhone(){return localStorage.getItem("gp_auth_phone") || ""}
+function checkRole(allowed){
+  const role=getAuthRole();
+  if(!getAuthPhone()){
+    window.location.href="login.html";
+    return false;
+  }
+  if(!allowed.includes(role)){
+    document.body.innerHTML = `<div style="font-family:Manrope,sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;background:#f9f9ff;padding:20px"><div style="max-width:520px;background:white;border:1px solid #d0c5af;border-radius:28px;padding:34px;text-align:center;box-shadow:0 15px 45px rgba(15,23,42,.08)"><h1 style="margin:0 0 10px;color:#151c27">Access Denied</h1><p style="color:#476080">Your role does not have permission to open this panel.</p><a href="index.html" style="display:inline-flex;margin-top:18px;background:#d4af37;color:white;text-decoration:none;padding:12px 18px;border-radius:14px;font-weight:800">Go Home</a></div></div>`;
+    return false;
+  }
+  return true;
+}
+function logout(){localStorage.removeItem("gp_auth_phone");localStorage.removeItem("gp_auth_role");window.location.href="login.html"}
+function openSidebar(){document.querySelector(".sidebar")?.classList.add("open")}
+function closeSidebar(){document.querySelector(".sidebar")?.classList.remove("open")}
+function fmtDate(v){return v ? new Date(v).toLocaleDateString("en-IN") : "-"}
+function money(v){ if(!v && v!==0) return "-"; const n=Number(v); if(Number.isNaN(n))return v; if(n>=10000000)return "₹"+(n/10000000).toFixed(2)+" Cr"; if(n>=100000)return "₹"+(n/100000).toFixed(1)+" L"; return "₹"+n.toLocaleString("en-IN")}
+async function fetchRows(table, options={}){
+  if(!supabaseClient) return [];
+  let q=supabaseClient.from(table).select(options.select || "*");
+  if(options.eq){Object.entries(options.eq).forEach(([k,v])=>q=q.eq(k,v))}
+  if(options.order){q=q.order(options.order,{ascending:false})}
+  if(options.limit){q=q.limit(options.limit)}
+  const {data,error}=await q;
+  if(error) throw error;
+  return data || [];
+}
+async function updateRow(table,id,patch){
+  if(!supabaseClient) throw new Error("Connect Supabase first.");
+  const {error}=await supabaseClient.from(table).update(patch).eq("id",id);
+  if(error) throw error;
+}
+async function insertRow(table,payload){
+  if(!supabaseClient) throw new Error("Connect Supabase first.");
+  const {error}=await supabaseClient.from(table).insert(payload);
+  if(error) throw error;
+}
+function bindCommon(){
+  document.getElementById("logout-btn")?.addEventListener("click",logout);
+  document.getElementById("mobile-menu-btn")?.addEventListener("click",openSidebar);
+  document.getElementById("close-sidebar-btn")?.addEventListener("click",closeSidebar);
+  document.getElementById("auth-phone")?.replaceChildren(document.createTextNode(getAuthPhone() ? "+91 " + getAuthPhone() : "Not logged in"));
+}
+document.addEventListener("DOMContentLoaded",bindCommon);
+
+const ALLOWED_ROLES = ['admin', 'owner'];
+document.addEventListener("DOMContentLoaded",()=>{ if(!checkRole(ALLOWED_ROLES)) return; initPanel(); });
+
+async function initPanel(){
+  document.getElementById("property-form").addEventListener("submit",saveProperty);
+  await loadOwner();
+}
+function getVideoDuration(file) {
+  return new Promise((resolve, reject) => {
+    const video = document.createElement("video");
+    video.preload = "metadata";
+
+    video.onloadedmetadata = () => {
+      URL.revokeObjectURL(video.src);
+      resolve(video.duration);
+    };
+
+    video.onerror = () => reject(new Error("Unable to read video duration."));
+    video.src = URL.createObjectURL(file);
+  });
+}
+
+async function uploadToCloudinary(file, resourceType = "image") {
+  const formData = new FormData();
+
+  formData.append("file", file);
+  formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+  formData.append("folder", "guntur-properties");
+
+  const response = await fetch(
+    `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/${resourceType}/upload`,
+    {
+      method: "POST",
+      body: formData
+    }
+  );
+
+  const result = await response.json();
+
+  if (!response.ok) {
+    throw new Error(result.error?.message || "Cloudinary upload failed.");
+  }
+
+  return {
+    url: result.secure_url,
+    publicId: result.public_id
+  };
+}
+async function saveProperty(e){
+  e.preventDefault();
+
+  const status = document.getElementById("property-status");
+  const form = e.target;
+  const data = Object.fromEntries(new FormData(form).entries());
+  const phone = getAuthPhone();
+
+  const photos = Array.from(document.getElementById("property-photos")?.files || []);
+  const videoFile = document.getElementById("property-video")?.files?.[0] || null;
+
+  if (photos.length > 15) {
+    status.textContent = "Maximum 15 photos allowed.";
+    return;
+  }
+
+  try {
+    status.textContent = "Checking files...";
+
+    if (videoFile) {
+      const duration = await getVideoDuration(videoFile);
+
+      if (duration > 60) {
+        status.textContent = "Video must be 1 minute or less.";
+        return;
+      }
+    }
+
+    const uploadedPhotos = [];
+
+    for (let i = 0; i < photos.length; i++) {
+      status.textContent = `Uploading photo ${i + 1} of ${photos.length}...`;
+      const uploaded = await uploadToCloudinary(photos[i], "image");
+      uploadedPhotos.push(uploaded);
+    }
+
+    let uploadedVideo = null;
+
+    if (videoFile) {
+      status.textContent = "Uploading video...";
+      uploadedVideo = await uploadToCloudinary(videoFile, "video");
+    }
+
+    const mainImage = uploadedPhotos[0]?.url || null;
+
+    const payload = {
+  title: data.title?.trim(),
+  property_type: data.property_type || "apartment",
+  listing_type: "sale",
+  price: data.price ? Number(data.price) : null,
+
+  location: data.location?.trim(),
+  district: data.district?.trim() || "Guntur",
+  map_url: data.map_url?.trim() || null,
+
+  area_sqft: data.area_sqft ? Number(data.area_sqft) : null,
+  bedrooms: data.bedrooms ? Number(data.bedrooms) : null,
+  bathrooms: data.bathrooms ? Number(data.bathrooms) : null,
+  facing: data.facing?.trim() || null,
+
+  contact_phone: data.contact_phone?.trim() || phone,
+  whatsapp_number: data.contact_phone?.trim() || phone,
+  user_phone: phone,
+  seller_type: "owner",
+
+  image_url: mainImage,
+  main_image_url: mainImage,
+
+  video_url: uploadedVideo?.url || null,
+  video_public_id: uploadedVideo?.publicId || null,
+
+  description: data.description?.trim() || null,
+  status: "active"
+};
+
+    if (!payload.title || !payload.location) {
+      status.textContent = "Please enter property title and location.";
+      return;
+    }
+
+    status.textContent = "Saving property...";
+
+    const { data: insertedProperty, error: propertyError } = await supabaseClient
+      .from("properties")
+      .insert(payload)
+      .select()
+      .single();
+
+    if (propertyError) throw propertyError;
+
+    if (uploadedPhotos.length) {
+      status.textContent = "Saving photos...";
+
+      const imageRows = uploadedPhotos.map((img, index) => ({
+        property_id: insertedProperty.id,
+        image_url: img.url,
+        cloudinary_public_id: img.publicId,
+        alt_text: payload.title,
+        is_main: index === 0,
+        display_order: index + 1
+      }));
+
+      const { error: imageError } = await supabaseClient
+        .from("property_images")
+        .insert(imageRows);
+
+      if (imageError) throw imageError;
+    }
+
+    status.textContent = "Property uploaded successfully with photos and video.";
+
+    form.reset();
+
+    await loadOwner();
+
+    setTimeout(() => {
+      window.location.href = "property-details.html?id=" + insertedProperty.id;
+    }, 1000);
+
+  } catch (err) {
+    console.error("Property upload failed:", err);
+    status.textContent = err.message || "Upload failed.";
+  }
+}
+async function loadOwner(){
+  if(!supabaseClient) return;
+
+  const phone = getAuthPhone();
+
+  const props = await fetchRows("properties", {
+    eq: { user_phone: phone },
+    limit: 50,
+    order: "created_at"
+  });
+
+  const propertyIds = props.map(p => p.id);
+
+  let leads = [];
+
+  if (propertyIds.length) {
+    const { data, error } = await supabaseClient
+      .from("property_chats")
+      .select("*")
+      .in("property_id", propertyIds)
+      .order("created_at", { ascending: false });
+
+    if (!error) leads = data || [];
+  }
+
+  document.getElementById("stat-properties").textContent = props.length;
+  document.getElementById("stat-leads").textContent = leads.length;
+  document.getElementById("stat-status").textContent = "Active";
+
+  document.getElementById("my-properties-body").innerHTML =
+    props.map(p => `
+      <tr>
+        <td>${p.title || "-"}</td>
+        <td>${p.property_type || "-"}</td>
+        <td>${money(p.price)}</td>
+        <td><span class="status approved">${p.status || "active"}</span></td>
+        <td>${fmtDate(p.created_at)}</td>
+      </tr>
+    `).join("") || `<tr><td colspan="5">No properties yet.</td></tr>`;
+
+  document.getElementById("leads-body").innerHTML =
+    leads.map(l => `
+      <tr>
+        <td>${l.visitor_name || "-"}</td>
+        <td>${l.visitor_phone || "-"}</td>
+        <td>${l.property_id || "-"}</td>
+        <td><span class="status ${l.lead_status || 'new'}">${l.lead_status || "new"}</span></td>
+      </tr>
+    `).join("") || `<tr><td colspan="4">No leads.</td></tr>`;
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>News & Updates | Guntur Properties</title>
+<meta name="description" content="Latest Guntur real estate news, property updates, market trends, registration updates and local property insights."/>
+<meta name="robots" content="index, follow, max-image-preview:large"/>
+<meta name="theme-color" content="#d4af37"/>
+
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+
+<style>
+:root{--gold:#d4af37;--primary:#735c00;--dark:#151c27;--secondary:#476080;--outline:#7f7663;--line:#d0c5af;--surface:#f9f9ff}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Manrope',sans-serif;background:#f9f9ff;color:#151c27}
+.material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 430,'GRAD' 0,'opsz' 24}
+.btn-gold{background:linear-gradient(180deg,#ffe088,#d4af37);color:#241a00;transition:.2s}.btn-gold:hover{transform:translateY(-1px);box-shadow:0 12px 26px rgba(212,175,55,.24)}
+.header{height:88px;background:rgba(255,255,255,.98);backdrop-filter:blur(14px);border-bottom:1px solid rgba(208,197,175,.35);position:sticky;top:0;z-index:50}
+.nav-link{display:flex;align-items:center;gap:6px;padding:12px 16px;border-radius:16px;color:#151c27;font-weight:800;text-decoration:none}
+.nav-link:hover{background:rgba(212,175,55,.13);color:#735c00}
+.news-card{transition:.22s}
+.news-card:hover{transform:translateY(-4px);box-shadow:0 22px 50px rgba(15,23,42,.12)}
+.modal{display:none}
+.modal.active{display:flex}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+  <div class="max-w-[1440px] mx-auto h-full px-5 lg:px-10 flex items-center justify-between gap-5">
+    <a href="index.html" class="flex items-center gap-3 text-decoration-none">
+      <img src="assets/images/WhatsApp Image 2026-05-12 at 13.33.30.jpeg" onerror="this.src='https://placehold.co/80x80/d4af37/ffffff?text=GP'" class="w-12 h-12 rounded-xl object-cover" alt="Guntur Properties"/>
+      <div>
+        <h1 class="text-2xl font-black text-[#d4af37] leading-tight">Guntur<br class="hidden md:block"/> Properties</h1>
+        <p class="text-[10px] text-[#7f7663] font-bold">Trusted. Transparent. Together.</p>
+      </div>
+    </a>
+
+    <nav class="hidden lg:flex items-center gap-2">
+      <a class="nav-link" href="properties.html?purpose=buy">Buy</a>
+      <a class="nav-link" href="properties.html?purpose=rent">Rent</a>
+      <a class="nav-link" href="projects.html">Projects</a>
+      <a class="nav-link" href="services.html">Services</a>
+      <a class="nav-link" href="register.html">For Sellers</a>
+      <a class="nav-link bg-[#d4af37]/15 text-[#735c00]" href="news.html">News & Updates</a>
+    </nav>
+
+    <div class="flex items-center gap-3">
+      <a href="tel:+919959919999" class="hidden sm:flex items-center gap-2 px-4 py-2 rounded-full border border-[#d0c5af] font-bold">
+        <span class="material-symbols-outlined text-sm">call</span> Call
+      </a>
+      <a href="https://wa.me/919959919999" target="_blank" class="flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#25D366] text-white font-black shadow-lg">
+        <span class="material-symbols-outlined text-sm">chat</span> WhatsApp
+      </a>
+    </div>
+  </div>
+</header>
+
+<section class="relative overflow-hidden bg-[#151c27] text-white">
+  <div class="absolute inset-0 opacity-30 bg-[url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1600&q=80')] bg-cover bg-center"></div>
+  <div class="relative max-w-[1440px] mx-auto px-5 lg:px-10 py-20">
+    <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/20 font-black text-sm">
+      <span class="material-symbols-outlined text-[#d4af37]">newspaper</span>
+      Guntur Properties News Hub
+    </span>
+    <h2 class="text-5xl md:text-7xl font-black mt-8 max-w-4xl leading-tight">News & Updates for Guntur Real Estate</h2>
+    <p class="text-white/80 text-xl mt-6 max-w-3xl">Read property market trends, local updates, registration news, buying guides and service updates.</p>
+  </div>
+</section>
+
+<main class="max-w-[1440px] mx-auto px-5 lg:px-10 py-12">
+  <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-5 mb-8">
+    <div>
+      <h2 class="text-4xl font-black">Latest Updates</h2>
+      <p class="text-[#476080] mt-2">Published by Guntur Properties admin team.</p>
+    </div>
+
+    <div class="flex gap-2 overflow-x-auto">
+      <button class="category-btn btn-gold px-4 py-2 rounded-xl font-black" data-category="all">All</button>
+      <button class="category-btn px-4 py-2 rounded-xl border border-[#d0c5af] font-black bg-white" data-category="market-trends">Market Trends</button>
+      <button class="category-btn px-4 py-2 rounded-xl border border-[#d0c5af] font-black bg-white" data-category="registration-updates">Registration</button>
+      <button class="category-btn px-4 py-2 rounded-xl border border-[#d0c5af] font-black bg-white" data-category="local-updates">Local Updates</button>
+    </div>
+  </div>
+
+  <section id="loading-state" class="bg-white rounded-3xl border border-[#d0c5af]/50 p-12 text-center">
+    <span class="material-symbols-outlined text-6xl text-[#d4af37] animate-pulse">database</span>
+    <h3 class="text-2xl font-black mt-4">Loading news...</h3>
+  </section>
+
+  <section id="empty-state" class="hidden bg-white rounded-3xl border border-[#d0c5af]/50 p-12 text-center">
+    <span class="material-symbols-outlined text-6xl text-[#d4af37]">newspaper</span>
+    <h3 class="text-2xl font-black mt-4">No news posted yet</h3>
+    <p class="text-[#476080] mt-2">Admin can post news from admin news panel.</p>
+  </section>
+
+  <section id="news-grid" class="grid md:grid-cols-2 xl:grid-cols-3 gap-7"></section>
+</main>
+
+<div id="news-modal" class="modal fixed inset-0 bg-black/60 z-[999] items-center justify-center p-4">
+  <article class="bg-white rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+    <img id="modal-image" src="" class="w-full h-80 object-cover rounded-t-3xl" alt="News image"/>
+    <div class="p-7">
+      <div class="flex items-center justify-between gap-4 mb-4">
+        <span id="modal-category" class="px-3 py-1 rounded-full bg-[#d4af37]/15 text-[#735c00] font-black text-xs uppercase"></span>
+        <button id="close-modal" class="w-10 h-10 rounded-full bg-[#f0f3ff] flex items-center justify-center">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+      <h2 id="modal-title" class="text-4xl font-black"></h2>
+      <p id="modal-date" class="text-[#7f7663] font-bold mt-2"></p>
+      <p id="modal-content" class="text-[#476080] leading-8 mt-6 whitespace-pre-line"></p>
+    </div>
+  </article>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const SUPABASE_URL = "https://mpuwfytcyjrsdkgaqaip.supabase.co";
+const SUPABASE_KEY = "sb_publishable_Cw3RO0xumC7MRdfOt16HBQ_Ae6PpWOK";
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let allNews = [];
+let activeCategory = "all";
+
+function fmtDate(value){
+  return value ? new Date(value).toLocaleDateString("en-IN", {day:"numeric", month:"short", year:"numeric"}) : "";
+}
+
+function titleCase(value){
+  return String(value || "General").replace(/[-_]/g," ").replace(/\b\w/g, s => s.toUpperCase());
+}
+
+function fallbackImage(){
+  return "https://placehold.co/1000x650/d4af37/ffffff?text=Guntur+Properties+News";
+}
+
+async function loadNews(){
+  const loading = document.getElementById("loading-state");
+  const empty = document.getElementById("empty-state");
+
+  try{
+    const { data, error } = await supabaseClient
+      .from("news_updates")
+      .select("*")
+      .eq("status", "published")
+      .order("created_at", { ascending:false });
+
+    if(error) throw error;
+
+    allNews = data || [];
+    loading.classList.add("hidden");
+
+    renderNews();
+
+    empty.classList.toggle("hidden", allNews.length !== 0);
+  }catch(error){
+    loading.innerHTML = `
+      <span class="material-symbols-outlined text-6xl text-red-500">error</span>
+      <h3 class="text-2xl font-black mt-4">Unable to load news</h3>
+      <p class="text-[#476080] mt-2">${error.message}</p>
+    `;
+  }
+}
+
+function renderNews(){
+  const grid = document.getElementById("news-grid");
+  const rows = activeCategory === "all"
+    ? allNews
+    : allNews.filter(item => item.category === activeCategory);
+
+  grid.innerHTML = rows.map(item => `
+    <article class="news-card bg-white rounded-3xl border border-[#d0c5af]/45 overflow-hidden shadow-sm cursor-pointer" data-id="${item.id}">
+      <img src="${item.image_url || fallbackImage()}" class="w-full h-56 object-cover" alt="${item.title}">
+      <div class="p-6">
+        <div class="flex items-center justify-between gap-3 mb-3">
+          <span class="text-xs font-black uppercase text-[#735c00] bg-[#d4af37]/15 px-3 py-1 rounded-full">${titleCase(item.category)}</span>
+          <span class="text-xs font-bold text-[#7f7663]">${fmtDate(item.created_at)}</span>
+        </div>
+        <h3 class="text-2xl font-black leading-tight">${item.title}</h3>
+        <p class="text-[#476080] mt-3 line-clamp-3">${item.summary || ""}</p>
+        <button class="mt-5 btn-gold px-5 py-2 rounded-xl font-black">Read More</button>
+      </div>
+    </article>
+  `).join("");
+
+  if (!rows.length) {
+    grid.innerHTML = `<div class="md:col-span-2 xl:col-span-3 bg-white rounded-3xl p-10 text-center border border-[#d0c5af]/50">
+      <h3 class="text-2xl font-black">No updates in this category</h3>
+    </div>`;
+  }
+
+  document.querySelectorAll(".news-card").forEach(card => {
+    card.addEventListener("click", () => {
+      const item = allNews.find(n => n.id === card.dataset.id);
+      openNews(item);
+    });
+  });
+}
+
+function openNews(item){
+  if(!item) return;
+
+  document.getElementById("modal-image").src = item.image_url || fallbackImage();
+  document.getElementById("modal-title").textContent = item.title;
+  document.getElementById("modal-category").textContent = titleCase(item.category);
+  document.getElementById("modal-date").textContent = fmtDate(item.created_at);
+  document.getElementById("modal-content").textContent = item.content || item.summary || "";
+  document.getElementById("news-modal").classList.add("active");
+}
+
+document.getElementById("close-modal").addEventListener("click", () => {
+  document.getElementById("news-modal").classList.remove("active");
+});
+
+document.getElementById("news-modal").addEventListener("click", (event) => {
+  if(event.target.id === "news-modal") {
+    document.getElementById("news-modal").classList.remove("active");
+  }
+});
+
+document.querySelectorAll(".category-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    activeCategory = btn.dataset.category;
+    document.querySelectorAll(".category-btn").forEach(b => {
+      b.className = "category-btn px-4 py-2 rounded-xl border border-[#d0c5af] font-black bg-white";
+    });
+    btn.className = "category-btn btn-gold px-4 py-2 rounded-xl font-black";
+    renderNews();
+  });
+});
+
+loadNews();
+</script>
+</body>
+</html>

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Login / Register | Guntur Properties</title>
+<meta name="description" content="Login or register to Guntur Properties using phone OTP. Access user, owner, broker, developer, staff or admin panels based on your role."/>
+<meta name="robots" content="noindex, follow"/>
+<meta name="theme-color" content="#d4af37"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+<style>
+:root{--gold:#d4af37;--primary:#735c00;--dark:#151c27;--secondary:#476080;--outline:#7f7663;--line:#d0c5af;--surface:#f9f9ff}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Manrope',sans-serif;background:linear-gradient(135deg,#f9f9ff,#f0f3ff);color:var(--dark);margin:0;-webkit-font-smoothing:antialiased}
+.material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 430,'GRAD' 0,'opsz' 24}
+.btn-gold{background:linear-gradient(180deg,#ffe088,#d4af37);color:#241a00;transition:.2s}.btn-gold:hover{transform:translateY(-1px);box-shadow:0 12px 26px rgba(212,175,55,.24)}
+.input-field{width:100%;background:#f9f9ff;border:1.5px solid rgba(208,197,175,.65);border-radius:14px;padding:13px 15px;font-size:14px;outline:none;transition:.2s}.input-field:focus{border-color:#d4af37;box-shadow:0 0 0 3px rgba(212,175,55,.15)}
+.desktop-header{height:86px;background:rgba(255,255,255,.98);backdrop-filter:blur(14px);border-bottom:1px solid rgba(208,197,175,.35);z-index:1000}
+.main-nav{position:relative;gap:12px}.main-nav>.group{position:static}
+.nav-link{display:flex;align-items:center;gap:6px;padding:12px 16px;min-height:46px;border-radius:16px;color:rgba(21,28,39,.88);font-weight:800;line-height:1.25;transition:.2s;cursor:pointer;white-space:nowrap}
+.group:hover>.nav-link,.group:focus-within>.nav-link,.group.menu-open>.nav-link{background:linear-gradient(180deg,rgba(212,175,55,.22),rgba(212,175,55,.12));color:#a98200;box-shadow:inset 0 0 0 1px rgba(212,175,55,.28)}
+.mega-menu{opacity:0;visibility:hidden;pointer-events:none;position:absolute;top:calc(100% + 14px);left:50%;width:1120px;height:390px;max-width:calc(100vw - 72px);transform:translate(-50%,12px);transition:.2s;background:rgba(255,255,255,.99);border:1px solid rgba(212,175,55,.18);border-radius:28px;box-shadow:0 24px 70px rgba(15,23,42,.14);z-index:1200;overflow:hidden}
+.group:hover .mega-menu,.group:focus-within .mega-menu,.group.menu-open .mega-menu{opacity:1;visibility:visible;pointer-events:auto;transform:translate(-50%,0)}
+.mega-menu-content{width:100%;height:100%;padding:24px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+.mega-card{background:#fff;border:1px solid rgba(212,175,55,.14);border-radius:22px;padding:22px;height:100%;box-shadow:0 10px 24px rgba(15,23,42,.05);overflow:auto}.mega-card h4{margin:0 0 14px;color:#a98200;font-size:12px;font-weight:900;letter-spacing:.12em;text-transform:uppercase}.mega-card ul{display:flex;flex-direction:column;gap:8px;margin:0;padding:0;list-style:none}.mega-card a{display:flex;align-items:center;gap:10px;border-radius:14px;padding:10px 12px;color:rgba(21,28,39,.68);font-size:14px;font-weight:700;transition:.18s}.mega-card a:hover{background:rgba(212,175,55,.13);color:#a98200}.mega-promo{background:linear-gradient(180deg,rgba(212,175,55,.10),rgba(240,243,255,.98))}
+.role-tab.active{background:#d4af37;color:white;box-shadow:0 12px 25px rgba(212,175,55,.25)}
+.auth-modal{box-shadow:0 30px 80px rgba(15,23,42,.22)}
+.otp-box{display:none}.otp-box.active{display:block}
+.selfie-box{display:none}.selfie-box.active{display:block}
+.camera-preview{width:100%;aspect-ratio:4/3;background:#111827;border-radius:18px;object-fit:cover}
+.captured-img{width:100%;aspect-ratio:4/3;background:#f3f4f6;border-radius:18px;object-fit:cover;border:1px solid rgba(208,197,175,.55)}
+.mobile-header{display:none}
+@media(max-width:1023px){.desktop-header{display:none}.mobile-header{display:block;position:sticky;top:0;z-index:1000;background:#fff;border-bottom:1px solid #ececec}.mobile-header-inner{height:66px;padding:0 16px;display:flex;align-items:center;justify-content:space-between}.mobile-brand{display:flex;align-items:center;gap:10px}.mobile-brand img{width:34px;height:34px;border-radius:9px;object-fit:cover}.mobile-brand-title{font-weight:900;color:#a98200;font-size:18px;line-height:1.05}.auth-wrap{padding-top:28px!important}}
+</style>
+</head>
+<body>
+
+<nav class="desktop-header fixed top-0 w-full">
+  <div class="max-w-7xl mx-auto px-6 h-full flex justify-between items-center">
+    <a href="index.html" class="flex items-center gap-3 shrink-0">
+      <img alt="Guntur Properties Logo" class="w-11 h-11 rounded-lg object-cover" src="assets/images/WhatsApp Image 2026-05-12 at 13.33.30.jpeg" onerror="this.src='https://placehold.co/80x80/d4af37/ffffff?text=GP'"/>
+      <div class="flex flex-col">
+        <span class="text-xl font-extrabold tracking-tight text-[#d4af37]">Guntur<br class="hidden xl:block"/> Properties</span>
+        <span class="text-[10px] text-outline leading-tight font-semibold">Trusted. Transparent. Together.</span>
+        <span class="mt-1 inline-flex w-fit items-center gap-1 text-[11px] font-bold text-[#735c00]"><span class="material-symbols-outlined text-[14px]">location_on</span> Guntur</span>
+      </div>
+    </a>
+
+    <div class="main-nav hidden lg:flex items-center h-full">
+      <div class="group h-full flex items-center">
+        <a class="nav-link">Buy <span class="material-symbols-outlined text-sm">expand_more</span></a>
+        <div class="mega-menu"><div class="mega-menu-content">
+          <div class="mega-card"><h4>Property Type</h4><ul><li><a href="properties.html?purpose=buy&type=flats"><span class="material-symbols-outlined">apartment</span>Flats</a></li><li><a href="properties.html?purpose=buy&type=houses"><span class="material-symbols-outlined">home</span>Houses</a></li><li><a href="properties.html?purpose=buy&type=villas"><span class="material-symbols-outlined">villa</span>Villas</a></li><li><a href="properties.html?purpose=buy&type=plots"><span class="material-symbols-outlined">landscape</span>Plots</a></li><li><a href="properties.html?purpose=buy&type=commercial"><span class="material-symbols-outlined">corporate_fare</span>Commercial</a></li></ul></div>
+          <div class="mega-card"><h4>Popular Areas</h4><ul><li><a href="properties.html?area=brodipet">Brodipet</a></li><li><a href="properties.html?area=arundelpet">Arundelpet</a></li><li><a href="properties.html?area=lakshmipuram">Lakshmipuram</a></li><li><a href="properties.html?area=amaravati-road">Amaravati Road</a></li></ul></div>
+          <div class="mega-card"><h4>Budget</h4><ul><li><a href="properties.html?budget=under-50-lakhs">Under ₹50 Lakhs</a></li><li><a href="properties.html?budget=50-lakhs-1-cr">₹50 Lakhs - ₹1 Cr</a></li><li><a href="properties.html?budget=1-cr-2-cr">₹1 Cr - ₹2 Cr</a></li><li><a href="properties.html?budget=above-2-cr">Above ₹2 Cr</a></li></ul></div>
+          <div class="mega-card mega-promo"><h4>Home Loan</h4><p class="text-sm text-secondary leading-relaxed mb-5">Find properties and plan finance with local support.</p><a href="home-loan.html" class="justify-center bg-[#d4af37] text-white hover:text-white">Check Eligibility</a></div>
+        </div></div>
+      </div>
+      <div class="group h-full flex items-center"><a class="nav-link">Rent <span class="material-symbols-outlined text-sm">expand_more</span></a><div class="mega-menu"><div class="mega-menu-content"><div class="mega-card"><h4>Residential Rent</h4><ul><li><a href="properties.html?purpose=rent&type=flats">Flats for Rent</a></li><li><a href="properties.html?purpose=rent&type=independent-house">Independent House</a></li><li><a href="properties.html?purpose=rent&type=gated-community">Gated Community</a></li></ul></div><div class="mega-card"><h4>Commercial Rent</h4><ul><li><a href="properties.html?purpose=rent&type=office-space">Office Space</a></li><li><a href="properties.html?purpose=rent&type=shop-showroom">Shop / Showroom</a></li><li><a href="properties.html?purpose=rent&type=warehouse">Warehouse</a></li></ul></div><div class="mega-card"><h4>Rent Range</h4><ul><li><a href="properties.html?purpose=rent&budget=under-10000">Under ₹10,000</a></li><li><a href="properties.html?purpose=rent&budget=10000-20000">₹10k - ₹20k</a></li><li><a href="properties.html?purpose=rent&budget=above-30000">Above ₹30k</a></li></ul></div><div class="mega-card mega-promo"><h4>Rental Support</h4><p class="text-sm text-secondary leading-relaxed mb-5">Shortlist rentals and communicate through the platform.</p><a href="properties.html?purpose=rent" class="justify-center bg-[#d4af37] text-white hover:text-white">Explore Rentals</a></div></div></div></div>
+      <div class="group h-full flex items-center"><a class="nav-link">Projects <span class="material-symbols-outlined text-sm">expand_more</span></a><div class="mega-menu"><div class="mega-menu-content"><div class="mega-card"><h4>Ongoing Projects</h4><ul><li><a href="projects.html?type=luxury-apartments">Luxury Apartments</a></li><li><a href="projects.html?type=premium-villas">Premium Villas</a></li><li><a href="projects.html?type=gated-townships">Gated Townships</a></li></ul></div><div class="mega-card"><h4>New Launches</h4><ul><li><a href="projects.html?project=amaravati-smart-city">Amaravati Smart City</a></li><li><a href="projects.html?project=gorantla-heights">Gorantla Heights</a></li></ul></div><div class="mega-card"><h4>Project Types</h4><ul><li><a href="projects.html?type=apartments">Apartments</a></li><li><a href="projects.html?type=villas">Villas</a></li><li><a href="projects.html?type=ventures">Ventures</a></li></ul></div><div class="mega-card mega-promo"><h4>Developer Listing</h4><p class="text-sm text-secondary leading-relaxed mb-5">Developers can list projects after approval.</p><a href="register.html?role=developer" class="justify-center bg-[#d4af37] text-white hover:text-white">Join Developer</a></div></div></div></div>
+      <div class="group h-full flex items-center"><a class="nav-link">Services <span class="material-symbols-outlined text-sm">expand_more</span></a><div class="mega-menu"><div class="mega-menu-content"><div class="mega-card"><h4>Worker Services</h4><ul><li><a href="services-details.html?service=plumbing"><span class="material-symbols-outlined">plumbing</span>Plumbing</a></li><li><a href="services-details.html?service=electrician"><span class="material-symbols-outlined">electrical_services</span>Electrician</a></li><li><a href="services-details.html?service=painting"><span class="material-symbols-outlined">format_paint</span>Painting</a></li><li><a href="services-details.html?service=construction-workers"><span class="material-symbols-outlined">engineering</span>Construction Workers</a></li></ul></div><div class="mega-card"><h4>Professional Services</h4><ul><li><a href="services-details.html?service=property-management"><span class="material-symbols-outlined">real_estate_agent</span>Property Management</a></li><li><a href="services-details.html?service=interior-design"><span class="material-symbols-outlined">chair</span>Interior Design</a></li><li><a href="services-details.html?service=architectural-design"><span class="material-symbols-outlined">architecture</span>Architectural Design</a></li><li><a href="services-details.html?service=vastu"><span class="material-symbols-outlined">explore</span>Vastu</a></li></ul></div><div class="mega-card"><h4>Join as Provider</h4><ul><li><a href="services.html#enroll">Plumber Enrollment</a></li><li><a href="services.html#enroll">Electrician Enrollment</a></li><li><a href="services.html#enroll">Painter Enrollment</a></li><li><a href="services.html#enroll">Construction Worker Enrollment</a></li></ul></div><div class="mega-card mega-promo"><h4>Service Hub</h4><p class="text-sm text-secondary leading-relaxed mb-5">Service providers can apply.</p><a href="services.html" class="justify-center bg-[#d4af37] text-white hover:text-white">Explore Services</a></div></div></div></div>
+      <div class="group h-full flex items-center"><a class="nav-link">For Sellers <span class="material-symbols-outlined text-sm">expand_more</span></a><div class="mega-menu"><div class="mega-menu-content"><div class="mega-card"><h4>Sell With Us</h4><ul><li><a href="post-property.html">Post Property for Free</a></li><li><a href="seller-packages.html">Seller Packages</a></li><li><a href="photoshoot.html">Request Photoshoot</a></li></ul></div><div class="mega-card"><h4>Join Us</h4><ul><li><a href="register.html?role=owner">Owners</a></li><li><a href="register.html?role=broker">Brokers</a></li><li><a href="register.html?role=developer">Developers</a></li></ul></div><div class="mega-card"><h4>Listing Tools</h4><ul><li><a href="login.html">Login to Panel</a></li><li><a href="register.html">Create Account</a></li><li><a href="contact.html">Talk to Staff</a></li></ul></div><div class="mega-card mega-promo"><h4>Upload Multiple Properties</h4><p class="text-sm text-secondary leading-relaxed mb-5">Manage panel after approval.</p><a href="register.html" class="justify-center bg-[#d4af37] text-white hover:text-white">Join Now</a></div></div></div></div>
+      <div class="group h-full flex items-center"><a class="nav-link">News & Updates <span class="material-symbols-outlined text-sm">expand_more</span></a><div class="mega-menu"><div class="mega-menu-content"><div class="mega-card"><h4>Latest News</h4><ul><li><a href="news.html?category=market-trends">Market Trends</a></li><li><a href="news.html?category=registration-updates">Registration Updates</a></li><li><a href="news.html?category=guntur-real-estate-news">Guntur Real Estate News</a></li></ul></div><div class="mega-card"><h4>Insights</h4><ul><li><a href="insights.html?topic=buying-guide">Buying Guide</a></li><li><a href="insights.html?topic=rental-guide">Rental Guide</a></li><li><a href="insights.html?topic=legal-checklist">Legal Checklist</a></li></ul></div><div class="mega-card"><h4>Local Updates</h4><ul><li><a href="news.html?area=amaravati-road">Amaravati Road</a></li><li><a href="news.html?area=brodipet">Brodipet</a></li><li><a href="news.html?area=lakshmipuram">Lakshmipuram</a></li></ul></div><div class="mega-card mega-promo"><h4>Stay Updated</h4><p class="text-sm text-secondary leading-relaxed mb-5">Read property trends and updates.</p><a href="news.html" class="justify-center bg-[#d4af37] text-white hover:text-white">Read News</a></div></div></div></div>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <a class="hidden sm:flex items-center gap-2 px-4 py-2 rounded-full border border-outline-variant text-on-surface font-semibold hover:bg-surface-container-low transition-all" href="tel:+919959919999"><span class="material-symbols-outlined text-sm">call</span><span class="text-sm">Call</span></a>
+      <a id="profile-link" class="flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#d4af37] text-white font-bold shadow-lg hover:brightness-110 transition-all active:scale-95 text-sm" href="login.html"><span class="material-symbols-outlined text-sm">person</span><span>Profile</span></a>
+    </div>
+  </div>
+</nav>
+
+<header class="mobile-header">
+  <div class="mobile-header-inner">
+    <a href="index.html" class="mobile-brand">
+      <img alt="Guntur Properties Logo" src="assets/images/WhatsApp Image 2026-05-12 at 13.33.30.jpeg" onerror="this.src='https://placehold.co/80x80/d4af37/ffffff?text=GP'"/>
+      <span class="mobile-brand-title">Guntur<br/>Properties</span>
+    </a>
+    <a href="login.html" class="text-sm font-black text-[#735c00]">Login</a>
+  </div>
+</header>
+
+<main class="auth-wrap min-h-screen pt-[120px] pb-16 px-4 flex items-start justify-center">
+  <section class="auth-modal w-full max-w-[560px] bg-white rounded-3xl border border-[#d0c5af]/40 p-6 md:p-8 relative">
+    <a href="index.html" class="absolute right-5 top-5 w-10 h-10 rounded-full flex items-center justify-center hover:bg-[#f0f3ff]" aria-label="Close"><span class="material-symbols-outlined">close</span></a>
+
+    <h1 class="text-3xl font-extrabold mb-2">Login / Register</h1>
+    <p class="text-[#476080] text-lg mb-7">Please enter your phone number</p>
+
+    <div id="phone-step">
+      <label class="text-xs font-black text-[#735c00] uppercase tracking-widest block mb-2">Phone Number</label>
+      <div class="flex items-center gap-2 border border-[#d0c5af] rounded-xl px-4 py-2 focus-within:ring-2 focus-within:ring-[#d4af37]/25">
+        <span class="font-extrabold text-[#476080]">+91</span>
+        <input id="login-phone" class="border-0 focus:ring-0 flex-1 py-3" placeholder="Enter mobile number" inputmode="numeric" maxlength="10"/>
+      </div>
+      <button id="continue-btn" class="btn-gold w-full mt-8 py-4 rounded-xl font-extrabold text-lg">Continue</button>
+
+      <div class="flex items-center gap-4 my-6"><div class="h-px bg-[#d0c5af]/60 flex-1"></div><span class="text-[#7f7663]">Or</span><div class="h-px bg-[#d0c5af]/60 flex-1"></div></div>
+
+      <a href="register.html" class="w-full border border-[#d0c5af] rounded-xl py-4 flex items-center justify-center gap-3 font-extrabold hover:bg-[#f9f9ff]">
+        <span class="material-symbols-outlined">how_to_reg</span>
+        Continue to Register Page
+      </a>
+    </div>
+
+    <div id="otp-step" class="hidden">
+      <div class="rounded-2xl bg-[#d4af37]/10 border border-[#d4af37]/30 p-4 mb-5">
+        <div class="flex items-center justify-between gap-3">
+          <div>
+            <p class="text-xs font-black uppercase tracking-widest text-[#735c00]">OTP Verification</p>
+            <p class="text-sm text-[#476080]">OTP sent to <span id="otp-phone-text" class="font-extrabold text-[#151c27]"></span></p>
+          </div>
+          <button id="edit-phone-btn" class="text-sm font-extrabold text-[#735c00] hover:underline">Edit</button>
+        </div>
+      </div>
+
+      <label class="text-xs font-black text-[#735c00] uppercase tracking-widest block mb-2">Enter OTP</label>
+      <input id="login-otp" class="input-field text-center font-black tracking-[.35em]" inputmode="numeric" maxlength="6" placeholder="______"/>
+      <button id="verify-login-btn" class="btn-gold w-full mt-5 py-4 rounded-xl font-extrabold text-lg">Submit</button>
+      <button id="resend-login-otp" class="w-full mt-3 py-3 rounded-xl border border-[#d0c5af] font-extrabold text-[#735c00]">Resend OTP</button>
+    </div>
+
+    <p id="login-status" class="text-sm text-[#476080] mt-4"></p>
+    <p class="text-xs text-[#7f7663] mt-5">By continuing, you agree to Guntur Properties Terms and Conditions.</p>
+  </section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const GP_SUPABASE_URL = "https://mpuwfytcyjrsdkgaqaip.supabase.co";
+    const GP_SUPABASE_ANON_KEY = "sb_publishable_Cw3RO0xumC7MRdfOt16HBQ_Ae6PpWOK";
+let supabaseClient = null;
+if (window.supabase && GP_SUPABASE_URL.startsWith("http") && GP_SUPABASE_ANON_KEY !== "PASTE_YOUR_SUPABASE_ANON_KEY") {
+  supabaseClient = window.supabase.createClient(GP_SUPABASE_URL, GP_SUPABASE_ANON_KEY);
+}
+function bindMegaMenus(){
+  function closeAll(){document.querySelectorAll(".main-nav > .group").forEach(i=>i.classList.remove("menu-open"))}
+  document.querySelectorAll(".main-nav > .group").forEach(menu=>{
+    const link=menu.querySelector(".nav-link"); const panel=menu.querySelector(".mega-menu");
+    if(!link||!panel)return;
+    link.addEventListener("click",e=>{e.preventDefault();e.stopPropagation();const open=menu.classList.contains("menu-open");closeAll();if(!open)menu.classList.add("menu-open")});
+    panel.addEventListener("click",e=>e.stopPropagation());
+  });
+  document.addEventListener("click",e=>{if(!e.target.closest(".main-nav"))closeAll()});
+  document.addEventListener("keydown",e=>{if(e.key==="Escape")closeAll()});
+}
+function cleanPhone(phone){
+  const digits = String(phone || "").replace(/\D/g, "");
+  if (digits.length === 10 && /^[6-9]/.test(digits)) return digits;
+  if (digits.length === 12 && digits.startsWith("91") && /^[6-9]/.test(digits.slice(2))) return digits.slice(2);
+  return "";
+}
+function makeOtp(){ return String(Math.floor(100000 + Math.random() * 900000)); }
+function panelByRole(role){
+  const map = {
+    user: "user-panel.html",
+    owner: "owner-panel.html",
+    broker: "broker-panel.html",
+    developer: "developer-panel.html",
+    staff: "staff-panel.html",
+    admin: "admin-panel.html"
+  };
+
+  return map[role] || "user-panel.html";
+}
+function checkAlreadyLoggedIn(){
+  const savedPhone = localStorage.getItem("gp_auth_phone");
+  const savedRole = localStorage.getItem("gp_auth_role");
+
+  if (savedPhone && savedRole) {
+    window.location.href = panelByRole(savedRole);
+  }
+}
+async function sendOtpViaSupabase(phone, otp, purpose){
+  /*
+    Production:
+    Create Supabase Edge Function "send-otp", connect SMS provider,
+    then uncomment this block.
+
+    if (supabaseClient) {
+      await supabaseClient.functions.invoke("send-otp", {
+        body: { phone: "+91" + phone, otp, purpose }
+      });
+    }
+  */
+}
+document.addEventListener("DOMContentLoaded", () => {
+  bindMegaMenus();
+  checkAlreadyLoggedIn();
+});
+
+let currentOtp = "";
+let currentPhone = "";
+
+async function startLoginOtp(){
+  const status = document.getElementById("login-status");
+  const phone = cleanPhone(document.getElementById("login-phone").value);
+  if(!phone){status.textContent="Enter a valid 10-digit Indian mobile number."; return;}
+  currentPhone = phone;
+  currentOtp = makeOtp();
+  await sendOtpViaSupabase(phone,currentOtp,"login");
+  document.getElementById("phone-step").classList.add("hidden");
+  document.getElementById("otp-step").classList.remove("hidden");
+  document.getElementById("otp-phone-text").textContent = "+91 " + phone;
+  status.textContent = "OTP sent. Demo OTP: " + currentOtp;
+  document.getElementById("login-otp").focus();
+}
+
+async function verifyLoginOtp(){
+  const status = document.getElementById("login-status");
+  const otp = document.getElementById("login-otp").value.trim();
+  if(otp !== currentOtp){status.textContent="Invalid OTP. Please try again."; return;}
+
+  let role = "user";
+  if(supabaseClient){
+    try{
+      const { data: profile } = await supabaseClient.from("profiles").select("role").eq("phone", currentPhone).maybeSingle();
+      role = profile?.role || "user";
+    }catch(e){ console.warn(e); }
+  }
+
+  localStorage.setItem("gp_auth_phone", currentPhone);
+  localStorage.setItem("gp_auth_role", role);
+  status.textContent = "Login successful. Redirecting...";
+  setTimeout(()=> window.location.href = panelByRole(role), 500);
+}
+
+document.getElementById("continue-btn").addEventListener("click", startLoginOtp);
+document.getElementById("verify-login-btn").addEventListener("click", verifyLoginOtp);
+document.getElementById("resend-login-otp").addEventListener("click", startLoginOtp);
+document.getElementById("edit-phone-btn").addEventListener("click",()=>{
+  document.getElementById("otp-step").classList.add("hidden");
+  document.getElementById("phone-step").classList.remove("hidden");
+  document.getElementById("login-status").textContent="Edit phone number and continue again.";
+});
+document.getElementById("login-phone").addEventListener("keydown",e=>{if(e.key==="Enter")startLoginOtp();});
+document.getElementById("login-otp").addEventListener("keydown",e=>{if(e.key==="Enter")verifyLoginOtp();});
+</script>
+
+
+<script src="js/config.js"></script>
+<script src="js/supabase.js"></script>
+<script src="js/validation.js"></script>
+<script src="js/toast.js"></script>
+<script src="js/error-logger.js"></script>
+<script src="js/network-status.js"></script>
+<script src="js/analytics.js"></script>
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
