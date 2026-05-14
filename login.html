@@ -180,7 +180,7 @@ async function sendOtpViaSupabase(phone, purpose){
       headers: {
   "Content-Type": "application/json",
   "apikey": GP_SUPABASE_ANON_KEY,
-  "Authorization": "Bearer " + GP_SUPABASE_ANON_KEY
+
 },
       body: JSON.stringify({
         phone: phone,
@@ -252,7 +252,6 @@ async function verifyLoginOtp(){
         headers: {
   "Content-Type": "application/json",
   "apikey": GP_SUPABASE_ANON_KEY,
-  "Authorization": "Bearer " + GP_SUPABASE_ANON_KEY
 },
         body: JSON.stringify({
           phone: currentPhone,
