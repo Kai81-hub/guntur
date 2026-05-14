@@ -197,34 +197,84 @@ let currentPhone = "";
 async function startLoginOtp(){
   const status = document.getElementById("login-status");
   const phone = cleanPhone(document.getElementById("login-phone").value);
-  if(!phone){status.textContent="Enter a valid 10-digit Indian mobile number."; return;}
+
+  if(!phone){
+    status.textContent = "Enter a valid 10-digit Indian mobile number.";
+    return;
+  }
+
+  if(!supabaseClient){
+    status.textContent = "Supabase is not connected. Check your config.";
+    return;
+  }
+
   currentPhone = phone;
-  currentOtp = makeOtp();
-  await sendOtpViaSupabase(phone,currentOtp,"login");
+  status.textContent = "Sending OTP...";
+
+  const { error } = await supabaseClient.auth.signInWithOtp({
+    phone: "+91" + phone
+  });
+
+  if(error){
+    console.error(error);
+    status.textContent = "OTP sending failed: " + error.message;
+    return;
+  }
+
   document.getElementById("phone-step").classList.add("hidden");
   document.getElementById("otp-step").classList.remove("hidden");
   document.getElementById("otp-phone-text").textContent = "+91 " + phone;
-  status.textContent = "OTP sent. Demo OTP: " + currentOtp;
+  status.textContent = "OTP sent to your phone number.";
   document.getElementById("login-otp").focus();
 }
 
 async function verifyLoginOtp(){
   const status = document.getElementById("login-status");
   const otp = document.getElementById("login-otp").value.trim();
-  if(otp !== currentOtp){status.textContent="Invalid OTP. Please try again."; return;}
+
+  if(!otp || otp.length !== 6){
+    status.textContent = "Enter valid 6-digit OTP.";
+    return;
+  }
+
+  if(!supabaseClient){
+    status.textContent = "Supabase is not connected. Check your config.";
+    return;
+  }
+
+  status.textContent = "Verifying OTP...";
+
+  const { data, error } = await supabaseClient.auth.verifyOtp({
+    phone: "+91" + currentPhone,
+    token: otp,
+    type: "sms"
+  });
+
+  if(error){
+    console.error(error);
+    status.textContent = "Invalid OTP or OTP expired.";
+    return;
+  }
 
   let role = "user";
-  if(supabaseClient){
-    try{
-      const { data: profile } = await supabaseClient.from("profiles").select("role").eq("phone", currentPhone).maybeSingle();
-      role = profile?.role || "user";
-    }catch(e){ console.warn(e); }
+
+  try{
+    const { data: profile } = await supabaseClient
+      .from("profiles")
+      .select("role")
+      .eq("phone", currentPhone)
+      .maybeSingle();
+
+    role = profile?.role || "user";
+  }catch(e){
+    console.warn(e);
   }
 
   localStorage.setItem("gp_auth_phone", currentPhone);
   localStorage.setItem("gp_auth_role", role);
+
   status.textContent = "Login successful. Redirecting...";
-  setTimeout(()=> window.location.href = panelByRole(role), 500);
+  setTimeout(() => window.location.href = panelByRole(role), 500);
 }
 
 document.getElementById("continue-btn").addEventListener("click", startLoginOtp);
