@@ -88,39 +88,56 @@ body{font-family:'Manrope',sans-serif;background:linear-gradient(135deg,#f9f9ff,
     <a href="index.html" class="absolute right-5 top-5 w-10 h-10 rounded-full flex items-center justify-center hover:bg-[#f0f3ff]" aria-label="Close"><span class="material-symbols-outlined">close</span></a>
 
     <h1 class="text-3xl font-extrabold mb-2">Login / Register</h1>
-    <p class="text-[#476080] text-lg mb-7">Please enter your phone number</p>
+    <p class="text-[#476080] text-lg mb-7">Login with your phone number and password</p>
 
-    <div id="phone-step">
-      <label class="text-xs font-black text-[#735c00] uppercase tracking-widest block mb-2">Phone Number</label>
-      <div class="flex items-center gap-2 border border-[#d0c5af] rounded-xl px-4 py-2 focus-within:ring-2 focus-within:ring-[#d4af37]/25">
-        <span class="font-extrabold text-[#476080]">+91</span>
-        <input id="login-phone" class="border-0 focus:ring-0 flex-1 py-3" placeholder="Enter mobile number" inputmode="numeric" maxlength="10"/>
-      </div>
-      <button id="continue-btn" class="btn-gold w-full mt-8 py-4 rounded-xl font-extrabold text-lg">Continue</button>
+   <div id="login-step">
+  <label class="text-xs font-black text-[#735c00] uppercase tracking-widest block mb-2">
+    Phone Number
+  </label>
 
-      <div class="flex items-center gap-4 my-6"><div class="h-px bg-[#d0c5af]/60 flex-1"></div><span class="text-[#7f7663]">Or</span><div class="h-px bg-[#d0c5af]/60 flex-1"></div></div>
+  <div class="flex items-center gap-2 border border-[#d0c5af] rounded-xl px-4 py-2 focus-within:ring-2 focus-within:ring-[#d4af37]/25">
+    <span class="font-extrabold text-[#476080]">+91</span>
+    <input
+      id="login-phone"
+      class="border-0 focus:ring-0 flex-1 py-3"
+      placeholder="Enter mobile number"
+      inputmode="numeric"
+      maxlength="10"
+    />
+  </div>
 
-      <a href="register.html" class="w-full border border-[#d0c5af] rounded-xl py-4 flex items-center justify-center gap-3 font-extrabold hover:bg-[#f9f9ff]">
-        <span class="material-symbols-outlined">how_to_reg</span>
-        Continue to Register Page
-      </a>
-    </div>
+  <label class="text-xs font-black text-[#735c00] uppercase tracking-widest block mt-5 mb-2">
+    Password
+  </label>
 
-    <div id="otp-step" class="hidden">
-      <div class="rounded-2xl bg-[#d4af37]/10 border border-[#d4af37]/30 p-4 mb-5">
-        <div class="flex items-center justify-between gap-3">
-          <div>
-            <p class="text-xs font-black uppercase tracking-widest text-[#735c00]">OTP Verification</p>
-            <p class="text-sm text-[#476080]">OTP sent to <span id="otp-phone-text" class="font-extrabold text-[#151c27]"></span></p>
-          </div>
-          <button id="edit-phone-btn" class="text-sm font-extrabold text-[#735c00] hover:underline">Edit</button>
-        </div>
-      </div>
+  <div class="border border-[#d0c5af] rounded-xl px-4 py-2 focus-within:ring-2 focus-within:ring-[#d4af37]/25">
+    <input
+      id="login-password"
+      class="border-0 focus:ring-0 w-full py-3"
+      type="password"
+      placeholder="Enter password"
+    />
+  </div>
 
-      <label class="text-xs font-black text-[#735c00] uppercase tracking-widest block mb-2">Enter OTP</label>
-      <input id="login-otp" class="input-field text-center font-black tracking-[.35em]" inputmode="numeric" maxlength="6" placeholder="______"/>
-      <button id="verify-login-btn" class="btn-gold w-full mt-5 py-4 rounded-xl font-extrabold text-lg">Submit</button>
-      <button id="resend-login-otp" class="w-full mt-3 py-3 rounded-xl border border-[#d0c5af] font-extrabold text-[#735c00]">Resend OTP</button>
+  <button id="continue-btn" class="btn-gold w-full mt-8 py-4 rounded-xl font-extrabold text-lg">
+    Login
+  </button>
+
+  <a href="forgot-password.html" class="block text-center mt-4 text-sm font-extrabold text-[#735c00] hover:underline">
+    Forgot / Change Password?
+  </a>
+
+  <div class="flex items-center gap-4 my-6">
+    <div class="h-px bg-[#d0c5af]/60 flex-1"></div>
+    <span class="text-[#7f7663]">Or</span>
+    <div class="h-px bg-[#d0c5af]/60 flex-1"></div>
+  </div>
+
+  <a href="register.html" class="w-full border border-[#d0c5af] rounded-xl py-4 flex items-center justify-center gap-3 font-extrabold hover:bg-[#f9f9ff]">
+    <span class="material-symbols-outlined">how_to_reg</span>
+    Continue to Register Page
+  </a>
+</div>
     </div>
 
     <p id="login-status" class="text-sm text-[#476080] mt-4"></p>
@@ -172,128 +189,90 @@ function checkAlreadyLoggedIn(){
     window.location.href = panelByRole(savedRole);
   }
 }
-async function sendOtpViaSupabase(phone, purpose){
-  const response = await fetch(
-    "https://mpuwfytcyjrsdkgaqaip.supabase.co/functions/v1/send-otp",
-    {
-      method: "POST",
-  headers: {
-  "Content-Type": "application/json",
-  "apikey": GP_SUPABASE_ANON_KEY
-},
-      body: JSON.stringify({
-        phone: phone,
-        purpose: purpose || "login"
-      })
-    }
-  );
 
-  const result = await response.json();
-
-  if (!response.ok || !result.success) {
-    throw new Error(result.message || "OTP sending failed.");
-  }
-
-  return result;
-}
 document.addEventListener("DOMContentLoaded", () => {
   bindMegaMenus();
   checkAlreadyLoggedIn();
 });
 
+async function hashPassword(password){
+  const encoder = new TextEncoder();
+  const data = encoder.encode(password);
+  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
 
-let currentPhone = "";
-let currentVerificationId = "";
+  return hashArray
+    .map(byte => byte.toString(16).padStart(2, "0"))
+    .join("");
+}
 
-async function startLoginOtp(){
+async function loginWithPassword(){
   const status = document.getElementById("login-status");
   const phone = cleanPhone(document.getElementById("login-phone").value);
+  const password = document.getElementById("login-password").value.trim();
 
   if(!phone){
     status.textContent = "Enter a valid 10-digit Indian mobile number.";
     return;
   }
 
-  try {
-    currentPhone = phone;
-    status.textContent = "Sending OTP...";
-
-    const otpResult = await sendOtpViaSupabase(phone, "login");
-currentVerificationId = otpResult.verificationId;
-
-    document.getElementById("phone-step").classList.add("hidden");
-    document.getElementById("otp-step").classList.remove("hidden");
-    document.getElementById("otp-phone-text").textContent = "+91 " + phone;
-
-    status.textContent = "OTP sent to your phone number.";
-    document.getElementById("login-otp").focus();
-
-  } catch(error) {
-    console.error(error);
-    status.textContent = error.message || "OTP sending failed.";
-  }
-}
-
-async function verifyLoginOtp(){
-  const status = document.getElementById("login-status");
-  const otp = document.getElementById("login-otp").value.trim();
-
-  if(!otp || otp.length !== 6){
-    status.textContent = "Enter valid 6-digit OTP.";
+  if(!password){
+    status.textContent = "Enter your password.";
     return;
   }
 
   try {
-    status.textContent = "Verifying OTP...";
+    status.textContent = "Checking login...";
 
-    const response = await fetch(
-      "https://mpuwfytcyjrsdkgaqaip.supabase.co/functions/v1/verify-otp",
-      {
-        method: "POST",
-  headers: {
-  "Content-Type": "application/json",
-  "apikey": GP_SUPABASE_ANON_KEY
-},
-       body: JSON.stringify({
-  phone: currentPhone,
-  otp: otp,
-  verificationId: currentVerificationId,
-  purpose: "login"
-})
-      }
-    );
+    const passwordHash = await hashPassword(password);
 
-    const result = await response.json();
+    const { data, error } = await supabaseClient
+      .from("profiles")
+      .select("phone, role, password_hash, password_set, phone_verified, verification_status")
+      .eq("phone", phone)
+      .maybeSingle();
 
-    if(!response.ok || !result.success){
-      throw new Error(result.message || "Invalid OTP or OTP expired.");
+    if(error) throw error;
+
+    if(!data){
+      status.textContent = "Account not found. Please register first.";
+      return;
     }
 
-    localStorage.setItem("gp_auth_phone", result.phone);
-    localStorage.setItem("gp_auth_role", result.role || "user");
+    if(!data.password_set || !data.password_hash){
+      status.textContent = "Password is not set. Use Forgot / Change Password.";
+      return;
+    }
+
+    if(data.password_hash !== passwordHash){
+      status.textContent = "Incorrect password.";
+      return;
+    }
+
+    localStorage.setItem("gp_auth_phone", data.phone);
+    localStorage.setItem("gp_auth_role", data.role || "user");
 
     status.textContent = "Login successful. Redirecting...";
 
     setTimeout(() => {
-      window.location.href = panelByRole(result.role || "user");
+      window.location.href = panelByRole(data.role || "user");
     }, 500);
 
   } catch(error) {
     console.error(error);
-    status.textContent = error.message || "Invalid OTP or OTP expired.";
+    status.textContent = error.message || "Login failed.";
   }
 }
 
-document.getElementById("continue-btn").addEventListener("click", startLoginOtp);
-document.getElementById("verify-login-btn").addEventListener("click", verifyLoginOtp);
-document.getElementById("resend-login-otp").addEventListener("click", startLoginOtp);
-document.getElementById("edit-phone-btn").addEventListener("click",()=>{
-  document.getElementById("otp-step").classList.add("hidden");
-  document.getElementById("phone-step").classList.remove("hidden");
-  document.getElementById("login-status").textContent="Edit phone number and continue again.";
+document.getElementById("continue-btn").addEventListener("click", loginWithPassword);
+
+document.getElementById("login-phone").addEventListener("keydown", e => {
+  if(e.key === "Enter") loginWithPassword();
 });
-document.getElementById("login-phone").addEventListener("keydown",e=>{if(e.key==="Enter")startLoginOtp();});
-document.getElementById("login-otp").addEventListener("keydown",e=>{if(e.key==="Enter")verifyLoginOtp();});
+
+document.getElementById("login-password").addEventListener("keydown", e => {
+  if(e.key === "Enter") loginWithPassword();
+});
 </script>
 
 
