@@ -177,10 +177,9 @@ async function sendOtpViaSupabase(phone, purpose){
     "https://mpuwfytcyjrsdkgaqaip.supabase.co/functions/v1/send-otp",
     {
       method: "POST",
-      headers: {
+  headers: {
   "Content-Type": "application/json",
-  "apikey": GP_SUPABASE_ANON_KEY,
-
+  "apikey": GP_SUPABASE_ANON_KEY
 },
       body: JSON.stringify({
         phone: phone,
@@ -204,6 +203,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 let currentPhone = "";
+let currentVerificationId = "";
 
 async function startLoginOtp(){
   const status = document.getElementById("login-status");
@@ -218,7 +218,8 @@ async function startLoginOtp(){
     currentPhone = phone;
     status.textContent = "Sending OTP...";
 
-    await sendOtpViaSupabase(phone, "login");
+    const otpResult = await sendOtpViaSupabase(phone, "login");
+currentVerificationId = otpResult.verificationId;
 
     document.getElementById("phone-step").classList.add("hidden");
     document.getElementById("otp-step").classList.remove("hidden");
@@ -249,15 +250,16 @@ async function verifyLoginOtp(){
       "https://mpuwfytcyjrsdkgaqaip.supabase.co/functions/v1/verify-otp",
       {
         method: "POST",
-        headers: {
+  headers: {
   "Content-Type": "application/json",
-  "apikey": GP_SUPABASE_ANON_KEY,
+  "apikey": GP_SUPABASE_ANON_KEY
 },
-        body: JSON.stringify({
-          phone: currentPhone,
-          otp: otp,
-          purpose: "login"
-        })
+       body: JSON.stringify({
+  phone: currentPhone,
+  otp: otp,
+  verificationId: currentVerificationId,
+  purpose: "login"
+})
       }
     );
 
