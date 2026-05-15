@@ -129,37 +129,61 @@ body{font-family:'Manrope',sans-serif;background:linear-gradient(135deg,#f9f9ff,
         <div><label class="text-xs font-black uppercase tracking-widest text-[#735c00] block mb-1.5">Phone Number *</label><input name="phone" class="input-field" inputmode="numeric" maxlength="10" placeholder="10-digit mobile number" required/></div>
         <div><label class="text-xs font-black uppercase tracking-widest text-[#735c00] block mb-1.5">Email</label><input name="email" class="input-field" type="email" placeholder="Email address"/></div>
         <div><label class="text-xs font-black uppercase tracking-widest text-[#735c00] block mb-1.5">Location</label><input name="location" class="input-field" placeholder="Area / city"/></div>
-        <div>
-          <label class="text-xs font-black uppercase tracking-widest text-[#735c00] block mb-1.5">
-            Create Password *
-          </label>
-          <input
-            name="password"
-            id="register-password"
-            class="input-field"
-            type="password"
-            placeholder="Create password"
-            required
-          />
-          <p class="text-xs text-[#476080] mt-1">
-            Minimum 8 characters, one number and one symbol required.
-          </p>
-        </div>
+      <div>
+  <label class="text-xs font-black uppercase tracking-widest text-[#735c00] block mb-1.5">
+    Create Password *
+  </label>
 
-        <div>
-          <label class="text-xs font-black uppercase tracking-widest text-[#735c00] block mb-1.5">
-            Re-enter Password *
-          </label>
-          <input
-            name="confirm_password"
-            id="register-confirm-password"
-            class="input-field"
-            type="password"
-            placeholder="Re-enter password"
-            required
-          />
-        </div>
-      </div>
+  <div class="relative">
+    <input
+      name="password"
+      id="register-password"
+      class="input-field pr-12"
+      type="password"
+      placeholder="Create password"
+      required
+    />
+
+    <button
+      type="button"
+      class="password-toggle absolute right-4 top-1/2 -translate-y-1/2 text-[#735c00]"
+      data-target="register-password"
+      aria-label="Show password"
+    >
+      <span class="material-symbols-outlined text-[22px]">visibility</span>
+    </button>
+  </div>
+
+  <p class="text-xs text-[#476080] mt-1">
+    Minimum 8 characters, one number and one symbol required.
+  </p>
+</div>
+
+<div>
+  <label class="text-xs font-black uppercase tracking-widest text-[#735c00] block mb-1.5">
+    Re-enter Password *
+  </label>
+
+  <div class="relative">
+    <input
+      name="confirm_password"
+      id="register-confirm-password"
+      class="input-field pr-12"
+      type="password"
+      placeholder="Re-enter password"
+      required
+    />
+
+    <button
+      type="button"
+      class="password-toggle absolute right-4 top-1/2 -translate-y-1/2 text-[#735c00]"
+      data-target="register-confirm-password"
+      aria-label="Show password"
+    >
+      <span class="material-symbols-outlined text-[22px]">visibility</span>
+    </button>
+  </div>
+</div>
 
       <div id="owner-fields" class="hidden mt-4 grid md:grid-cols-2 gap-4">
   <div>
@@ -551,6 +575,16 @@ async function uploadSelfie(userId){
   const { data } = supabaseClient.storage.from("verification-documents").getPublicUrl(filePath);
   return data.publicUrl;
 }
+async function hashPassword(password){
+  const encoder = new TextEncoder();
+  const data = encoder.encode(password);
+  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+
+  return hashArray
+    .map(byte => byte.toString(16).padStart(2, "0"))
+    .join("");
+}
 
 async function verifyRegisterOtp(){
   const status = document.getElementById("register-status");
@@ -577,10 +611,17 @@ async function verifyRegisterOtp(){
 
     status.textContent = "OTP verified. Creating account...";
 
-    const profileData = {
-      ...pendingRegisterData,
-      phone_verified: true
-    };
+   const passwordHash = await hashPassword(pendingRegisterData.password);
+
+const profileData = {
+  ...pendingRegisterData,
+  password_hash: passwordHash,
+  password_set: true,
+  phone_verified: true
+};
+
+delete profileData.password;
+delete profileData.confirm_password;
 
     if(supabaseClient){
       if(selfieDataUrl){
@@ -638,6 +679,18 @@ document.getElementById("edit-register-phone").addEventListener("click",()=>{set
 
 const initialRole = new URLSearchParams(location.search).get("role");
 if(["user","owner","broker","developer"].includes(initialRole)) setRole(initialRole);
+document.querySelectorAll(".password-toggle").forEach(button => {
+  button.addEventListener("click", () => {
+    const input = document.getElementById(button.dataset.target);
+    const icon = button.querySelector(".material-symbols-outlined");
+
+    if (!input) return;
+
+    const isPassword = input.type === "password";
+    input.type = isPassword ? "text" : "password";
+    icon.textContent = isPassword ? "visibility_off" : "visibility";
+  });
+});
 </script>
 <script src="js/config.js"></script>
 <script src="js/supabase.js"></script>
