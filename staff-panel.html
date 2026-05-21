@@ -25,7 +25,89 @@ td{padding:14px;border-bottom:1px solid rgba(208,197,175,.32);font-size:14px;col
 .status.pending{background:#fff7d6;color:#8a6500}.status.approved{background:#dcfce7;color:#166534}.status.rejected{background:#fee2e2;color:#991b1b}.status.new{background:#dbeafe;color:#1d4ed8}
 .mobile-menu{display:none}
 @media(max-width:1023px){.layout{grid-template-columns:1fr!important}.sidebar{position:fixed;inset:0 auto 0 0;width:280px;z-index:60;transform:translateX(-105%);transition:.25s}.sidebar.open{transform:translateX(0)}.mobile-menu{display:inline-flex}.content{padding:18px!important}.desktop-spacer{display:none}}
-</style>
+.location-edit-input{
+  width:100%;
+  min-width:150px;
+  border:1px solid rgba(208,197,175,.75);
+  border-radius:12px;
+  padding:9px 10px;
+  font-weight:800;
+  outline:none;
+}
+
+.location-edit-input:focus{
+  border-color:#d4af37;
+  box-shadow:0 0 0 3px rgba(212,175,55,.14);
+}
+
+.panel-action{
+  color:#735c00;
+  font-weight:900;
+  cursor:pointer;
+}
+.sheet-toolbar{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  margin-bottom:16px;
+}
+
+.sheet-search{
+  width:100%;
+  max-width:360px;
+  border:1px solid rgba(208,197,175,.75);
+  border-radius:14px;
+  padding:12px 14px;
+  font-weight:800;
+  outline:none;
+}
+
+.sheet-search:focus{
+  border-color:#d4af37;
+  box-shadow:0 0 0 3px rgba(212,175,55,.14);
+}
+
+.contact-toggle{
+  border:1px solid rgba(212,175,55,.35);
+  border-radius:999px;
+  padding:7px 12px;
+  font-size:12px;
+  font-weight:900;
+  color:#735c00;
+  background:#fff8dc;
+}
+
+.role-sheet-title{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.id-list{
+  max-width:260px;
+  white-space:normal;
+  line-height:1.5;
+  font-size:12px;
+  color:#476080;
+  font-weight:700;
+}
+
+@media(max-width:640px){
+  .sheet-search{
+    max-width:100%;
+  }
+
+  .sheet-toolbar{
+    align-items:stretch;
+  }
+
+  th,td{
+    font-size:13px;
+  }
+}</style>
+
 </head>
 <body>
 <div class="layout grid grid-cols-[280px_1fr] min-h-screen">
@@ -41,11 +123,32 @@ td{padding:14px;border-bottom:1px solid rgba(208,197,175,.32);font-size:14px;col
       <button id="close-sidebar-btn" class="lg:hidden w-9 h-9 rounded-full bg-[#f0f3ff]"><span class="material-symbols-outlined">close</span></button>
     </div>
     <nav class="space-y-2"><a class="sidebar-link active" href="staff-panel.html"><span class="material-symbols-outlined">dashboard</span>Dashboard</a>
-<a class="sidebar-link " href="staff-panel.html#pending"><span class="material-symbols-outlined">fact_check</span>Pending Properties</a>
+<a class="sidebar-link " href="staff-panel.html#pending">
+  <span class="material-symbols-outlined">fact_check</span>
+  Manual Locations
+</a>
+<a class="sidebar-link" href="staff-panel.html#users-sheet">
+  <span class="material-symbols-outlined">person</span>
+  Users Sheet
+</a>
+
+<a class="sidebar-link" href="staff-panel.html#owners-sheet">
+  <span class="material-symbols-outlined">home</span>
+  Owners Sheet
+</a>
+
+<a class="sidebar-link" href="staff-panel.html#brokers-sheet">
+  <span class="material-symbols-outlined">real_estate_agent</span>
+  Brokers Sheet
+</a>
+
+<a class="sidebar-link" href="staff-panel.html#developers-sheet">
+  <span class="material-symbols-outlined">apartment</span>
+  Developers Sheet
+</a>
 <a class="sidebar-link " href="staff-panel.html#leads"><span class="material-symbols-outlined">contact_phone</span>Leads</a>
 <a class="sidebar-link " href="staff-panel.html#chats"><span class="material-symbols-outlined">forum</span>Chats</a>
 <a class="sidebar-link " href="staff-panel.html#services"><span class="material-symbols-outlined">construction</span>Service Leads</a>
-<a class="sidebar-link " href="staff-panel.html#analytics"><span class="material-symbols-outlined">analytics</span>Visitor Analytics</a></nav>
     <div class="mt-8 rounded-3xl bg-[#151c27] text-white p-5">
       <p class="text-xs text-white/60 font-bold uppercase">Logged in</p>
       <p id="auth-phone" class="font-black mt-1">Checking...</p>
@@ -66,95 +169,192 @@ td{padding:14px;border-bottom:1px solid rgba(208,197,175,.32);font-size:14px;col
     </header>
     
 <section class="grid sm:grid-cols-2 xl:grid-cols-4 gap-5 mb-8">
-  <div class="panel-card p-6"><p class="text-[#476080] font-bold">Pending Properties</p><h2 id="stat-pending" class="text-4xl font-black mt-2">0</h2></div>
+  <div class="panel-card p-6"><p class="text-[#476080] font-bold">Manual Locations</p><h2 id="stat-pending" class="text-4xl font-black mt-2">0</h2></div>
   <div class="panel-card p-6"><p class="text-[#476080] font-bold">New Leads</p><h2 id="stat-leads" class="text-4xl font-black mt-2">0</h2></div>
   <div class="panel-card p-6"><p class="text-[#476080] font-bold">Open Chats</p><h2 id="stat-chats" class="text-4xl font-black mt-2">0</h2></div>
   <div class="panel-card p-6"><p class="text-[#476080] font-bold">Service Requests</p><h2 id="stat-services" class="text-4xl font-black mt-2">0</h2></div>
 </section>
-<section id="pending" class="panel-card p-6 mb-8"><h2 class="text-2xl font-black mb-5">Pending Properties</h2><div class="table-wrap"><table><thead><tr><th>Title</th><th>Type</th><th>Price</th><th>Status</th><th>Action</th></tr></thead><tbody id="pending-body"><tr><td colspan="5">Connect Supabase to load data.</td></tr></tbody></table></div></section>
+<section id="pending" class="panel-card p-6 mb-8">
+  <h2 class="text-2xl font-black mb-2">Manual Location Verification</h2>
+
+  <p class="text-[#476080] text-sm font-semibold mb-5">
+    Properties are already live. Staff only checks and corrects manually entered state, district and city/local area spelling.
+  </p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Property</th>
+          <th>State</th>
+          <th>District</th>
+          <th>City / Local Area</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+
+      <tbody id="pending-body">
+        <tr>
+          <td colspan="6">Connect Supabase to load manual locations.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+<section id="users-sheet" class="panel-card p-6 mb-8">
+  <div class="sheet-toolbar">
+    <div>
+      <h2 class="text-2xl font-black role-sheet-title">
+        <span class="material-symbols-outlined text-[#d4af37]">person</span>
+        User Role Sheet
+      </h2>
+      <p class="text-[#476080] text-sm font-semibold mt-1">
+        View users, phone numbers, searches, visited properties and contact status.
+      </p>
+    </div>
+
+    <input id="users-search" class="sheet-search" placeholder="Search users by name, phone, search, property id..." />
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>User Name</th>
+          <th>Phone</th>
+          <th>What They Searched</th>
+          <th>Visited Property IDs</th>
+          <th>Contacted Us</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="users-sheet-body">
+        <tr><td colspan="6">Loading users...</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="owners-sheet" class="panel-card p-6 mb-8">
+  <div class="sheet-toolbar">
+    <div>
+      <h2 class="text-2xl font-black role-sheet-title">
+        <span class="material-symbols-outlined text-[#d4af37]">home</span>
+        Owner Role Sheet
+      </h2>
+      <p class="text-[#476080] text-sm font-semibold mt-1">
+        View owners, posted properties, property IDs and visitor count.
+      </p>
+    </div>
+
+    <input id="owners-search" class="sheet-search" placeholder="Search owners by name, phone, property id..." />
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Owner Name</th>
+          <th>Phone</th>
+          <th>Properties Posted</th>
+          <th>Property IDs</th>
+          <th>Members Visited</th>
+          <th>Contacted Us</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="owners-sheet-body">
+        <tr><td colspan="7">Loading owners...</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="brokers-sheet" class="panel-card p-6 mb-8">
+  <div class="sheet-toolbar">
+    <div>
+      <h2 class="text-2xl font-black role-sheet-title">
+        <span class="material-symbols-outlined text-[#d4af37]">real_estate_agent</span>
+        Broker Role Sheet
+      </h2>
+      <p class="text-[#476080] text-sm font-semibold mt-1">
+        View brokers, property count, property IDs, visitors and contact status.
+      </p>
+    </div>
+
+    <input id="brokers-search" class="sheet-search" placeholder="Search brokers by name, phone, property id..." />
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Broker Name</th>
+          <th>Phone</th>
+          <th>Properties Posted</th>
+          <th>Property IDs</th>
+          <th>Members Visited</th>
+          <th>Contacted Us</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="brokers-sheet-body">
+        <tr><td colspan="7">Loading brokers...</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="developers-sheet" class="panel-card p-6 mb-8">
+  <div class="sheet-toolbar">
+    <div>
+      <h2 class="text-2xl font-black role-sheet-title">
+        <span class="material-symbols-outlined text-[#d4af37]">apartment</span>
+        Developer Role Sheet
+      </h2>
+      <p class="text-[#476080] text-sm font-semibold mt-1">
+        View developers, project/property count, property IDs, visitors and contact status.
+      </p>
+    </div>
+
+    <input id="developers-search" class="sheet-search" placeholder="Search developers by name, phone, property id..." />
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Developer Name</th>
+          <th>Phone</th>
+          <th>Properties / Projects Posted</th>
+          <th>Property IDs</th>
+          <th>Members Visited</th>
+          <th>Contacted Us</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="developers-sheet-body">
+        <tr><td colspan="7">Loading developers...</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
 <section id="leads" class="panel-card p-6 mb-8"><h2 class="text-2xl font-black mb-5">Property Leads</h2><div class="table-wrap"><table><thead><tr><th>Name</th><th>Phone</th><th>Property</th><th>Status</th><th>Date</th></tr></thead><tbody id="leads-body"><tr><td colspan="5">Connect Supabase to load data.</td></tr></tbody></table></div></section>
 <section id="services" class="panel-card p-6"><h2 class="text-2xl font-black mb-5">Service Leads</h2><div class="table-wrap"><table><thead><tr><th>Service</th><th>Name</th><th>Phone</th><th>Location</th><th>Status</th></tr></thead><tbody id="services-body"><tr><td colspan="5">Connect Supabase to load data.</td></tr></tbody></table></div></section>
 
   </main>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-const GP_SUPABASE_URL = "PASTE_YOUR_SUPABASE_PROJECT_URL";
-const GP_SUPABASE_ANON_KEY = "PASTE_YOUR_SUPABASE_ANON_KEY";
-let supabaseClient = null;
-if (window.supabase && GP_SUPABASE_URL.startsWith("http") && GP_SUPABASE_ANON_KEY !== "PASTE_YOUR_SUPABASE_ANON_KEY") {
-  supabaseClient = window.supabase.createClient(GP_SUPABASE_URL, GP_SUPABASE_ANON_KEY);
-}
-function getAuthRole(){return localStorage.getItem("gp_auth_role") || "user"}
-function getAuthPhone(){return localStorage.getItem("gp_auth_phone") || ""}
-function checkRole(allowed){
-  const role=getAuthRole();
-  if(!getAuthPhone()){
-    window.location.href="login.html";
-    return false;
-  }
-  if(!allowed.includes(role)){
-    document.body.innerHTML = `<div style="font-family:Manrope,sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;background:#f9f9ff;padding:20px"><div style="max-width:520px;background:white;border:1px solid #d0c5af;border-radius:28px;padding:34px;text-align:center;box-shadow:0 15px 45px rgba(15,23,42,.08)"><h1 style="margin:0 0 10px;color:#151c27">Access Denied</h1><p style="color:#476080">Your role does not have permission to open this panel.</p><a href="index.html" style="display:inline-flex;margin-top:18px;background:#d4af37;color:white;text-decoration:none;padding:12px 18px;border-radius:14px;font-weight:800">Go Home</a></div></div>`;
-    return false;
-  }
-  return true;
-}
-function logout(){localStorage.removeItem("gp_auth_phone");localStorage.removeItem("gp_auth_role");window.location.href="login.html"}
-function openSidebar(){document.querySelector(".sidebar")?.classList.add("open")}
-function closeSidebar(){document.querySelector(".sidebar")?.classList.remove("open")}
-function fmtDate(v){return v ? new Date(v).toLocaleDateString("en-IN") : "-"}
-function money(v){ if(!v && v!==0) return "-"; const n=Number(v); if(Number.isNaN(n))return v; if(n>=10000000)return "₹"+(n/10000000).toFixed(2)+" Cr"; if(n>=100000)return "₹"+(n/100000).toFixed(1)+" L"; return "₹"+n.toLocaleString("en-IN")}
-async function fetchRows(table, options={}){
-  if(!supabaseClient) return [];
-  let q=supabaseClient.from(table).select(options.select || "*");
-  if(options.eq){Object.entries(options.eq).forEach(([k,v])=>q=q.eq(k,v))}
-  if(options.order){q=q.order(options.order,{ascending:false})}
-  if(options.limit){q=q.limit(options.limit)}
-  const {data,error}=await q;
-  if(error) throw error;
-  return data || [];
-}
-async function updateRow(table,id,patch){
-  if(!supabaseClient) throw new Error("Connect Supabase first.");
-  const {error}=await supabaseClient.from(table).update(patch).eq("id",id);
-  if(error) throw error;
-}
-async function insertRow(table,payload){
-  if(!supabaseClient) throw new Error("Connect Supabase first.");
-  const {error}=await supabaseClient.from(table).insert(payload);
-  if(error) throw error;
-}
-function bindCommon(){
-  document.getElementById("logout-btn")?.addEventListener("click",logout);
-  document.getElementById("mobile-menu-btn")?.addEventListener("click",openSidebar);
-  document.getElementById("close-sidebar-btn")?.addEventListener("click",closeSidebar);
-  document.getElementById("auth-phone")?.replaceChildren(document.createTextNode(getAuthPhone() ? "+91 " + getAuthPhone() : "Not logged in"));
-}
-document.addEventListener("DOMContentLoaded",bindCommon);
-
-const ALLOWED_ROLES = ['admin', 'staff'];
-document.addEventListener("DOMContentLoaded",()=>{ if(!checkRole(ALLOWED_ROLES)) return; initPanel(); });
-
-async function initPanel(){ await loadStaff(); }
-async function loadStaff(){
-  if(!supabaseClient)return;
-  const [pending,leads,chats,services]=await Promise.all([
-    fetchRows("properties",{eq:{approval_status:"pending"},limit:50,order:"created_at"}),
-    fetchRows("property_chats",{limit:50,order:"created_at"}),
-    fetchRows("property_chat_messages",{limit:50,order:"created_at"}),
-    fetchRows("service_leads",{limit:50,order:"created_at"})
-  ]);
-  document.getElementById("stat-pending").textContent=pending.length;
-  document.getElementById("stat-leads").textContent=leads.length;
-  document.getElementById("stat-chats").textContent=chats.length;
-  document.getElementById("stat-services").textContent=services.length;
-  document.getElementById("pending-body").innerHTML=pending.map(p=>`<tr><td>${p.title||"-"}</td><td>${p.property_type||"-"}</td><td>${money(p.price)}</td><td><span class="status pending">pending</span></td><td><button onclick="approve('${p.id}')" class="text-green-700 font-black">Approve</button></td></tr>`).join("") || `<tr><td colspan="5">No pending properties.</td></tr>`;
-  document.getElementById("leads-body").innerHTML=leads.map(l=>`<tr><td>${l.visitor_name||"-"}</td><td>${l.visitor_phone||"-"}</td><td>${l.property_id||"-"}</td><td><span class="status ${l.lead_status||'new'}">${l.lead_status||"new"}</span></td><td>${fmtDate(l.created_at)}</td></tr>`).join("") || `<tr><td colspan="5">No leads.</td></tr>`;
-  document.getElementById("services-body").innerHTML=services.map(s=>`<tr><td>${s.service_name||"-"}</td><td>${s.visitor_name||"-"}</td><td>${s.visitor_phone||"-"}</td><td>${s.visitor_location||"-"}</td><td><span class="status ${s.lead_status||'new'}">${s.lead_status||"new"}</span></td></tr>`).join("") || `<tr><td colspan="5">No service leads.</td></tr>`;
-}
-async function approve(id){await updateRow("properties",id,{approval_status:"approved"});loadStaff();}
-
-</script>
+<script src="js/config.js"></script>
+<script src="js/supabase.js"></script>
+<script src="js/validation.js"></script>
+<script src="js/toast.js"></script>
+<script src="js/error-logger.js"></script>
+<script src="js/analytics.js"></script>
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/main.js"></script>
 <script src="js/panels/staff.js"></script>
 </body>
 </html>
