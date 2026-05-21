@@ -4,7 +4,20 @@
    ========================================================= */
 
 window.GP_PROPERTY_DETAILS = {
+
   current: null,
+  getGoogleMapsUrl(property) {
+  const address = [
+    property.address,
+    property.street_name,
+    property.location,
+    property.city,
+    property.district,
+    property.pincode
+  ].filter(Boolean).join(", ");
+
+  return "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(address);
+},
 
   route() {
     const params = new URLSearchParams(location.search);
@@ -95,9 +108,39 @@ window.GP_PROPERTY_DETAILS = {
     setText("summary-facing", property.facing || "N/A");
     setText("summary-listed-by", window.GP_UTILS.titleCase(property.seller_type || "Owner / Agent"));
 
-    const location = [property.location, property.district].filter(Boolean).join(", ");
-    const locEl = document.getElementById("property-location");
-    if (locEl) locEl.innerHTML = `<span class="material-symbols-outlined mr-2">location_on</span>${location || "Guntur"}`;
+    const location = [property.location, property.district, property.pincode]
+  .filter(Boolean)
+  .join(", ");
+
+const mapsUrl = this.getGoogleMapsUrl(property);
+
+const locEl = document.getElementById("property-location");
+if (locEl) {
+  locEl.innerHTML = `
+    <a href="${mapsUrl}" target="_blank" rel="noopener"
+       class="inline-flex items-center hover:text-primary transition-colors">
+      <span class="material-symbols-outlined mr-2">location_on</span>
+      ${location || "Guntur"}
+    </a>
+  `;
+}
+
+const openMapBtn = document.getElementById("open-map-btn");
+const mapLocationText = document.getElementById("map-location-text");
+const mapHelpText = document.getElementById("map-help-text");
+
+if (openMapBtn) {
+  openMapBtn.href = mapsUrl;
+  openMapBtn.classList.remove("hidden");
+}
+
+if (mapLocationText) {
+  mapLocationText.textContent = location || "Guntur";
+}
+
+if (mapHelpText) {
+  mapHelpText.textContent = "Click the button to open this property location in Google Maps.";
+}
 
     const mainImg = document.getElementById("main-gallery-img") || document.getElementById("main-image");
     if (mainImg) {
