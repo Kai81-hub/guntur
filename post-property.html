@@ -1,0 +1,1834 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Post Property | Guntur Properties</title>
+
+  <link rel="icon" href="assets/images/WhatsApp Image 2026-05-12 at 13.33.30.jpeg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ["Manrope", "sans-serif"],
+            body: ["Manrope", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    :root {
+      --gold: #d4af37;
+      --gold-dark: #735c00;
+      --text: #151c27;
+      --muted: #64748b;
+      --bg: #f9f9ff;
+      --line: rgba(212,175,55,.22);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Manrope", sans-serif;
+      background:
+        radial-gradient(circle at top right, rgba(212,175,55,.16), transparent 32%),
+        linear-gradient(180deg, #ffffff, #f9f9ff);
+      color: var(--text);
+    }
+
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+    }
+
+    .page-header {
+      background: rgba(255,255,255,.9);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(208,197,175,.45);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .form-card {
+      background: rgba(255,255,255,.96);
+      border: 1px solid rgba(212,175,55,.18);
+      box-shadow: 0 24px 70px rgba(15,23,42,.10);
+      border-radius: 28px;
+    }
+
+    .input-field,
+    .select-field,
+    .textarea-field {
+      width: 100%;
+      border: 1px solid rgba(208,197,175,.75);
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 14px 16px;
+      font-weight: 700;
+      color: #151c27;
+      outline: none;
+      transition: .18s ease;
+    }
+
+    .textarea-field {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .input-field:focus,
+    .select-field:focus,
+    .textarea-field:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 4px rgba(212,175,55,.16);
+    }
+
+    .label {
+      display: block;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: .08em;
+      color: var(--gold-dark);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .gold-btn {
+      background: linear-gradient(180deg, #f6d96c, #d4af37);
+      color: #151c27;
+      font-weight: 900;
+      border-radius: 16px;
+      min-height: 56px;
+      box-shadow: 0 14px 30px rgba(212,175,55,.28);
+      transition: .2s ease;
+    }
+
+    .gold-btn:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.04);
+    }
+
+    .gold-btn:disabled {
+      opacity: .65;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .status-box {
+      display: none;
+      border-radius: 16px;
+      padding: 14px 16px;
+      font-weight: 800;
+      margin-top: 18px;
+    }
+
+    .status-box.show {
+      display: block;
+    }
+
+    .status-success {
+      background: #ecfdf5;
+      color: #047857;
+      border: 1px solid #a7f3d0;
+    }
+
+    .status-error {
+      background: #fef2f2;
+      color: #b91c1c;
+      border: 1px solid #fecaca;
+    }
+
+    .image-preview {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .image-preview img {
+      width: 100%;
+      height: 86px;
+      object-fit: cover;
+      border-radius: 14px;
+      border: 1px solid rgba(208,197,175,.55);
+    }
+
+    @media (max-width: 768px) {
+      .form-card {
+        border-radius: 20px;
+      }
+    }
+    .hidden-force {
+  display: none !important;
+}
+
+.role-card {
+  border: 1px solid rgba(212,175,55,.22);
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 16px;
+  cursor: pointer;
+  transition: .18s ease;
+}
+
+.role-card.active {
+  border-color: #d4af37;
+  background: #fff8dc;
+  box-shadow: 0 10px 24px rgba(212,175,55,.18);
+}
+
+.role-card input {
+  display: none;
+}
+/* Professional role-based post property UI */
+.post-layout {
+  display: grid;
+  grid-template-columns: 0.75fr 1.25fr;
+  gap: 28px;
+  align-items: start;
+}
+
+.role-summary-card {
+  position: sticky;
+  top: 96px;
+}
+
+.professional-card {
+  background: linear-gradient(180deg, #ffffff, #fffdf5);
+  border: 1px solid rgba(212,175,55,.22);
+  border-radius: 28px;
+  box-shadow: 0 24px 70px rgba(15,23,42,.10);
+}
+
+.role-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 18px 0;
+}
+
+.role-tab {
+  border: 1px solid rgba(212,175,55,.25);
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 14px;
+  text-align: left;
+  transition: .2s ease;
+}
+
+.role-tab.active {
+  background: #fff8dc;
+  border-color: #d4af37;
+  box-shadow: 0 12px 28px rgba(212,175,55,.18);
+}
+
+.role-tab-title {
+  font-weight: 900;
+  color: #151c27;
+  font-size: 14px;
+}
+
+.role-tab-sub {
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 700;
+  margin-top: 4px;
+}
+
+.property-type-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.property-type-card {
+  border: 1px solid rgba(208,197,175,.75);
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 16px;
+  cursor: pointer;
+  transition: .2s ease;
+  min-height: 92px;
+}
+
+.property-type-card.active {
+  border-color: #d4af37;
+  background: #fff8dc;
+  box-shadow: 0 12px 24px rgba(212,175,55,.16);
+}
+
+.property-type-card input {
+  display: none;
+}
+
+.property-type-card .material-symbols-outlined {
+  color: #d4af37;
+  font-size: 26px;
+}
+
+.property-type-card strong {
+  display: block;
+  margin-top: 6px;
+  font-size: 14px;
+}
+
+.media-rule-box {
+  background: #f8fafc;
+  border: 1px dashed rgba(127,118,99,.35);
+  border-radius: 18px;
+  padding: 14px;
+  color: #475569;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.progress-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: #fff8dc;
+  color: #735c00;
+  border: 1px solid rgba(212,175,55,.28);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.video-preview {
+  margin-top: 12px;
+}
+
+.video-preview video {
+  width: 100%;
+  max-height: 220px;
+  border-radius: 16px;
+  border: 1px solid rgba(208,197,175,.55);
+  object-fit: cover;
+}
+
+@media (max-width: 1023px) {
+  .post-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .role-summary-card {
+    position: static;
+  }
+
+  .property-type-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .role-tabs {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  main {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+
+  .page-header .max-w-6xl {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .page-header img {
+    width: 42px !important;
+    height: 42px !important;
+  }
+
+  .page-header .font-black.text-xl {
+    font-size: 18px;
+  }
+
+  .form-card,
+  .professional-card {
+    border-radius: 20px;
+    padding: 18px !important;
+  }
+
+  .property-type-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .input-field,
+  .select-field,
+  .textarea-field {
+    border-radius: 14px;
+    padding: 13px 14px;
+  }
+
+  .gold-btn {
+    min-height: 52px;
+  }
+}
+  </style>
+</head>
+
+<body>
+  <header class="page-header">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between gap-4">
+      <a href="index.html" class="flex items-center gap-3">
+        <img
+          src="assets/images/WhatsApp Image 2026-05-12 at 13.33.30.jpeg"
+          onerror="this.src='https://placehold.co/80x80/d4af37/ffffff?text=GP'"
+          class="w-12 h-12 rounded-xl object-cover"
+          alt="Guntur Properties Logo"
+        />
+        <div>
+          <div class="font-black text-xl leading-none text-[#735c00]">Guntur Properties</div>
+          <div class="text-xs font-bold text-slate-500 mt-1">Post your property</div>
+        </div>
+      </a>
+
+      <div class="flex items-center gap-2">
+        <a href="index.html" class="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-[#d0c5af] font-extrabold text-sm">
+          <span class="material-symbols-outlined text-[20px]">home</span>
+          Home
+        </a>
+        <a href="tel:+919959919999" class="inline-flex w-11 h-11 rounded-full bg-white border border-[#d0c5af] items-center justify-center">
+          <span class="material-symbols-outlined">call</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 py-8 md:py-12">
+    <section class="post-layout">
+      <div class="form-card p-6 md:p-8 role-summary-card">
+        <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#fff8dc] text-[#735c00] font-black text-xs uppercase tracking-widest">
+          <span class="material-symbols-outlined text-[18px]">verified</span>
+          Owner / Broker / Developer
+        </span>
+
+        <h1 class="text-3xl md:text-5xl font-black tracking-tight mt-5 leading-tight">
+          List your property on Guntur Properties
+        </h1>
+
+        <p class="text-slate-600 font-semibold mt-4 leading-relaxed">
+          Add property details clearly. After submission, your property will appear in search results. based on keywords like location, BHK, floor, type and district.
+        </p>
+
+        <div class="mt-7 grid gap-4">
+          <div class="flex gap-3">
+            <span class="material-symbols-outlined text-[#d4af37]">search</span>
+            <div>
+              <h3 class="font-black">Keyword searchable</h3>
+              <p class="text-sm text-slate-500 font-semibold">Example: “2 BHK house in Brodipet”.</p>
+            </div>
+          </div>
+
+          <div class="flex gap-3">
+            <span class="material-symbols-outlined text-[#d4af37]">location_on</span>
+            <div>
+              <h3 class="font-black">District based</h3>
+              <p class="text-sm text-slate-500 font-semibold">District must be correct for search dropdowns.</p>
+            </div>
+          </div>
+
+          <div class="flex gap-3">
+            <span class="material-symbols-outlined text-[#d4af37]">image</span>
+            <div>
+              <h3 class="font-black">Photos optional</h3>
+              <p class="text-sm text-slate-500 font-semibold">You can add photos if your Supabase storage bucket is ready.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+<div id="access-card" class="form-card p-5 md:p-8 hidden-force">
+  <h2 class="text-2xl font-black mb-2">Upgrade your account</h2>
+  <p class="text-slate-500 font-semibold mb-6">
+    Only owners, brokers and developers can post properties. You can upgrade with the same phone number.
+  </p>
+
+  <div class="grid md:grid-cols-3 gap-4 mb-5">
+    <label class="role-card active">
+      <input type="radio" name="upgrade_role" value="owner" checked />
+      <span class="material-symbols-outlined text-[#d4af37]">home</span>
+      <div class="font-black mt-2">Owner</div>
+      <div class="text-xs text-slate-500 font-semibold">Post your own property</div>
+    </label>
+
+    <label class="role-card">
+      <input type="radio" name="upgrade_role" value="broker" />
+      <span class="material-symbols-outlined text-[#d4af37]">real_estate_agent</span>
+      <div class="font-black mt-2">Broker</div>
+      <div class="text-xs text-slate-500 font-semibold">Manage multiple listings</div>
+    </label>
+
+    <label class="role-card">
+      <input type="radio" name="upgrade_role" value="developer" />
+      <span class="material-symbols-outlined text-[#d4af37]">apartment</span>
+      <div class="font-black mt-2">Developer</div>
+      <div class="text-xs text-slate-500 font-semibold">Post projects and units</div>
+    </label>
+  </div>
+
+  <div class="grid md:grid-cols-2 gap-5">
+    <div>
+      <label class="label">Full Name *</label>
+      <input id="upgrade_full_name" class="input-field" placeholder="Enter your name" />
+    </div>
+
+    <div>
+      <label class="label">Phone Number *</label>
+      <input id="upgrade_phone" class="input-field" readonly />
+    </div>
+
+    <div class="md:col-span-2">
+      <label class="label">Profile Photo</label>
+      <input id="upgrade_photo" class="input-field" type="file" accept="image/*" />
+      <p class="text-xs text-slate-500 font-semibold mt-2">
+        Optional. This will be saved to your profile.
+      </p>
+    </div>
+  </div>
+
+  <button id="upgrade-role-btn" type="button" class="gold-btn w-full mt-6">
+    Upgrade and Continue
+  </button>
+
+  <div id="access-status" class="status-box"></div>
+</div>
+      <form id="post-property-form" class="form-card p-5 md:p-8 hidden-force">
+        <div id="role-form-header" class="mb-6">
+  <span id="role-badge" class="progress-pill">
+    <span class="material-symbols-outlined text-[18px]">real_estate_agent</span>
+    Property Posting
+  </span>
+
+  <h2 id="role-form-title" class="text-2xl md:text-3xl font-black mt-4 mb-2">
+    Post Property
+  </h2>
+
+  <p id="role-form-subtitle" class="text-slate-500 font-semibold">
+    Select property type, upload media and submit and make it live.
+  </p>
+
+  <div id="posting-limit-box" class="mt-4 rounded-2xl bg-[#fff8dc] border border-[#d4af37]/30 p-4 text-sm font-bold text-[#735c00]">
+    Checking posting limit...
+  </div>
+</div>
+
+        <div class="grid md:grid-cols-2 gap-5">
+          <div class="md:col-span-2">
+            <label class="label">Property Title *</label>
+            <input
+              id="title"
+              class="input-field"
+              required
+              placeholder="Example: 2 BHK House on 2nd Floor in Brodipet"
+            />
+          </div>
+
+          <div>
+            <label class="label">Listing Type *</label>
+            <select id="listing_type" class="select-field" required>
+              <option value="buy">Buy / Sale</option>
+              <option value="rent">Rent</option>
+            </select>
+          </div>
+
+          <div class="md:col-span-2">
+  <label class="label">Choose Listing Category *</label>
+  <div id="property-type-grid" class="property-type-grid"></div>
+  <input id="property_type" type="hidden" required />
+</div>
+
+          <div id="bhk-field">
+  <label class="label">BHK</label>
+  <select id="bhk" class="select-field">
+    <option value="">Select BHK</option>
+    <option value="1 BHK">1 BHK</option>
+    <option value="2 BHK">2 BHK</option>
+    <option value="3 BHK">3 BHK</option>
+    <option value="4 BHK">4 BHK</option>
+    <option value="5+ BHK">5+ BHK</option>
+  </select>
+</div>                        
+
+          <div id="floor-field">
+  <label class="label">Floor</label>
+  <input id="floor" class="input-field" placeholder="Example: 2nd floor" />
+</div>
+
+          
+
+          <div>
+            <label class="label">Price</label>
+            <input id="price" class="input-field" type="number" min="0" placeholder="Example: 7500000" />
+          </div>
+
+          <div>
+            <label class="label">Price Label</label>
+            <input id="price_label" class="input-field" placeholder="Example: ₹75 L" />
+          </div>
+          <div>
+            <label class="label">District *</label>
+            <select id="district" class="select-field" required>
+              <option value="Guntur">Guntur</option>
+              <option value="Alluri Sitharama Raju">Alluri Sitharama Raju</option>
+              <option value="Anakapalli">Anakapalli</option>
+              <option value="Parvathipuram Manyam">Parvathipuram Manyam</option>
+              <option value="Polavaram">Polavaram</option>
+              <option value="Srikakulam">Srikakulam</option>
+              <option value="Visakhapatnam">Visakhapatnam</option>
+              <option value="Vizianagaram">Vizianagaram</option>
+              <option value="Bapatla">Bapatla</option>
+              <option value="Dr. B.R. Ambedkar Konaseema">Dr. B.R. Ambedkar Konaseema</option>
+              <option value="East Godavari">East Godavari</option>
+              <option value="Eluru">Eluru</option>
+              <option value="Kakinada">Kakinada</option>
+              <option value="Krishna">Krishna</option>
+              <option value="NTR">NTR</option>
+              <option value="Palnadu">Palnadu</option>
+              <option value="Prakasam">Prakasam</option>
+              <option value="Sri Potti Sriramulu Nellore">Sri Potti Sriramulu Nellore</option>
+              <option value="West Godavari">West Godavari</option>
+              <option value="Ananthapuramu">Ananthapuramu</option>
+              <option value="Annamayya">Annamayya</option>
+              <option value="Chittoor">Chittoor</option>
+              <option value="YSR Kadapa">YSR Kadapa</option>
+              <option value="Kurnool">Kurnool</option>
+              <option value="Markapuram">Markapuram</option>
+              <option value="Nandyal">Nandyal</option>
+              <option value="Sri Sathya Sai">Sri Sathya Sai</option>
+              <option value="Tirupati">Tirupati</option>
+            </select>
+          </div>
+
+          <div>
+  <label class="label">Local Area *</label>
+  <select id="location" class="select-field" required>
+    <option value="">Select district first</option>
+  </select>
+</div>
+
+<div>
+  <label class="label">Pincode</label>
+  <input id="pincode" class="input-field" placeholder="Example: 522006" maxlength="6" />
+</div>
+
+<div>
+  <label class="label">Street / Lane</label>
+  <input id="street_name" class="input-field" placeholder="Example: 4th Lane" />
+</div>
+
+<div>
+  <label class="label">Landmark</label>
+  <input id="landmark" class="input-field" placeholder="Example: Brodipet main road" />
+</div>
+
+
+
+          <div class="md:col-span-2">
+            <label class="label">Address</label>
+            <input id="address" class="input-field" placeholder="Full address or nearby area" />
+          </div>
+<div class="md:col-span-2">
+  <div id="dynamic-property-fields" class="grid md:grid-cols-2 gap-5"></div>
+</div>
+          <div>
+            <label class="label">Facing</label>
+            <select id="facing" class="select-field">
+              <option value="">Select Facing</option>
+              <option value="East Facing">East Facing</option>
+              <option value="West Facing">West Facing</option>
+              <option value="North Facing">North Facing</option>
+              <option value="South Facing">South Facing</option>
+            </select>
+          </div>
+
+          <div id="furnishing-field">
+  <label class="label">Furnishing</label>
+  <select id="furnishing" class="select-field">
+    <option value="">Select Furnishing</option>
+    <option value="Unfurnished">Unfurnished</option>
+    <option value="Semi Furnished">Semi Furnished</option>
+    <option value="Fully Furnished">Fully Furnished</option>
+  </select>
+</div>
+
+          <div class="md:col-span-2">
+            <label class="label">Amenities</label>
+            <input id="amenities" class="input-field" placeholder="Example: parking, water, lift, power backup" />
+          </div>
+
+          <div class="md:col-span-2">
+            <label class="label">Description *</label>
+            <textarea
+              id="description"
+              class="textarea-field"
+              required
+              placeholder="Example: 2 BHK independent house available on 2nd floor in Brodipet, Guntur. Good for family."
+            ></textarea>
+            </div>
+            <div class="md:col-span-2">
+  <label class="label">Google Maps Location Link</label>
+  <input
+    id="location_link"
+    class="input-field"
+    placeholder="Paste Google Maps link or click Use My Current Location"
+  />
+</div>
+
+<div class="md:col-span-2">
+  <button type="button" id="use-current-location-btn" class="gold-btn w-full">
+    Use My Current Location
+  </button>
+  <p class="text-xs text-slate-500 font-semibold mt-2">
+    Use this only when you are standing at the exact property location.
+  </p>
+</div>
+
+<input id="latitude" type="hidden" />
+<input id="longitude" type="hidden" />
+          
+
+          <div>
+            <label class="label">Owner / Contact Name</label>
+            <input id="owner_name" class="input-field" placeholder="Example: Suresh" />
+          </div>
+
+          <div>
+            <label class="label">Owner / Contact Phone</label>
+            <input id="owner_phone" class="input-field" placeholder="Example: 9876543210" maxlength="10" />
+          </div>
+
+          <div class="md:col-span-2">
+  <label class="label">Property Photos *</label>
+  <input id="property_images" class="input-field" type="file" accept="image/*" multiple />
+  <div class="media-rule-box mt-2">
+    Upload minimum 5 photos and maximum 10 photos. Photos will upload to Cloudinary automatically.
+  </div>
+  <div id="image-preview" class="image-preview"></div>
+</div>
+
+<div class="md:col-span-2">
+  <label class="label">Property Video</label>
+  <input id="property_video" class="input-field" type="file" accept="video/*" />
+  <div class="media-rule-box mt-2">
+    Optional. Upload maximum 1 video up to 80MB. Video will upload to Cloudinary automatically.
+  </div>
+  <div id="video-preview" class="video-preview"></div>
+</div>
+
+</div>
+
+<button id="submit-btn" type="submit" class="gold-btn w-full mt-7">
+          Submit Property
+        </button>
+
+        <div id="status-box" class="status-box"></div>
+      </form>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/supabase.js"></script>
+
+  <script>
+    const form = document.getElementById("post-property-form");
+    const statusBox = document.getElementById("status-box");
+    const submitBtn = document.getElementById("submit-btn");
+    const imageInput = document.getElementById("property_images");
+    const imagePreview = document.getElementById("image-preview");
+    const videoInput = document.getElementById("property_video");
+const videoPreview = document.getElementById("video-preview");
+let selectedImageFiles = [];
+const accessCard = document.getElementById("access-card");
+const accessStatus = document.getElementById("access-status");
+const upgradeRoleBtn = document.getElementById("upgrade-role-btn");
+
+let currentProfile = null;
+
+function showAccessStatus(message, type = "success") {
+  accessStatus.textContent = message;
+  accessStatus.className = "status-box show " + (type === "success" ? "status-success" : "status-error");
+}
+
+function getStoredUserPhone() {
+  const authPhone = localStorage.getItem("gp_auth_phone");
+  if (authPhone) {
+    return String(authPhone).replace(/\D/g, "").slice(-10);
+  }
+
+  const possibleKeys = [
+    "gp_user",
+    "currentUser",
+    "loggedInUser",
+    "user",
+    "profile"
+  ];
+
+  for (const key of possibleKeys) {
+    try {
+      const raw = localStorage.getItem(key);
+      if (!raw) continue;
+
+      const parsed = JSON.parse(raw);
+      const phone =
+        parsed.phone ||
+        parsed.mobile ||
+        parsed.phone_number ||
+        parsed.user?.phone ||
+        parsed.profile?.phone;
+
+      if (phone) return String(phone).replace(/\D/g, "").slice(-10);
+    } catch (_) {}
+  }
+
+  const directPhone =
+    localStorage.getItem("phone") ||
+    localStorage.getItem("user_phone") ||
+    localStorage.getItem("gp_phone");
+
+  return directPhone ? String(directPhone).replace(/\D/g, "").slice(-10) : "";
+}
+
+async function showPostForm() {
+  accessCard.classList.add("hidden-force");
+  form.classList.remove("hidden-force");
+  await applyRoleBasedForm();
+}
+
+function showUpgradeForm(phone) {
+  form.classList.add("hidden-force");
+  accessCard.classList.remove("hidden-force");
+
+  const phoneInput = document.getElementById("upgrade_phone");
+  if (phoneInput) phoneInput.value = phone;
+}
+
+function saveProfileToLocal(profile) {
+  localStorage.setItem("gp_user", JSON.stringify(profile));
+  localStorage.setItem("gp_phone", profile.phone || "");
+  localStorage.setItem("gp_role", profile.role || "");
+
+  localStorage.setItem("gp_auth_phone", profile.phone || "");
+  localStorage.setItem("gp_auth_role", profile.role || "");
+}
+
+async function uploadProfilePhoto(phone) {
+  const file = document.getElementById("upgrade_photo")?.files?.[0];
+  if (!file) return "";
+
+  return await uploadToCloudinary(file, `profiles/${phone}`);
+}
+
+async function loadCurrentProfile() {
+  const phone = getStoredUserPhone();
+
+  if (!phone) {
+    window.location.href = "login.html?next=post-property.html";
+    return;
+  }
+
+  if (!window.GP_SUPABASE?.isConfigured?.()) {
+    showStatus("Supabase is not connected. Check js/config.js.", "error");
+    return;
+  }
+
+  const profiles = await window.GP_SUPABASE.select(window.GP_CONFIG.TABLES.profiles, {
+    select: "*",
+    eq: { phone },
+    limit: 1
+  });
+
+  currentProfile = Array.isArray(profiles) ? profiles[0] : null;
+
+  if (!currentProfile) {
+    showUpgradeForm(phone);
+    return;
+  }
+
+  saveProfileToLocal(currentProfile);
+
+  const allowedRoles = ["owner", "broker", "developer", "admin", "staff"];
+
+  if (allowedRoles.includes(String(currentProfile.role || "").toLowerCase())) {
+    showPostForm();
+  } else {
+    showUpgradeForm(phone);
+  }
+}
+
+document.querySelectorAll(".role-card").forEach((card) => {
+  card.addEventListener("click", () => {
+    document.querySelectorAll(".role-card").forEach((item) => item.classList.remove("active"));
+    card.classList.add("active");
+    card.querySelector("input").checked = true;
+  });
+});
+
+upgradeRoleBtn?.addEventListener("click", async () => {
+  upgradeRoleBtn.disabled = true;
+  upgradeRoleBtn.textContent = "Updating...";
+
+  try {
+    const phone = getStoredUserPhone();
+    const fullName = getValue("upgrade_full_name") || currentProfile?.full_name || "";
+    const selectedRole = document.querySelector("input[name='upgrade_role']:checked")?.value || "owner";
+
+    if (!phone) {
+      throw new Error("Phone number missing. Please login again.");
+    }
+
+    if (!fullName) {
+      throw new Error("Please enter your full name.");
+    }
+
+    let photoUrl = "";
+
+    try {
+      photoUrl = await uploadProfilePhoto(phone);
+    } catch (photoError) {
+      console.warn("Profile photo upload skipped:", photoError);
+    }
+
+    const profilePayload = {
+      full_name: fullName,
+      phone,
+      role: selectedRole,
+      verification_status: "pending",
+      account_type: selectedRole,
+      updated_at: new Date().toISOString()
+    };
+
+    if (photoUrl) {
+      profilePayload.photo_url = photoUrl;
+      profilePayload.profile_photo = photoUrl;
+      profilePayload.avatar_url = photoUrl;
+    }
+
+    let savedProfile;
+
+    if (currentProfile?.id) {
+      const updated = await window.GP_SUPABASE.update(
+        window.GP_CONFIG.TABLES.profiles,
+        currentProfile.id,
+        profilePayload
+      );
+
+      savedProfile = Array.isArray(updated) ? updated[0] : { ...currentProfile, ...profilePayload };
+    } else {
+      const inserted = await window.GP_SUPABASE.insert(
+        window.GP_CONFIG.TABLES.profiles,
+        {
+          ...profilePayload,
+          created_at: new Date().toISOString()
+        }
+      );
+
+      savedProfile = Array.isArray(inserted) ? inserted[0] : profilePayload;
+    }
+
+    currentProfile = savedProfile;
+    saveProfileToLocal(savedProfile);
+
+    showAccessStatus("Account upgraded successfully. You can now post property.", "success");
+
+    setTimeout(() => {
+      showPostForm();
+    }, 700);
+
+  } catch (error) {
+    showAccessStatus(error.message || "Unable to upgrade account.", "error");
+  } finally {
+    upgradeRoleBtn.disabled = false;
+    upgradeRoleBtn.textContent = "Upgrade and Continue";
+  }
+});
+    function showStatus(message, type = "success") {
+      statusBox.textContent = message;
+      statusBox.className = "status-box show " + (type === "success" ? "status-success" : "status-error");
+    }
+
+    function getValue(id) {
+      return document.getElementById(id)?.value?.trim() || "";
+    }
+
+    function getNumber(id) {
+      const value = getValue(id);
+      return value ? Number(value) : null;
+    }
+
+    function cleanPhone(phone) {
+      return String(phone || "").replace(/\D/g, "").slice(0, 10);
+    }
+
+    function renderImagePreview() {
+  imagePreview.innerHTML = "";
+
+  selectedImageFiles.forEach((file, index) => {
+    const wrap = document.createElement("div");
+    wrap.className = "relative";
+
+    const url = URL.createObjectURL(file);
+
+    wrap.innerHTML = `
+      <img src="${url}" alt="${file.name}" />
+      <button
+        type="button"
+        data-remove-image="${index}"
+        class="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-red-600 text-white font-black text-xs"
+      >
+        ×
+      </button>
+    `;
+
+    imagePreview.appendChild(wrap);
+  });
+
+  imagePreview.querySelectorAll("[data-remove-image]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const index = Number(btn.dataset.removeImage);
+      selectedImageFiles.splice(index, 1);
+renderImagePreview();
+showStatus(`${selectedImageFiles.length} photos selected.`, selectedImageFiles.length >= 5 ? "success" : "error");
+    });
+  });
+}
+
+imageInput?.addEventListener("change", () => {
+  const newFiles = Array.from(imageInput.files || []);
+
+  newFiles.forEach((file) => {
+    const alreadyExists = selectedImageFiles.some((oldFile) =>
+      oldFile.name === file.name &&
+      oldFile.size === file.size &&
+      oldFile.lastModified === file.lastModified
+    );
+
+    if (!alreadyExists && selectedImageFiles.length < 10) {
+      selectedImageFiles.push(file);
+    }
+  });
+
+  imageInput.value = "";
+  renderImagePreview();
+
+  if (selectedImageFiles.length < 5) {
+    showStatus(`You selected ${selectedImageFiles.length} photo(s). Minimum 5 photos required.`, "error");
+  }
+
+  if (selectedImageFiles.length >= 5 && selectedImageFiles.length <= 10) {
+    showStatus(`${selectedImageFiles.length} photos selected successfully.`, "success");
+  }
+});
+
+videoInput?.addEventListener("change", () => {
+  videoPreview.innerHTML = "";
+
+  const file = videoInput.files?.[0];
+  if (!file) return;
+
+  const sizeMB = file.size / 1024 / 1024;
+  if (sizeMB > 80) {
+    showStatus("Video is too large. Please upload below 80MB.", "error");
+    videoInput.value = "";
+    return;
+  }
+
+  const url = URL.createObjectURL(file);
+  const video = document.createElement("video");
+  video.src = url;
+  video.controls = true;
+  videoPreview.appendChild(video);
+});
+
+    async function uploadToCloudinary(file, folder = "properties") {
+  const cloudName = window.GP_CONFIG?.CLOUDINARY?.CLOUD_NAME;
+  const uploadPreset = window.GP_CONFIG?.CLOUDINARY?.UPLOAD_PRESET;
+
+  if (!cloudName || !uploadPreset) {
+    throw new Error("Cloudinary is not configured in js/config.js.");
+  }
+
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("upload_preset", uploadPreset);
+  formData.append("folder", `guntur-properties/${folder}`);
+
+  const resourceType = file.type.startsWith("video/") ? "video" : "image";
+
+  const response = await fetch(
+    `https://api.cloudinary.com/v1_1/${cloudName}/${resourceType}/upload`,
+    {
+      method: "POST",
+      body: formData
+    }
+  );
+
+  const result = await response.json();
+
+  if (!response.ok) {
+    throw new Error(result.error?.message || "Cloudinary upload failed.");
+  }
+
+  return result.secure_url;
+}
+
+async function uploadImages(propertyId) {
+  const files = selectedImageFiles;
+
+  console.log("Selected photos for upload:", files.length, files);
+
+  if (!files || files.length < 5) {
+    throw new Error(`Please upload at least 5 property photos. You selected ${files.length}.`);
+  }
+
+  if (files.length > 10) {
+    throw new Error("You can upload maximum 10 property photos.");
+  }
+
+  const uploadedUrls = [];
+
+  for (const file of files) {
+    showStatus(`Uploading photo ${uploadedUrls.length + 1} of ${files.length}...`, "success");
+
+    const url = await uploadToCloudinary(file, `properties/${propertyId}/images`);
+    uploadedUrls.push(url);
+  }
+
+  return uploadedUrls;
+}
+
+async function uploadVideo(propertyId) {
+  const file = videoInput?.files?.[0];
+
+  if (!file) return "";
+
+  const sizeMB = file.size / 1024 / 1024;
+
+  if (sizeMB > 80) {
+    throw new Error("Video is too large. Please upload a video below 80MB.");
+  }
+
+  return await uploadToCloudinary(file, `properties/${propertyId}/videos`);
+}
+
+    async function updatePropertyMedia(propertyId, imageUrls, videoUrl) {
+  try {
+    await window.GP_SUPABASE.update(
+      window.GP_CONFIG.TABLES.properties,
+      propertyId,
+      {
+        image_urls: imageUrls,
+        images: imageUrls,
+        main_image: imageUrls[0] || "",
+        video_urls: videoUrl ? [videoUrl] : [],
+        main_video: videoUrl || "",
+        updated_at: new Date().toISOString()
+      }
+    );
+  } catch (error) {
+    console.warn("Media URL update failed:", error);
+    throw error;
+  }
+}
+    const ROLE_LIMITS = {
+  owner: 2,
+  broker: 8,
+  developer: 15,
+  admin: 999,
+  staff: 999
+};
+
+const ROLE_CONFIG = {
+  owner: {
+    badge: "Owner Listing",
+    title: "Post Your Own Property",
+    subtitle: "Owners can post up to 2 own properties. Best for house, flat, villa or plot listings.",
+    types: [
+      { value: "house", label: "House", icon: "home" },
+      { value: "flat", label: "Flat / Apartment", icon: "apartment" },
+      { value: "villa", label: "Villa", icon: "villa" },
+      { value: "plot", label: "Plot / Land", icon: "map" }
+    ]
+  },
+  broker: {
+    badge: "Broker Listing",
+    title: "Post Broker Property",
+    subtitle: "Brokers can post up to 8 verified properties across residential, commercial and PG listings.",
+    types: [
+  { value: "house", label: "House", icon: "home" },
+  { value: "flat", label: "Flat / Apartment", icon: "apartment" },
+  { value: "villa", label: "Villa", icon: "villa" },
+  { value: "plot", label: "Plot / Land", icon: "map" },
+  { value: "commercial", label: "Commercial", icon: "storefront" },
+  { value: "pg", label: "PG / Co-living", icon: "bed" },
+  { value: "project", label: "Project / New Launch", icon: "domain_add" }
+]
+  },
+  developer: {
+    badge: "Developer Listing",
+    title: "Post Developer Project / Unit",
+    subtitle: "Developers can post up to 15 projects or units. Use project/new launch for new developments.",
+    types: [
+      { value: "project", label: "Project / New Launch", icon: "domain_add" },
+      { value: "flat", label: "Flat / Apartment", icon: "apartment" },
+      { value: "villa", label: "Villa", icon: "villa" },
+      { value: "plot", label: "Plot / Land", icon: "map" },
+      { value: "commercial", label: "Commercial", icon: "storefront" }
+    ]
+  }
+};
+
+function getCurrentRole() {
+  return String(
+    currentProfile?.role ||
+    localStorage.getItem("gp_auth_role") ||
+    localStorage.getItem("gp_role") ||
+    "user"
+  ).toLowerCase();
+}
+
+function getPropertyLimitByRole(role) {
+  return ROLE_LIMITS[String(role || "").toLowerCase()] || 0;
+}
+
+async function getPostedPropertyCount(phone) {
+  const rows = await window.GP_SUPABASE.select(window.GP_CONFIG.TABLES.properties, {
+    select: "id",
+    eq: { posted_by_phone: phone },
+    limit: 100
+  });
+
+  return Array.isArray(rows) ? rows.length : 0;
+}
+
+function renderPropertyTypeCards(types) {
+  const grid = document.getElementById("property-type-grid");
+  const hiddenInput = document.getElementById("property_type");
+
+  grid.innerHTML = "";
+
+  types.forEach((item, index) => {
+    const label = document.createElement("label");
+    label.className = "property-type-card" + (index === 0 ? " active" : "");
+    label.innerHTML = `
+      <input type="radio" name="property_type_radio" value="${item.value}" ${index === 0 ? "checked" : ""}>
+      <span class="material-symbols-outlined">${item.icon}</span>
+      <strong>${item.label}</strong>
+    `;
+
+    label.addEventListener("click", () => {
+      document.querySelectorAll(".property-type-card").forEach((card) => {
+        card.classList.remove("active");
+      });
+
+      label.classList.add("active");
+      label.querySelector("input").checked = true;
+      hiddenInput.value = item.value;
+renderExtraFields(item.value);
+    });
+
+    grid.appendChild(label);
+  });
+
+  hiddenInput.value = types[0]?.value || "";
+renderExtraFields(hiddenInput.value);
+}
+
+async function applyRoleBasedForm() {
+  const role = getCurrentRole();
+  const phone = getStoredUserPhone();
+  const config = ROLE_CONFIG[role] || ROLE_CONFIG.owner;
+  const limit = getPropertyLimitByRole(role);
+  const count = await getPostedPropertyCount(phone);
+
+  document.getElementById("role-badge").innerHTML = `
+    <span class="material-symbols-outlined text-[18px]">verified</span>
+    ${config.badge}
+  `;
+
+  document.getElementById("role-form-title").textContent = config.title;
+  document.getElementById("role-form-subtitle").textContent = config.subtitle;
+
+  renderPropertyTypeCards(config.types);
+
+  const limitBox = document.getElementById("posting-limit-box");
+
+  if (count >= limit) {
+    limitBox.className = "mt-4 rounded-2xl bg-red-50 border border-red-200 p-4 text-sm font-bold text-red-700";
+    limitBox.textContent = `Limit reached. ${role.toUpperCase()} accounts can post maximum ${limit} properties.`;
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Posting Limit Reached";
+    return;
+  }
+
+  limitBox.className = "mt-4 rounded-2xl bg-[#fff8dc] border border-[#d4af37]/30 p-4 text-sm font-bold text-[#735c00]";
+  limitBox.textContent = `Your role: ${role.toUpperCase()} • Posted: ${count}/${limit} properties • Remaining: ${limit - count}`;
+}
+
+async function checkPropertyPostingLimit(phone, role) {
+  const limit = getPropertyLimitByRole(role);
+
+  if (!limit) {
+    throw new Error("Only owners, brokers and developers can post properties.");
+  }
+
+  const count = await getPostedPropertyCount(phone);
+
+  if (count >= limit) {
+    throw new Error(`Your ${role} account can post maximum ${limit} properties.`);
+  }
+}
+const DISTRICT_LOCAL_AREAS = {
+  "Guntur": [
+    "Guntur",
+    "Brodipet",
+    "Lakshmipuram",
+    "Pattabhipuram",
+    "Arundelpet",
+    "Kothapet",
+    "Gorantla",
+    "Nallapadu",
+    "Amaravati Road",
+    "Chandramouli Nagar",
+    "Brindavan Gardens",
+    "Vidya Nagar",
+    "AT Agraharam",
+    "Syamala Nagar",
+    "SVN Colony",
+    "Inner Ring Road",
+    "Old Guntur",
+    "New Guntur",
+    "Pedapalakaluru",
+    "Palakaluru Road",
+    "Etukuru Road",
+    "Ankireddy Palem",
+    "Nagarampalem",
+    "Stambalagaruvu"
+  ],
+
+  "Palnadu": [
+    "Narasaraopet",
+    "Sattenapalli",
+    "Piduguralla",
+    "Macherla",
+    "Gurazala",
+    "Vinukonda",
+    "Chilakaluripet"
+  ],
+
+  "NTR": [
+    "Vijayawada",
+    "Benz Circle",
+    "Patamata",
+    "Governorpet",
+    "Moghalrajpuram",
+    "Auto Nagar",
+    "Ajit Singh Nagar",
+    "Ibrahimpatnam",
+    "Nandigama",
+    "Mylavaram"
+  ],
+
+  "Krishna": [
+    "Machilipatnam",
+    "Gudivada",
+    "Vuyyuru",
+    "Pedana",
+    "Pamarru",
+    "Avanigadda"
+  ],
+
+  "Bapatla": [
+    "Bapatla",
+    "Chirala",
+    "Repalle",
+    "Parchur",
+    "Addanki"
+  ],
+
+  "Prakasam": [
+    "Ongole",
+    "Markapur",
+    "Kandukur",
+    "Giddalur"
+  ]
+};
+
+function updateLocalAreaDropdown() {
+  const district = getValue("district");
+  const areaSelect = document.getElementById("location");
+  if (!areaSelect) return;
+
+  const areas = DISTRICT_LOCAL_AREAS[district] || [];
+
+  areaSelect.innerHTML = `<option value="">Select Local Area</option>`;
+
+  areas.forEach((area) => {
+    const option = document.createElement("option");
+    option.value = area;
+    option.textContent = area;
+    areaSelect.appendChild(option);
+  });
+}
+
+document.getElementById("district")?.addEventListener("change", updateLocalAreaDropdown);
+updateLocalAreaDropdown();
+const PROPERTY_EXTRA_FIELDS = {
+  flat: [
+    ["apartment_name", "Apartment Name", "text", "Example: Sri Sai Residency"],
+    ["flat_number", "Flat Number", "text", "Example: 204"],
+    ["floor_number", "Floor Number", "number", "Example: 2"],
+    ["total_floors", "Total Floors", "number", "Example: 5"],
+    ["builtup_area", "Built-up Area", "number", "Example: 1250"],
+    ["area_unit", "Area Unit", "text", "Example: Sq Ft"],
+    ["lift_available", "Lift Available", "text", "Example: Yes / No"],
+    ["maintenance_charges", "Maintenance", "number", "Example: 2000"],
+    ["parking", "Parking", "text", "Example: Bike / Car / Both"]
+  ],
+
+  house: [
+    ["door_number", "Door Number", "text", "Example: 4-12-88"],
+    ["house_type", "House Type", "text", "Example: Independent / Duplex"],
+    ["house_structure", "House Structure", "text", "Example: Ground Floor / G+1 / G+2"],
+    ["plot_area", "Plot Area", "number", "Example: 200"],
+    ["builtup_area", "Built-up Area", "number", "Example: 1500"],
+    ["area_unit", "Area Unit", "text", "Example: Sq Yards / Sq Ft"],
+    ["terrace_available", "Terrace Available", "text", "Example: Yes / No"],
+    ["parking", "Parking", "text", "Example: Bike / Car / Both"]
+  ],
+
+  villa: [
+    ["villa_name", "Villa / Community Name", "text", "Example: Green Villas"],
+    ["villa_number", "Villa Number", "text", "Example: V-12"],
+    ["plot_area", "Plot Area", "number", "Example: 300"],
+    ["builtup_area", "Built-up Area", "number", "Example: 2500"],
+    ["area_unit", "Area Unit", "text", "Example: Sq Yards / Sq Ft"],
+    ["total_floors", "Total Floors", "number", "Example: 2"],
+    ["terrace_available", "Terrace Available", "text", "Example: Yes / No"],
+    ["parking", "Parking", "text", "Example: 2 Car Parking"]
+  ],
+
+  plot: [
+    ["plot_area", "Plot Area", "number", "Example: 200"],
+    ["area_unit", "Area Unit", "text", "Example: Sq Yards / Acres"],
+    ["survey_number", "Survey Number", "text", "Example: 122/3"],
+    ["road_width", "Road Width", "text", "Example: 33 Feet"],
+    ["approval_type", "Approval Type", "text", "Example: DTCP / RERA / Panchayat"],
+    ["boundary_wall", "Boundary Wall", "text", "Example: Yes / No"]
+  ],
+
+  commercial: [
+    ["commercial_type", "Shop / Office Type", "text", "Example: Shop / Office / Showroom"],
+    ["floor_number", "Floor", "number", "Example: 1"],
+    ["builtup_area", "Built-up Area", "number", "Example: 1200"],
+    ["area_unit", "Area Unit", "text", "Example: Sq Ft"],
+    ["road_width", "Road Width", "text", "Example: 40 Feet"],
+    ["washroom", "Washroom", "text", "Example: Available / Not Available"],
+    ["suitable_for", "Suitable For", "text", "Example: Clinic, Office, Retail"]
+  ],
+
+  pg: [
+    ["pg_name", "PG / Co-living Name", "text", "Example: Sai Boys PG"],
+    ["room_type", "Room Type", "text", "Example: Single / Double / Triple"],
+    ["sharing_type", "Sharing Type", "text", "Example: Boys / Girls / Co-living"],
+    ["food_available", "Food", "text", "Example: Yes / No"],
+    ["deposit_amount", "Deposit", "number", "Example: 5000"],
+    ["monthly_rent", "Monthly Rent", "number", "Example: 7000"],
+    ["rules", "Rules", "text", "Example: No smoking, timings"]
+  ],
+
+  project: [
+    ["project_name", "Project Name", "text", "Example: Premium Villa Project"],
+    ["rera_number", "RERA Number", "text", "Example: P123456"],
+    ["total_units", "Total Units", "number", "Example: 120"],
+    ["possession_date", "Possession Date", "date", ""],
+    ["project_status", "Project Status", "text", "Example: New Launch / Under Construction / Ready to Move"],
+    ["developer_name", "Developer Name", "text", "Example: ABC Developers"]
+  ]
+};
+const PROJECT_SUB_TYPES = [
+  { value: "project_flat", label: "Flat / Apartment", icon: "apartment" },
+  { value: "project_villa", label: "Villa", icon: "villa" },
+  { value: "project_plot", label: "Plot / Land", icon: "map" },
+  { value: "project_commercial", label: "Commercial", icon: "storefront" }
+];
+
+const PROJECT_SUBTYPE_FIELDS = {
+  project_flat: [
+    ["unit_bhk_options", "BHK Options", "text", "Example: 2 BHK, 3 BHK"],
+    ["unit_size_range", "Unit Size Range", "text", "Example: 1100 - 1800 Sq Ft"],
+    ["starting_floor", "Starting Floor", "number", "Example: 1"],
+    ["total_floors", "Total Floors", "number", "Example: 10"],
+    ["lift_available", "Lift Available", "text", "Example: Yes"],
+    ["parking", "Parking", "text", "Example: Car Parking"]
+  ],
+
+  project_villa: [
+    ["villa_size_range", "Villa Size Range", "text", "Example: 1800 - 3200 Sq Ft"],
+    ["plot_area", "Plot Area", "number", "Example: 300"],
+    ["builtup_area", "Built-up Area", "number", "Example: 2500"],
+    ["area_unit", "Area Unit", "text", "Example: Sq Ft / Sq Yards"],
+    ["parking", "Parking", "text", "Example: 2 Car Parking"]
+  ],
+
+  project_plot: [
+    ["plot_area", "Plot Area", "number", "Example: 200"],
+    ["area_unit", "Area Unit", "text", "Example: Sq Yards"],
+    ["survey_number", "Survey Number", "text", "Example: 122/3"],
+    ["road_width", "Road Width", "text", "Example: 40 Feet"],
+    ["approval_type", "Approval Type", "text", "Example: DTCP / RERA"],
+    ["boundary_wall", "Boundary Wall", "text", "Example: Yes / No"]
+  ],
+
+  project_commercial: [
+    ["commercial_type", "Commercial Type", "text", "Example: Shop / Office / Showroom"],
+    ["unit_size_range", "Unit Size Range", "text", "Example: 500 - 3000 Sq Ft"],
+    ["floor_number", "Floor", "number", "Example: 1"],
+    ["road_width", "Road Width", "text", "Example: 60 Feet"],
+    ["washroom", "Washroom", "text", "Example: Available"],
+    ["suitable_for", "Suitable For", "text", "Example: Retail / Office"]
+  ]
+};
+
+function renderProjectSubTypeCards() {
+  const box = document.getElementById("dynamic-property-fields");
+  if (!box) return;
+
+  box.insertAdjacentHTML("beforeend", `
+    <div class="md:col-span-2 mt-2">
+      <label class="label">Project Property Type *</label>
+      <div id="project-subtype-grid" class="property-type-grid"></div>
+      <input id="project_unit_type" type="hidden" class="extra-property-field" />
+      <div id="project-subtype-fields" class="grid md:grid-cols-2 gap-5 mt-5"></div>
+    </div>
+  `);
+
+  const grid = document.getElementById("project-subtype-grid");
+  const hidden = document.getElementById("project_unit_type");
+
+  PROJECT_SUB_TYPES.forEach((item, index) => {
+    const label = document.createElement("label");
+    label.className = "property-type-card" + (index === 0 ? " active" : "");
+    label.innerHTML = `
+      <input type="radio" name="project_subtype_radio" value="${item.value}" ${index === 0 ? "checked" : ""}>
+      <span class="material-symbols-outlined">${item.icon}</span>
+      <strong>${item.label}</strong>
+    `;
+
+    label.addEventListener("click", () => {
+      document.querySelectorAll("#project-subtype-grid .property-type-card").forEach((card) => {
+        card.classList.remove("active");
+      });
+
+      label.classList.add("active");
+      label.querySelector("input").checked = true;
+      hidden.value = item.value;
+      renderProjectSubTypeFields(item.value);
+      updateCommonFieldVisibility("project", item.value);
+    });
+
+    grid.appendChild(label);
+  });
+
+  hidden.value = PROJECT_SUB_TYPES[0].value;
+  renderProjectSubTypeFields(hidden.value);
+  updateCommonFieldVisibility("project", hidden.value);
+}
+
+function renderProjectSubTypeFields(projectSubType) {
+  const box = document.getElementById("project-subtype-fields");
+  if (!box) return;
+
+  const fields = PROJECT_SUBTYPE_FIELDS[projectSubType] || [];
+  box.innerHTML = "";
+
+  fields.forEach(([id, label, type, placeholder]) => {
+    box.insertAdjacentHTML("beforeend", `
+      <div>
+        <label class="label">${label}</label>
+        <input
+          id="${id}"
+          class="input-field extra-property-field"
+          type="${type}"
+          placeholder="${placeholder || ""}"
+        />
+      </div>
+    `);
+  });
+}
+
+function renderExtraFields(propertyType) {
+  const box = document.getElementById("dynamic-property-fields");
+  if (!box) return;
+
+  const fields = PROPERTY_EXTRA_FIELDS[propertyType] || [];
+  box.innerHTML = "";
+
+  if (!fields.length) return;
+
+  box.insertAdjacentHTML("beforeend", `
+    <div class="md:col-span-2 rounded-2xl border border-[#d4af37]/20 bg-[#fff8dc]/50 p-4">
+      <h3 class="font-black text-[#735c00]">More Details</h3>
+      <p class="text-xs font-bold text-slate-500 mt-1">
+        These fields change based on selected property type.
+      </p>
+    </div>
+  `);
+
+  fields.forEach(([id, label, type, placeholder]) => {
+    box.insertAdjacentHTML("beforeend", `
+      <div>
+        <label class="label">${label}</label>
+        <input
+          id="${id}"
+          class="input-field extra-property-field"
+          type="${type}"
+          placeholder="${placeholder || ""}"
+        />
+      </div>
+    `);
+  });
+
+  if (propertyType === "project") {
+  renderProjectSubTypeCards();
+  return;
+}
+
+updateCommonFieldVisibility(propertyType);
+}
+function setFieldVisibility(id, show) {
+  const el = document.getElementById(id);
+  if (!el) return;
+
+  el.style.display = show ? "" : "none";
+
+  if (!show) {
+    el.querySelectorAll("input, select, textarea").forEach((field) => {
+      field.value = "";
+    });
+  }
+}
+
+function updateCommonFieldVisibility(propertyType, projectSubType = "") {
+  const noBhkTypes = ["plot", "commercial", "pg"];
+  const noFloorTypes = ["house", "plot", "villa", "pg"];
+  const noFurnishingTypes = ["plot"];
+
+  let showBhk = !noBhkTypes.includes(propertyType);
+  let showFloor = !noFloorTypes.includes(propertyType);
+  let showFurnishing = !noFurnishingTypes.includes(propertyType);
+
+  if (propertyType === "project") {
+    if (projectSubType === "project_plot" || projectSubType === "project_commercial") {
+      showBhk = false;
+      showFloor = false;
+      showFurnishing = false;
+    }
+
+    if (projectSubType === "project_flat" || projectSubType === "project_villa") {
+      showBhk = true;
+      showFloor = projectSubType === "project_flat";
+      showFurnishing = true;
+    }
+  }
+
+  setFieldVisibility("bhk-field", showBhk);
+  setFieldVisibility("floor-field", showFloor);
+  setFieldVisibility("furnishing-field", showFurnishing);
+}
+
+function collectExtraFields() {
+  const data = {};
+
+  document.querySelectorAll(".extra-property-field").forEach((field) => {
+    if (!field.id) return;
+
+    if (field.type === "number") {
+      data[field.id] = field.value ? Number(field.value) : null;
+    } else {
+      data[field.id] = field.value.trim();
+    }
+  });
+
+  return data;
+}
+document.getElementById("use-current-location-btn")?.addEventListener("click", () => {
+  if (!navigator.geolocation) {
+    showStatus("Your browser does not support location.", "error");
+    return;
+  }
+
+  showStatus("Getting current location...", "success");
+
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
+
+      document.getElementById("latitude").value = latitude;
+      document.getElementById("longitude").value = longitude;
+
+      const mapsUrl = `https://www.google.com/maps?q=${latitude},${longitude}`;
+      document.getElementById("location_link").value = mapsUrl;
+
+      showStatus("Location added. Please check before submitting.", "success");
+    },
+    () => {
+      showStatus("Location permission denied. You can paste Google Maps link manually.", "error");
+    },
+    {
+      enableHighAccuracy: true,
+      timeout: 12000,
+      maximumAge: 0
+    }
+  );
+});
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Submitting...";
+
+      try {
+        if (!window.GP_SUPABASE?.isConfigured?.()) {
+          throw new Error("Supabase is not connected. Check js/config.js.");
+        }
+
+        const title = getValue("title");
+        const description = getValue("description");
+        const propertyType = getValue("property_type");
+        const listingType = getValue("listing_type");
+        const location = getValue("location");
+        const district = getValue("district");
+        const city = district;
+
+        if (!title || !description || !propertyType || !listingType || !location || !district) {
+          throw new Error("Please fill all required fields.");
+        }
+        if (selectedImageFiles.length < 5) {
+  throw new Error("Please upload at least 5 property photos.");
+}
+
+if (selectedImageFiles.length > 10) {
+  throw new Error("You can upload maximum 10 property photos.");
+}
+        const loggedPhone = getStoredUserPhone();
+const loggedRole = getCurrentRole();
+
+if (!loggedPhone) {
+  window.location.href = "login.html?next=post-property.html";
+  return;
+}
+
+await checkPropertyPostingLimit(loggedPhone, loggedRole);
+const extraFields = collectExtraFields();
+        const payload = {
+          title,
+          property_title: title,
+          description,
+          property_type: propertyType,
+          listing_type: listingType,
+          purpose: listingType,
+          category: propertyType,
+          ...extraFields,
+
+          bhk: getValue("bhk"),
+          bedrooms: getValue("bhk") ? Number(getValue("bhk").replace(/\D/g, "")) || null : null,
+          floor: getValue("floor"),
+          floor_number: getNumber("floor_number"),
+project_unit_type: getValue("project_unit_type"),
+
+          price: getNumber("price"),
+          price_label: getValue("price_label"),
+
+          location,
+          area: location,
+          locality: location,
+          district,
+          city,
+          landmark: getValue("landmark"),
+          address: getValue("address"),
+          street_name: getValue("street_name"),
+pincode: getValue("pincode"),
+location_link: getValue("location_link"),
+latitude: getValue("latitude") ? Number(getValue("latitude")) : null,
+longitude: getValue("longitude") ? Number(getValue("longitude")) : null,
+          facing: getValue("facing"),
+          furnishing: getValue("furnishing"),
+          amenities: getValue("amenities"),
+
+          owner_name: getValue("owner_name"),
+          owner_phone: cleanPhone(getValue("owner_phone")),
+          posted_by_phone: loggedPhone,
+posted_by_role: loggedRole,
+
+          status: "active",
+created_at: new Date().toISOString(),
+updated_at: new Date().toISOString()
+        };
+
+        const inserted = await window.GP_SUPABASE.insert(
+          window.GP_CONFIG.TABLES.properties,
+          payload
+        );
+
+        const property = Array.isArray(inserted) ? inserted[0] : null;
+
+        if (!property?.id) {
+          showStatus("Property saved, but ID was not returned. Check Supabase table.", "success");
+          form.reset();
+selectedImageFiles = [];
+imagePreview.innerHTML = "";
+return;
+        }
+
+        let imageUrls = [];
+
+        try {
+  showStatus("Property saved. Uploading photos/video to Cloudinary...", "success");
+
+  const imageUrls = await uploadImages(property.id);
+  const videoUrl = await uploadVideo(property.id);
+
+  await updatePropertyMedia(property.id, imageUrls, videoUrl);
+} catch (mediaError) {
+  console.warn(mediaError);
+  showStatus(mediaError.message || "Property saved, but media upload failed.", "error");
+  return;
+}
+showStatus("Property uploaded successfully. It is now live.", "success");
+form.reset();
+selectedImageFiles = [];
+imagePreview.innerHTML = "";
+videoPreview.innerHTML = "";
+await applyRoleBasedForm();
+
+      } catch (error) {
+        showStatus(error.message || "Unable to upload property.", "error");
+      } finally {
+  await applyRoleBasedForm();
+
+  if (!submitBtn.textContent.includes("Limit")) {
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Submit Property";
+  }
+}
+    });
+    document.addEventListener("DOMContentLoaded", loadCurrentProfile);
+  </script>
+</body>
+</html>
