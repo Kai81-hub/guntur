@@ -1,13 +1,55 @@
 /* =========================================================
    Guntur Properties - Dynamic Search Locations
    Reads active property locations from Supabase and adds them
-   to desktop search dropdown, mobile locality chips, and search suggestions.
+   to desktop search dropdown, header search dropdown,
+   mobile locality chips, and search suggestions.
    ========================================================= */
 
 window.GP_SEARCH_LOCATIONS = {
   locations: [],
   districts: [],
   suggestions: [],
+
+ defaultLocations: [],
+
+apDistricts: [
+  "Alluri Sitharama Raju",
+  "Anakapalli",
+  "Parvathipuram Manyam",
+  "Polavaram",
+  "Srikakulam",
+  "Visakhapatnam",
+  "Vizianagaram",
+  "Bapatla",
+  "Dr. B.R. Ambedkar Konaseema",
+  "East Godavari",
+  "Eluru",
+  "Guntur",
+  "Kakinada",
+  "Krishna",
+  "NTR",
+  "Palnadu",
+  "Prakasam",
+  "Sri Potti Sriramulu Nellore",
+  "West Godavari",
+  "Ananthapuramu",
+  "Annamayya",
+  "Chittoor",
+  "YSR Kadapa",
+  "Kurnool",
+  "Markapuram",
+  "Nandyal",
+  "Sri Sathya Sai",
+  "Tirupati"
+],
+  defaultSuggestions: [
+  "Flats",
+  "Houses",
+  "Plots",
+  "Villa",
+  "2 BHK",
+  "3 BHK"
+],
 
   async init() {
     const clientReady =
@@ -16,35 +58,91 @@ window.GP_SEARCH_LOCATIONS = {
       window.GP_CONFIG?.TABLES?.properties;
 
     if (!clientReady) {
-      console.warn("Dynamic search locations skipped: Supabase is not connected.");
+      console.warn("Dynamic search locations skipped: Supabase is not connected. Using default suggestions.");
+
+      this.locations = [];
+this.districts = [];
+      this.suggestions = [...this.defaultSuggestions];
+
+      this.renderHeaderLocationMenu();
+      this.renderMobileLocalities();
+      this.addSearchDatalist();
+
       return;
     }
 
     try {
       const rows = await window.GP_SUPABASE.select(window.GP_CONFIG.TABLES.properties, {
-        select: "title, district, location, property_type, status",
-        eq: { status: "active" },
-        order: "created_at",
-        limit: 500
-      });
+  select: `
+    title,
+    property_title,
+    description,
+    district,
+    location,
+    area,
+    locality,
+    city,
+    landmark,
+    address,
+    property_type,
+    listing_type,
+    category,
+    bhk,
+    bedrooms,
+    floor,
+    floor_number,
+    total_floors,
+    amenities,
+    status
+  `,
+  eq: { status: "active" },
+  order: "created_at",
+  limit: 500
+});
 
       this.locations = this.unique(rows.map((p) => p.location));
       this.districts = this.unique(rows.map((p) => p.district));
 
       this.suggestions = this.unique(
-        rows.flatMap((p) => [
-          p.title,
-          p.location,
-          p.district,
-          p.property_type
-        ])
-      );
+  rows.flatMap((p) => [
+    p.title,
+    p.property_title,
+    p.description,
+    p.location,
+    p.area,
+    p.locality,
+    p.district,
+    p.city,
+    p.landmark,
+    p.address,
+    p.property_type,
+    p.listing_type,
+    p.category,
+    p.bhk,
+    p.bedrooms ? `${p.bedrooms} BHK` : "",
+    p.floor,
+    p.floor_number ? `${p.floor_number} floor` : "",
+    p.total_floors ? `${p.total_floors} floors` : "",
+    p.amenities
+  ])
+);
 
       this.renderDesktopLocationMenu();
+      this.renderHeaderLocationMenu();
       this.renderMobileLocalities();
       this.addSearchDatalist();
+
     } catch (error) {
-      console.warn("Dynamic search locations failed:", error);
+      console.warn("Dynamic search locations failed. Using default suggestions:", error);
+
+      this.locations = [...this.defaultLocations];
+     this.districts = [];
+      this.suggestions = [...this.defaultSuggestions];
+
+      this.renderDesktopLocationMenu();
+      this.renderHeaderLocationMenu();
+      this.renderMobileLocalities();
+      this.addSearchDatalist();
     }
   },
 
@@ -66,26 +164,40 @@ window.GP_SEARCH_LOCATIONS = {
       .replaceAll("'", "&#039;");
   },
 
+ getAllLocations() {
+  const activeDistricts = this.unique(
+    this.districts.filter((district) => {
+      const value = String(district || "").trim();
+      return this.apDistricts.includes(value);
+    })
+  );
+
+  return this.unique([
+  ...activeDistricts
+]);
+},
+
+  setLocation(location) {
+  const value = location || "";
+
+    const mainSelected = document.getElementById("selected-location");
+    const headerSelected = document.getElementById("header-selected-location");
+    const desktopSelected = document.getElementById("desktop-selected-location");
+
+    if (mainSelected) mainSelected.textContent = value || "Select Location";
+if (headerSelected) headerSelected.textContent = value || "Select Location";
+if (desktopSelected) desktopSelected.textContent = value || "Select Location";
+
+    if (typeof selectedLocation !== "undefined") {
+      selectedLocation = value;
+    }
+  },
+
   renderDesktopLocationMenu() {
-    const menu = document.getElementById("location-menu");
+    const menu = document.getElementById("location-menu-main");
     if (!menu) return;
 
-    const defaultLocations = [
-      "Guntur",
-      "Brodipet",
-      "Lakshmipuram",
-      "Arundelpet",
-      "Amaravati Road",
-      "Gorantla",
-      "Pattabhipuram",
-      "Tenali"
-    ];
-
-    const allLocations = this.unique([
-      ...defaultLocations,
-      ...this.districts,
-      ...this.locations
-    ]);
+    const allLocations = this.getAllLocations();
 
     menu.innerHTML = allLocations.map((loc) => `
       <button
@@ -100,8 +212,32 @@ window.GP_SEARCH_LOCATIONS = {
 
     menu.querySelectorAll(".location-option").forEach((btn) => {
       btn.addEventListener("click", () => {
-        const selected = document.getElementById("selected-location");
-        if (selected) selected.textContent = btn.dataset.location;
+        this.setLocation(btn.dataset.location || "");
+        menu.classList.add("hidden");
+      });
+    });
+  },
+
+  renderHeaderLocationMenu() {
+    const menu = document.getElementById("header-location-menu");
+    if (!menu) return;
+
+    const allLocations = this.getAllLocations();
+
+    menu.innerHTML = allLocations.map((loc) => `
+      <button
+        type="button"
+        data-location="${this.escapeHtml(loc)}"
+        class="header-location-option w-full text-left p-3 rounded-2xl border border-transparent transition-all hover:bg-[#d4af37]/10"
+      >
+        <span class="font-bold text-on-surface">${this.escapeHtml(loc)}</span>
+        <span class="block text-xs text-outline">Available property location</span>
+      </button>
+    `).join("");
+
+    menu.querySelectorAll(".header-location-option").forEach((btn) => {
+      btn.addEventListener("click", () => {
+       this.setLocation(btn.dataset.location || "");
         menu.classList.add("hidden");
       });
     });
@@ -111,17 +247,13 @@ window.GP_SEARCH_LOCATIONS = {
     const mobileBody = document.querySelector(".mobile-search-body");
     if (!mobileBody) return;
 
-    const defaultLocations = [
+    const allLocations = this.unique([
       "Brodipet",
       "Lakshmipuram",
       "Arundelpet",
       "Amaravati Road",
       "Gorantla",
-      "Pattabhipuram"
-    ];
-
-    const allLocations = this.unique([
-      ...defaultLocations,
+      "Pattabhipuram",
       ...this.locations
     ]);
 
@@ -152,8 +284,13 @@ window.GP_SEARCH_LOCATIONS = {
   },
 
   addSearchDatalist() {
-    const input = document.getElementById("property-search");
-    if (!input) return;
+   const inputs = [
+  document.getElementById("main-search-input"),
+  document.getElementById("header-property-search"),
+  document.getElementById("mobile-search-input")
+].filter(Boolean);
+
+    if (!inputs.length) return;
 
     let datalist = document.getElementById("gp-search-suggestions");
 
@@ -163,11 +300,18 @@ window.GP_SEARCH_LOCATIONS = {
       document.body.appendChild(datalist);
     }
 
-    datalist.innerHTML = this.suggestions.map((item) => `
+    const allSuggestions = this.unique([
+      ...this.defaultSuggestions,
+      ...this.suggestions
+    ]);
+
+    datalist.innerHTML = allSuggestions.map((item) => `
       <option value="${this.escapeHtml(item)}"></option>
     `).join("");
 
-    input.setAttribute("list", "gp-search-suggestions");
+    inputs.forEach((input) => {
+      input.setAttribute("list", "gp-search-suggestions");
+    });
   }
 };
 
