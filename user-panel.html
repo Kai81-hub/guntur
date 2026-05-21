@@ -3,146 +3,702 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>User Panel | Guntur Properties</title>
+<title>Profile | Guntur Properties</title>
 <meta name="robots" content="noindex, nofollow"/>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
 <style>
-:root{--gold:#d4af37;--primary:#735c00;--dark:#151c27;--secondary:#476080;--outline:#7f7663;--line:#d0c5af;--surface:#f9f9ff;--green:#22c55e;--red:#ef4444;--blue:#3b82f6}
+:root{
+  --gold:#d4af37;
+  --primary:#735c00;
+  --dark:#151c27;
+  --secondary:#476080;
+  --outline:#7f7663;
+  --line:#d0c5af;
+  --surface:#f9f9ff;
+  --white:#ffffff;
+  --green:#22c55e;
+  --red:#ef4444;
+  --blue:#3b82f6;
+}
 *{box-sizing:border-box}
-body{margin:0;font-family:'Manrope',sans-serif;background:#f9f9ff;color:#151c27;-webkit-font-smoothing:antialiased}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:'Manrope',sans-serif;
+  background:
+    radial-gradient(circle at top right, rgba(212,175,55,.16), transparent 34%),
+    linear-gradient(180deg,#fff,#f9f9ff);
+  color:var(--dark);
+  -webkit-font-smoothing:antialiased;
+}
+a{text-decoration:none;color:inherit}
 .material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 430,'GRAD' 0,'opsz' 24}
-.btn-gold{background:linear-gradient(180deg,#ffe088,#d4af37);color:#241a00;transition:.2s}.btn-gold:hover{transform:translateY(-1px);box-shadow:0 12px 26px rgba(212,175,55,.24)}
-.sidebar-link{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:16px;color:#476080;font-weight:800;transition:.18s}
-.sidebar-link:hover,.sidebar-link.active{background:rgba(212,175,55,.13);color:#735c00}
-.panel-card{background:#fff;border:1px solid rgba(208,197,175,.45);border-radius:26px;box-shadow:0 15px 38px rgba(15,23,42,.06)}
+.btn-gold{
+  background:linear-gradient(180deg,#ffe088,#d4af37);
+  color:#241a00;
+  transition:.2s;
+  box-shadow:0 12px 28px rgba(212,175,55,.22)
+}
+.btn-gold:hover{transform:translateY(-1px);box-shadow:0 16px 34px rgba(212,175,55,.28)}
+.btn-soft{
+  background:#fff;
+  border:1px solid rgba(208,197,175,.62);
+  color:var(--primary);
+  transition:.2s
+}
+.btn-soft:hover{background:#fff8dc}
+.layout{display:grid;grid-template-columns:280px 1fr;min-height:100vh}
+.sidebar{
+  background:rgba(255,255,255,.94);
+  border-right:1px solid rgba(208,197,175,.45);
+  padding:20px;
+  position:sticky;
+  top:0;
+  height:100vh;
+  overflow:auto;
+  z-index:70;
+}
+.sidebar-link{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:12px 14px;
+  border-radius:16px;
+  color:var(--secondary);
+  font-weight:900;
+  transition:.18s;
+}
+.sidebar-link:hover,.sidebar-link.active{background:rgba(212,175,55,.13);color:var(--primary)}
+.content{padding:28px}
+.panel-card{
+  background:#fff;
+  border:1px solid rgba(208,197,175,.45);
+  border-radius:26px;
+  box-shadow:0 15px 38px rgba(15,23,42,.06)
+}
+.hero-card{
+  background:
+    radial-gradient(circle at top right, rgba(212,175,55,.22), transparent 36%),
+    linear-gradient(135deg,#151c27,#243047);
+  color:#fff;
+  border-radius:30px;
+  box-shadow:0 22px 58px rgba(15,23,42,.18);
+  overflow:hidden;
+}
+.stat-card{
+  background:#fff;
+  border:1px solid rgba(208,197,175,.45);
+  border-radius:24px;
+  padding:22px;
+  box-shadow:0 12px 30px rgba(15,23,42,.05)
+}
+.profile-avatar{
+  width:86px;height:86px;border-radius:26px;object-fit:cover;
+  border:3px solid rgba(212,175,55,.55);
+  background:#fff8dc
+}
+.quick-action{
+  background:#fff;
+  border:1px solid rgba(208,197,175,.45);
+  border-radius:22px;
+  padding:18px;
+  display:flex;
+  gap:14px;
+  align-items:flex-start;
+  transition:.18s;
+}
+.quick-action:hover{transform:translateY(-2px);box-shadow:0 14px 34px rgba(15,23,42,.08)}
+.quick-icon{
+  width:46px;height:46px;border-radius:16px;
+  display:flex;align-items:center;justify-content:center;
+  background:#fff8dc;color:var(--primary);flex:0 0 auto
+}
 .table-wrap{overflow:auto}
-table{width:100%;border-collapse:collapse;min-width:820px}
-th{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#7f7663;text-align:left;padding:14px;border-bottom:1px solid rgba(208,197,175,.45)}
-td{padding:14px;border-bottom:1px solid rgba(208,197,175,.32);font-size:14px;color:#151c27}
+table{width:100%;border-collapse:collapse;min-width:640px}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--outline);text-align:left;padding:14px;border-bottom:1px solid rgba(208,197,175,.45)}
+td{padding:14px;border-bottom:1px solid rgba(208,197,175,.32);font-size:14px;color:var(--dark)}
 .status{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:6px 10px;font-size:12px;font-weight:900}
-.status.pending{background:#fff7d6;color:#8a6500}.status.approved{background:#dcfce7;color:#166534}.status.rejected{background:#fee2e2;color:#991b1b}.status.new{background:#dbeafe;color:#1d4ed8}
+.status.pending{background:#fff7d6;color:#8a6500}
+.status.approved,.status.contacted{background:#dcfce7;color:#166534}
+.status.rejected,.status.not_contacted{background:#fee2e2;color:#991b1b}
+.status.new{background:#dbeafe;color:#1d4ed8}
+.footer{
+  margin-top:28px;
+  background:#151c27;
+  color:#fff;
+  border-radius:30px 30px 0 0;
+  padding:34px;
+}
+.footer a{color:rgba(255,255,255,.78)}
+.footer a:hover{color:#fff}
 .mobile-menu{display:none}
-@media(max-width:1023px){.layout{grid-template-columns:1fr!important}.sidebar{position:fixed;inset:0 auto 0 0;width:280px;z-index:60;transform:translateX(-105%);transition:.25s}.sidebar.open{transform:translateX(0)}.mobile-menu{display:inline-flex}.content{padding:18px!important}.desktop-spacer{display:none}}
+.mobile-bottom-nav{display:none}
+
+@media(max-width:1023px){
+  body{padding-bottom:84px}
+  .layout{grid-template-columns:1fr}
+  .sidebar{
+    position:fixed;
+    inset:0 auto 0 0;
+    width:286px;
+    transform:translateX(-105%);
+    transition:.25s;
+    box-shadow:20px 0 60px rgba(15,23,42,.20)
+  }
+  .sidebar.open{transform:translateX(0)}
+  .content{padding:18px 16px 94px!important}
+  .mobile-menu{display:inline-flex}
+  .hero-grid{grid-template-columns:1fr!important}
+  .mobile-bottom-nav{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    position:fixed;
+    left:0;right:0;bottom:0;
+    height:72px;
+    background:#fff;
+    border-top:1px solid #e5e7eb;
+    z-index:5000;
+    box-shadow:0 -10px 25px rgba(15,23,42,.08);
+  }
+  .mobile-bottom-item{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:4px;
+    color:#6b7280;
+    font-size:11px;
+    font-weight:900;
+  }
+  .mobile-bottom-item .material-symbols-outlined{font-size:26px}
+  .mobile-bottom-item.active{color:var(--dark)}
+  .mobile-bottom-item.active .material-symbols-outlined{
+    color:var(--primary);
+    font-variation-settings:'FILL' 1,'wght' 650,'GRAD' 0,'opsz' 24
+  }
+}
+@media(max-width:640px){
+  .content{padding:12px 12px 96px!important}
+  .hero-card{border-radius:24px}
+  .panel-card,.stat-card{border-radius:20px}
+  .profile-avatar{width:70px;height:70px;border-radius:20px}
+  .footer{border-radius:24px 24px 0 0;padding:24px}
+}
+/* Fix mobile/tablet horizontal scrolling */
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.layout,
+.content,
+.panel-card,
+.hero-card,
+.footer,
+.stat-card,
+.quick-action {
+  max-width: 100%;
+}
+
+.content {
+  overflow-x: hidden;
+}
+
+img,
+video,
+iframe {
+  max-width: 100%;
+}
+
+/* Prevent long text/links from forcing page width */
+h1,
+h2,
+h3,
+p,
+a,
+td,
+th,
+span,
+div {
+  overflow-wrap: anywhere;
+}
+
+/* Tables should scroll inside only, not whole page */
+.table-wrap {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-wrap table {
+  min-width: 640px;
+}
+
+/* Mobile hero/profile buttons should not overflow */
+@media (max-width: 640px) {
+  .hero-card .flex {
+    min-width: 0;
+  }
+
+  .hero-card .flex.flex-col,
+  .hero-card .flex.flex-row {
+    width: 100%;
+  }
+
+  .hero-card a {
+    width: 100%;
+  }
+
+  .content {
+    width: 100%;
+    max-width: 100vw;
+  }
+
+  .footer {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .grid {
+    min-width: 0;
+  }
+
+  .quick-action {
+    min-width: 0;
+  }
+
+  .profile-avatar {
+    flex-shrink: 0;
+  }
+
+  #profile-name,
+  #profile-meta {
+    max-width: 100%;
+    word-break: break-word;
+  }
+}.chat-bubble {
+  max-width: 82%;
+  padding: 10px 13px;
+  border-radius: 18px;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.chat-bubble.user {
+  margin-left: auto;
+  background: #d4af37;
+  color: #151c27;
+  border-bottom-right-radius: 6px;
+}
+
+.chat-bubble.staff,
+.chat-bubble.owner,
+.chat-bubble.broker,
+.chat-bubble.developer,
+.chat-bubble.admin {
+  margin-right: auto;
+  background: #ffffff;
+  color: #151c27;
+  border: 1px solid rgba(208,197,175,.65);
+  border-bottom-left-radius: 6px;
+}
+
+.chat-bubble small {
+  display: block;
+  margin-top: 5px;
+  font-size: 10px;
+  opacity: .65;
+}
 </style>
 </head>
 <body>
-<div class="layout grid grid-cols-[280px_1fr] min-h-screen">
-  <aside class="sidebar bg-white border-r border-[#d0c5af]/40 p-5">
+<div class="layout">
+  <aside class="sidebar">
     <div class="flex items-center justify-between gap-3 mb-8">
       <a href="index.html" class="flex items-center gap-3">
-        <img src="assets/images/WhatsApp Image 2026-05-12 at 13.33.30.jpeg" onerror="this.src='https://placehold.co/80x80/d4af37/ffffff?text=GP'" class="w-10 h-10 rounded-xl object-cover" alt="Guntur Properties"/>
+        <img src="assets/images/WhatsApp Image 2026-05-12 at 13.33.30.jpeg" onerror="this.src='https://placehold.co/80x80/d4af37/ffffff?text=GP'" class="w-11 h-11 rounded-xl object-cover" alt="Guntur Properties"/>
         <div>
-          <p class="font-black text-[#d4af37] leading-tight">Guntur<br/>Properties</p>
-          <p class="text-[10px] text-[#7f7663] font-bold">User role</p>
+          <p class="font-black text-[#735c00] leading-tight">Guntur<br/>Properties</p>
+          <p class="text-[10px] text-[#7f7663] font-bold uppercase">Profile</p>
         </div>
       </a>
       <button id="close-sidebar-btn" class="lg:hidden w-9 h-9 rounded-full bg-[#f0f3ff]"><span class="material-symbols-outlined">close</span></button>
     </div>
-    <nav class="space-y-2"><a class="sidebar-link active" href="user-panel.html"><span class="material-symbols-outlined">dashboard</span>Dashboard</a>
-<a class="sidebar-link " href="user-panel.html#favorites"><span class="material-symbols-outlined">favorite</span>Shortlist</a>
-<a class="sidebar-link " href="user-panel.html#inquiries"><span class="material-symbols-outlined">contact_mail</span>Inquiries</a>
-<a class="sidebar-link " href="user-panel.html#chats"><span class="material-symbols-outlined">forum</span>Chats</a>
-<a class="sidebar-link " href="user-panel.html#profile"><span class="material-symbols-outlined">person</span>Profile</a></nav>
+
+    <nav class="space-y-2">
+      <a class="sidebar-link active" href="#profile"><span class="material-symbols-outlined">person</span>Profile</a>
+      <a class="sidebar-link" href="#saved"><span class="material-symbols-outlined">favorite</span>Saved Properties</a>
+      <a class="sidebar-link" href="#inquiries"><span class="material-symbols-outlined">contact_mail</span>Inquiries</a>
+      <a class="sidebar-link" href="#chats"><span class="material-symbols-outlined">forum</span>Chats</a>
+      <a class="sidebar-link" href="#recent-searches"><span class="material-symbols-outlined">history</span>Recent Searches</a>
+      <a class="sidebar-link" href="post-property.html"><span class="material-symbols-outlined">add_home</span>Post Property / Project</a>
+    </nav>
+
     <div class="mt-8 rounded-3xl bg-[#151c27] text-white p-5">
       <p class="text-xs text-white/60 font-bold uppercase">Logged in</p>
       <p id="auth-phone" class="font-black mt-1">Checking...</p>
+      <p id="auth-role" class="text-xs text-white/60 font-bold mt-1">Role: User</p>
       <button id="logout-btn" class="mt-4 w-full py-3 rounded-2xl bg-white/10 hover:bg-white/15 font-extrabold">Logout</button>
     </div>
   </aside>
 
-  <main class="content p-8">
-    <header class="panel-card p-5 flex items-center justify-between gap-4 mb-8">
+  <main class="content">
+    <header class="panel-card p-4 md:p-5 flex items-center justify-between gap-4 mb-6">
       <div class="flex items-center gap-3">
         <button id="mobile-menu-btn" class="mobile-menu w-10 h-10 rounded-xl bg-[#f0f3ff] items-center justify-center"><span class="material-symbols-outlined">menu</span></button>
         <div>
-          <h1 class="text-2xl md:text-3xl font-black">User Panel</h1>
-          <p class="text-[#476080] text-sm font-semibold">User role dashboard for Guntur Properties</p>
+          <h1 class="text-2xl md:text-3xl font-black">Profile</h1>
+          <p class="text-[#476080] text-sm font-semibold">Manage saved properties, chats and enquiries.</p>
         </div>
       </div>
-      <a href="index.html" class="hidden sm:inline-flex px-4 py-3 rounded-2xl border border-[#d0c5af]/60 font-extrabold text-[#735c00]">View Site</a>
+      <div class="hidden sm:flex items-center gap-2">
+        <a href="post-property.html" class="btn-gold px-4 py-3 rounded-2xl font-black inline-flex items-center gap-2">
+          <span class="material-symbols-outlined">add_home</span>
+          Post Property / Project
+        </a>
+        <a href="index.html" class="btn-soft px-4 py-3 rounded-2xl font-black">View Site</a>
+      </div>
     </header>
-    
-<section class="grid sm:grid-cols-3 gap-5 mb-8">
-  <div class="panel-card p-6"><p class="text-[#476080] font-bold">Shortlisted</p><h2 id="stat-fav" class="text-4xl font-black mt-2">0</h2></div>
-  <div class="panel-card p-6"><p class="text-[#476080] font-bold">Inquiries</p><h2 id="stat-inquiries" class="text-4xl font-black mt-2">0</h2></div>
-  <div class="panel-card p-6"><p class="text-[#476080] font-bold">Chats</p><h2 id="stat-chats" class="text-4xl font-black mt-2">0</h2></div>
-</section>
-<section id="favorites" class="panel-card p-6 mb-8"><h2 class="text-2xl font-black mb-5">Shortlisted Properties</h2><div id="favorites-list" class="grid md:grid-cols-2 xl:grid-cols-3 gap-4"><p class="text-[#476080]">Shortlist data appears here after Supabase connection.</p></div></section>
-<section id="inquiries" class="panel-card p-6"><h2 class="text-2xl font-black mb-5">My Inquiries</h2><div class="table-wrap"><table><thead><tr><th>Property</th><th>Status</th><th>Date</th></tr></thead><tbody id="inquiries-body"><tr><td colspan="3">Connect Supabase to load data.</td></tr></tbody></table></div></section>
 
+    <section id="profile" class="hero-card p-5 md:p-7 mb-6">
+      <div class="hero-grid grid md:grid-cols-[1fr_auto] gap-6 items-center">
+        <div class="flex items-center gap-4">
+          <img id="profile-photo" class="profile-avatar" src="https://placehold.co/160x160/d4af37/ffffff?text=GP" alt="Profile photo"/>
+          <div>
+            <p class="text-white/60 text-xs font-black uppercase tracking-widest">Welcome back</p>
+            <h2 id="profile-name" class="text-2xl md:text-4xl font-black mt-1">Guntur Properties User</h2>
+            <p id="profile-meta" class="text-white/70 font-semibold mt-2">Loading profile...</p>
+          </div>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-3">
+          <a href="post-property.html" class="btn-gold px-5 py-4 rounded-2xl font-black text-center inline-flex items-center justify-center gap-2">
+            <span class="material-symbols-outlined">domain_add</span>
+            Post Project
+          </a>
+          <a href="properties.html" class="px-5 py-4 rounded-2xl font-black text-center bg-white/10 text-white hover:bg-white/15 inline-flex items-center justify-center gap-2">
+            <span class="material-symbols-outlined">search</span>
+            Browse
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
+      <div class="stat-card"><p class="text-[#476080] font-bold">Saved</p><h2 id="stat-saved" class="text-4xl font-black mt-2">0</h2></div>
+      <div class="stat-card"><p class="text-[#476080] font-bold">Inquiries</p><h2 id="stat-inquiries" class="text-4xl font-black mt-2">0</h2></div>
+      <div class="stat-card"><p class="text-[#476080] font-bold">Chats</p><h2 id="stat-chats" class="text-4xl font-black mt-2">0</h2></div>
+      <div class="stat-card"><p class="text-[#476080] font-bold">Searches</p><h2 id="stat-searches" class="text-4xl font-black mt-2">0</h2></div>
+    </section>
+
+    <section class="grid lg:grid-cols-3 gap-4 mb-6">
+      <a href="properties.html?purpose=buy" class="quick-action">
+        <div class="quick-icon"><span class="material-symbols-outlined">real_estate_agent</span></div>
+        <div><h3 class="font-black">Buy Property</h3><p class="text-sm text-[#476080] font-semibold mt-1">Find houses, flats, plots and projects.</p></div>
+      </a>
+      <a href="properties.html?purpose=rent" class="quick-action">
+        <div class="quick-icon"><span class="material-symbols-outlined">key</span></div>
+        <div><h3 class="font-black">Rent Property</h3><p class="text-sm text-[#476080] font-semibold mt-1">Search rentals by local area.</p></div>
+      </a>
+      <a href="post-property.html" class="quick-action">
+        <div class="quick-icon"><span class="material-symbols-outlined">add_home_work</span></div>
+        <div><h3 class="font-black">Post Property / Project</h3><p class="text-sm text-[#476080] font-semibold mt-1">Upgrade if needed and create a listing.</p></div>
+      </a>
+    </section>
+
+    <section id="saved" class="panel-card p-5 md:p-6 mb-6">
+      <div class="flex items-center justify-between gap-3 mb-5">
+        <h2 class="text-2xl font-black">Saved Properties</h2>
+        <a href="properties.html" class="text-[#735c00] font-black text-sm">Browse more</a>
+      </div>
+      <div id="saved-list" class="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
+        <p class="text-[#476080] font-semibold">Saved properties will appear here.</p>
+      </div>
+    </section>
+
+    <section id="recent-searches" class="panel-card p-5 md:p-6 mb-6">
+      <h2 class="text-2xl font-black mb-5">Recent Searches</h2>
+      <div id="recent-searches-list" class="grid md:grid-cols-3 gap-3">
+        <p class="text-[#476080] font-semibold">Your last searches will appear here.</p>
+      </div>
+    </section>
+
+    <section id="inquiries" class="panel-card p-5 md:p-6 mb-6">
+      <h2 class="text-2xl font-black mb-5">My Inquiries</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Property</th><th>Status</th><th>Date</th><th>Action</th></tr></thead>
+          <tbody id="inquiries-body"><tr><td colspan="4">Connect Supabase to load data.</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="chats" class="panel-card p-5 md:p-6 mb-6">
+      <h2 class="text-2xl font-black mb-5">Chats</h2>
+      <div id="chats-list" class="grid gap-3">
+        <p class="text-[#476080] font-semibold">Your property chats will appear here.</p>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="grid md:grid-cols-4 gap-7">
+        <div class="md:col-span-2">
+          <div class="flex items-center gap-3">
+            <img src="assets/images/WhatsApp Image 2026-05-12 at 13.33.30.jpeg" onerror="this.src='https://placehold.co/80x80/d4af37/ffffff?text=GP'" class="w-12 h-12 rounded-xl object-cover" alt="Guntur Properties"/>
+            <div>
+              <h3 class="font-black text-xl">Guntur Properties</h3>
+              <p class="text-white/60 text-sm font-semibold">Buy, rent, projects and services in Andhra Pradesh.</p>
+            </div>
+          </div>
+          <p class="text-white/60 text-sm font-semibold mt-5 max-w-xl">
+            Your profile helps you save properties, track enquiries, chat with property owners and post projects or listings when upgraded.
+          </p>
+        </div>
+        <div>
+          <h4 class="font-black mb-3">Quick Links</h4>
+          <div class="grid gap-2 text-sm font-semibold">
+            <a href="index.html">Home</a>
+            <a href="properties.html">Properties</a>
+            <a href="post-property.html">Post Property</a>
+            <a href="news-updates.html">News</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="font-black mb-3">Support</h4>
+          <div class="grid gap-2 text-sm font-semibold">
+            <a href="tel:+919959919999">Call Support</a>
+            <a href="https://wa.me/919959919999?text=Hi%20Guntur%20Properties%2C%20I%20need%20help%20with%20my%20profile." target="_blank" rel="noopener">WhatsApp</a>
+            <a href="contact.html">Contact</a>
+          </div>
+        </div>
+      </div>
+      <div class="border-t border-white/10 mt-7 pt-5 text-white/50 text-sm font-semibold">
+        © <span id="footer-year"></span> Guntur Properties. All rights reserved.
+      </div>
+    </footer>
   </main>
 </div>
+<!-- USER CHAT MODAL -->
+<div id="user-chat-modal" class="fixed inset-0 z-[7000] hidden">
+  <div id="user-chat-backdrop" class="absolute inset-0 bg-black/45"></div>
+
+  <div class="absolute inset-x-3 bottom-3 md:inset-auto md:right-8 md:bottom-8 md:w-[420px] bg-white rounded-3xl shadow-2xl border border-[#d0c5af]/60 overflow-hidden">
+    <div class="bg-[#151c27] text-white p-4 flex items-center justify-between gap-3">
+      <div>
+        <p id="chat-modal-title" class="font-black">Property Chat</p>
+        <p id="chat-modal-subtitle" class="text-xs text-white/60 font-bold">Messages are saved to Supabase</p>
+      </div>
+
+      <button id="close-user-chat" type="button" class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/15 flex items-center justify-center">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+
+    <div id="user-chat-messages" class="h-[360px] overflow-y-auto p-4 bg-[#f9f9ff] space-y-3">
+      <p class="text-sm text-[#476080] font-semibold">Select a chat to load messages.</p>
+    </div>
+
+    <form id="user-chat-form" class="p-3 bg-white border-t border-[#d0c5af]/50 flex gap-2">
+      <input
+        id="user-chat-input"
+        class="flex-1 rounded-2xl border-[#d0c5af] focus:border-[#d4af37] focus:ring-[#d4af37] font-bold"
+        placeholder="Type message..."
+        autocomplete="off"
+      />
+      <button type="submit" class="btn-gold px-4 rounded-2xl font-black">
+        Send
+      </button>
+    </form>
+  </div>
+</div>
+<nav class="mobile-bottom-nav" aria-label="Mobile bottom navigation">
+  <a href="index.html" class="mobile-bottom-item"><span class="material-symbols-outlined">home</span>Home</a>
+  <a href="news-updates.html" class="mobile-bottom-item"><span class="material-symbols-outlined">newspaper</span>News</a>
+  <a href="#chats" class="mobile-bottom-item"><span class="material-symbols-outlined">chat</span>Chats</a>
+  <a href="#saved" class="mobile-bottom-item"><span class="material-symbols-outlined">bookmark</span>Saved</a>
+  <a href="#profile" class="mobile-bottom-item active"><span class="material-symbols-outlined">person</span>Profile</a>
+</nav>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/config.js"></script>
+<script src="js/supabase.js"></script>
 <script>
-const GP_SUPABASE_URL = "PASTE_YOUR_SUPABASE_PROJECT_URL";
-const GP_SUPABASE_ANON_KEY = "PASTE_YOUR_SUPABASE_ANON_KEY";
+const GP_SUPABASE_URL = window.GP_CONFIG?.SUPABASE_URL || "https://mpuwfytcyjrsdkgaqaip.supabase.co";
+const GP_SUPABASE_ANON_KEY = window.GP_CONFIG?.SUPABASE_ANON_KEY || "sb_publishable_Cw3RO0xumC7MRdfOt16HBQ_Ae6PpWOK";
+
 let supabaseClient = null;
-if (window.supabase && GP_SUPABASE_URL.startsWith("http") && GP_SUPABASE_ANON_KEY !== "PASTE_YOUR_SUPABASE_ANON_KEY") {
+if (window.GP_SUPABASE?.createClient) {
+  supabaseClient = window.GP_SUPABASE.createClient();
+} else if (window.supabase && GP_SUPABASE_URL.startsWith("http")) {
   supabaseClient = window.supabase.createClient(GP_SUPABASE_URL, GP_SUPABASE_ANON_KEY);
 }
-function getAuthRole(){return localStorage.getItem("gp_auth_role") || "user"}
-function getAuthPhone(){return localStorage.getItem("gp_auth_phone") || ""}
-function checkRole(allowed){
-  const role=getAuthRole();
-  if(!getAuthPhone()){
-    window.location.href="login.html";
-    return false;
-  }
-  if(!allowed.includes(role)){
-    document.body.innerHTML = `<div style="font-family:Manrope,sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;background:#f9f9ff;padding:20px"><div style="max-width:520px;background:white;border:1px solid #d0c5af;border-radius:28px;padding:34px;text-align:center;box-shadow:0 15px 45px rgba(15,23,42,.08)"><h1 style="margin:0 0 10px;color:#151c27">Access Denied</h1><p style="color:#476080">Your role does not have permission to open this panel.</p><a href="index.html" style="display:inline-flex;margin-top:18px;background:#d4af37;color:white;text-decoration:none;padding:12px 18px;border-radius:14px;font-weight:800">Go Home</a></div></div>`;
-    return false;
-  }
-  return true;
+
+function getAuthRole(){return localStorage.getItem("gp_auth_role") || localStorage.getItem("gp_role") || "user"}
+function getAuthPhone(){return localStorage.getItem("gp_auth_phone") || localStorage.getItem("gp_phone") || ""}
+function logout(){
+  ["gp_auth_phone","gp_auth_role","gp_phone","gp_role","gp_user"].forEach(k=>localStorage.removeItem(k));
+  window.location.href="login.html";
 }
-function logout(){localStorage.removeItem("gp_auth_phone");localStorage.removeItem("gp_auth_role");window.location.href="login.html"}
 function openSidebar(){document.querySelector(".sidebar")?.classList.add("open")}
 function closeSidebar(){document.querySelector(".sidebar")?.classList.remove("open")}
 function fmtDate(v){return v ? new Date(v).toLocaleDateString("en-IN") : "-"}
-function money(v){ if(!v && v!==0) return "-"; const n=Number(v); if(Number.isNaN(n))return v; if(n>=10000000)return "₹"+(n/10000000).toFixed(2)+" Cr"; if(n>=100000)return "₹"+(n/100000).toFixed(1)+" L"; return "₹"+n.toLocaleString("en-IN")}
+function money(v){
+  if(!v && v!==0) return "-";
+  const n=Number(v);
+  if(Number.isNaN(n)) return v;
+  if(n>=10000000) return "₹"+(n/10000000).toFixed(2)+" Cr";
+  if(n>=100000) return "₹"+(n/100000).toFixed(1)+" L";
+  return "₹"+n.toLocaleString("en-IN");
+}
 async function fetchRows(table, options={}){
   if(!supabaseClient) return [];
   let q=supabaseClient.from(table).select(options.select || "*");
   if(options.eq){Object.entries(options.eq).forEach(([k,v])=>q=q.eq(k,v))}
+  if(options.or){q=q.or(options.or)}
   if(options.order){q=q.order(options.order,{ascending:false})}
   if(options.limit){q=q.limit(options.limit)}
   const {data,error}=await q;
-  if(error) throw error;
+  if(error) {
+    console.warn(table,error.message);
+    return [];
+  }
   return data || [];
 }
-async function updateRow(table,id,patch){
-  if(!supabaseClient) throw new Error("Connect Supabase first.");
-  const {error}=await supabaseClient.from(table).update(patch).eq("id",id);
-  if(error) throw error;
-}
-async function insertRow(table,payload){
-  if(!supabaseClient) throw new Error("Connect Supabase first.");
-  const {error}=await supabaseClient.from(table).insert(payload);
-  if(error) throw error;
+function checkRole(){
+  if(!getAuthPhone()){
+    window.location.href="login.html?next=user-panel.html";
+    return false;
+  }
+  return true;
 }
 function bindCommon(){
   document.getElementById("logout-btn")?.addEventListener("click",logout);
   document.getElementById("mobile-menu-btn")?.addEventListener("click",openSidebar);
   document.getElementById("close-sidebar-btn")?.addEventListener("click",closeSidebar);
-  document.getElementById("auth-phone")?.replaceChildren(document.createTextNode(getAuthPhone() ? "+91 " + getAuthPhone() : "Not logged in"));
-}
-document.addEventListener("DOMContentLoaded",bindCommon);
+  document.getElementById("footer-year").textContent = new Date().getFullYear();
 
-const ALLOWED_ROLES = ['admin', 'staff', 'user', 'owner', 'broker', 'developer'];
-document.addEventListener("DOMContentLoaded",()=>{ if(!checkRole(ALLOWED_ROLES)) return; initPanel(); });
+  document.querySelectorAll(".sidebar-link,.mobile-bottom-item").forEach(link=>{
+    link.addEventListener("click",()=>closeSidebar());
+  });
+
+  document.getElementById("auth-phone")?.replaceChildren(document.createTextNode(getAuthPhone() ? "+91 " + getAuthPhone() : "Not logged in"));
+  document.getElementById("auth-role")?.replaceChildren(document.createTextNode("Role: " + getAuthRole().toUpperCase()));
+}
+
+function propertyCard(p){
+  const img = Array.isArray(p.image_urls) ? p.image_urls[0] : (Array.isArray(p.images) ? p.images[0] : p.main_image);
+  const title = p.title || p.property_title || "Property";
+  const location = [p.location,p.district].filter(Boolean).join(", ");
+  return `
+    <a href="property-details.html?id=${encodeURIComponent(p.id)}" class="block rounded-3xl border border-[#d0c5af]/50 overflow-hidden bg-white hover:shadow-lg transition">
+      <img src="${img || 'https://placehold.co/600x360/d4af37/ffffff?text=Guntur+Properties'}" class="w-full h-36 object-cover" alt="${title}">
+      <div class="p-4">
+        <h3 class="font-black line-clamp-1">${title}</h3>
+        <p class="text-sm text-[#476080] font-semibold mt-1">${location || "Guntur"}</p>
+        <p class="text-[#735c00] font-black mt-2">${p.price_label || money(p.price)}</p>
+      </div>
+    </a>
+  `;
+}
+
+async function loadProfile(phone){
+  const rows = await fetchRows("profiles",{eq:{phone},limit:1});
+  const profile = rows[0] || {};
+  const name = profile.full_name || profile.name || "Guntur Properties User";
+  const role = profile.role || getAuthRole() || "user";
+  const photo = profile.photo_url || profile.profile_photo || profile.avatar_url;
+
+  document.getElementById("profile-name").textContent = name;
+  document.getElementById("profile-meta").textContent = `+91 ${phone} • ${String(role).toUpperCase()} profile`;
+  if(photo) document.getElementById("profile-photo").src = photo;
+
+  localStorage.setItem("gp_auth_role", role);
+  localStorage.setItem("gp_role", role);
+}
+
+async function loadSaved(phone){
+  let saved = await fetchRows("saved_properties",{eq:{user_phone:phone},limit:20,order:"created_at"});
+  document.getElementById("stat-saved").textContent = saved.length;
+
+  if(!saved.length){
+    document.getElementById("saved-list").innerHTML = `<p class="text-[#476080] font-semibold">No saved properties yet.</p>`;
+    return;
+  }
+
+  const ids = saved.map(s=>s.property_id).filter(Boolean);
+  let properties = [];
+  if(ids.length && supabaseClient){
+    const {data,error}=await supabaseClient.from("properties").select("*").in("id",ids).limit(20);
+    if(!error) properties = data || [];
+  }
+
+  document.getElementById("saved-list").innerHTML =
+    properties.length ? properties.map(propertyCard).join("") : `<p class="text-[#476080] font-semibold">${saved.length} saved item(s). Property details will show after IDs match.</p>`;
+}
+
+async function loadInquiries(phone){
+  const inquiries = await fetchRows("property_chats",{eq:{visitor_phone:phone},limit:50,order:"created_at"});
+  document.getElementById("stat-inquiries").textContent = inquiries.length;
+  document.getElementById("stat-chats").textContent = inquiries.length;
+
+  document.getElementById("inquiries-body").innerHTML = inquiries.map(i=>`
+    <tr>
+      <td>${i.property_id || "-"}</td>
+      <td><span class="status ${i.lead_status || 'new'}">${i.lead_status || "new"}</span></td>
+      <td>${fmtDate(i.created_at)}</td>
+      <td><a class="font-black text-[#735c00]" href="property-details.html?id=${encodeURIComponent(i.property_id || '')}">Open</a></td>
+    </tr>
+  `).join("") || `<tr><td colspan="4">No inquiries yet.</td></tr>`;
+
+  document.getElementById("chats-list").innerHTML = inquiries.map(i=>`
+    <a href="property-details.html?id=${encodeURIComponent(i.property_id || '')}" class="rounded-2xl border border-[#d0c5af]/50 p-4 flex items-center justify-between gap-3 hover:bg-[#fff8dc] transition">
+      <div>
+        <p class="font-black">Property Chat</p>
+        <p class="text-sm text-[#476080] font-semibold">Property ID: ${i.property_id || "-"}</p>
+      </div>
+      <span class="status ${i.lead_status || 'new'}">${i.lead_status || "new"}</span>
+    </a>
+  `).join("") || `<p class="text-[#476080] font-semibold">No chats yet.</p>`;
+}
+
+function loadRecentSearches(phone){
+  const keys = ["gp_recent_searches", `gp_recent_searches_${phone}`];
+  let rows = [];
+  for(const key of keys){
+    try{
+      const raw = localStorage.getItem(key);
+      if(raw) rows = rows.concat(JSON.parse(raw));
+    }catch(_){}
+  }
+  rows = rows.slice(0,3);
+  document.getElementById("stat-searches").textContent = rows.length;
+  document.getElementById("recent-searches-list").innerHTML = rows.length ? rows.map(item=>{
+    const q = typeof item === "string" ? item : (item.q || item.search || item.location || "Property search");
+    const url = `properties.html?q=${encodeURIComponent(q)}`;
+    return `<a href="${url}" class="rounded-2xl bg-[#fff8dc] border border-[#d4af37]/30 p-4 font-black text-[#735c00]">${q}</a>`;
+  }).join("") : `<p class="text-[#476080] font-semibold">No recent searches yet.</p>`;
+}
 
 async function initPanel(){
-  if(!supabaseClient)return;
-  const phone=getAuthPhone();
-  const inquiries=await fetchRows("property_chats",{eq:{visitor_phone:phone},limit:50,order:"created_at"});
-  document.getElementById("stat-inquiries").textContent=inquiries.length;
-  document.getElementById("stat-chats").textContent=inquiries.length;
-  document.getElementById("stat-fav").textContent=0;
-  document.getElementById("inquiries-body").innerHTML=inquiries.map(i=>`<tr><td>${i.property_id||"-"}</td><td><span class="status ${i.lead_status||'new'}">${i.lead_status||"new"}</span></td><td>${fmtDate(i.created_at)}</td></tr>`).join("") || `<tr><td colspan="3">No inquiries yet.</td></tr>`;
+  if(!checkRole()) return;
+  const phone = getAuthPhone();
+  await loadProfile(phone);
+  await Promise.all([loadSaved(phone), loadInquiries(phone)]);
+  loadRecentSearches(phone);
 }
 
+document.addEventListener("DOMContentLoaded",()=>{
+  bindCommon();
+  initPanel();
+});
 </script>
-<script src="js/panels/user.js"></script>
 </body>
 </html>
