@@ -20,6 +20,17 @@ window.GP_CONFIG = {
     pageMedia: "page-media"
   },
 
+  STORAGE: {
+    property_images: "property-images",
+    profile_images: "profile-images",
+    property_videos: "property-videos"
+  },
+
+  CLOUDINARY: {
+    CLOUD_NAME: "dlzmuyuxo",
+    UPLOAD_PRESET: "guntur_properties_upload"
+  },
+
   TABLES: {
     profiles: "profiles",
     properties: "properties",
