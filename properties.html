@@ -215,11 +215,37 @@
     <div class="desktop-search-area hidden md:flex flex-grow items-center gap-3 ml-6">
       <div class="flex items-center bg-white rounded-lg px-4 py-2 shadow-sm border border-line/30 min-w-[180px]">
         <span class="material-symbols-outlined text-primary mr-2">location_on</span>
-        <select id="district-select" class="border-none focus:ring-0 bg-transparent font-semibold text-dark w-full p-0 cursor-pointer">
-          <option value="Guntur">Guntur, AP</option>
-          <option value="Tenali">Tenali</option>
-          <option value="Vijayawada">Vijayawada</option>
-        </select>
+        <div class="relative min-w-[220px]">
+
+  <button
+    id="properties-location-button"
+    type="button"
+    class="flex items-center justify-between w-full bg-white rounded-lg px-4 py-2 shadow-sm border border-line/30 h-[50px]"
+  >
+    <div class="flex items-center gap-2">
+      <span class="material-symbols-outlined text-primary">
+        location_on
+      </span>
+
+      <span
+        id="properties-selected-location"
+        class="font-semibold text-dark"
+      >
+        Select Location
+      </span>
+    </div>
+
+    <span class="material-symbols-outlined text-outline">
+      expand_more
+    </span>
+  </button>
+
+  <div
+    id="properties-location-menu"
+    class="hidden absolute top-full left-0 mt-2 w-full bg-white border border-line/30 rounded-2xl shadow-2xl z-50 p-2 max-h-[320px] overflow-auto"
+  >
+  </div>
+</div>
       </div>
 
       <div class="flex-grow bg-white rounded-lg px-4 py-2 shadow-sm border border-line/30 flex items-center">
@@ -263,7 +289,7 @@
 
     <div class="flex items-center gap-2 overflow-x-auto no-scrollbar">
       <button id="clear-all-btn" class="px-3 py-2 rounded-xl bg-white border border-line/50 text-sm font-extrabold hover:border-gold hover:text-primary">Clear All</button>
-      <span id="active-filter-pill" class="px-3 py-2 rounded-xl bg-gold/10 border border-gold/30 text-primary text-sm font-extrabold">Guntur • All</span>
+      <span id="active-filter-pill" class="px-3 py-2 rounded-xl bg-gold/10 border border-gold/30 text-primary text-sm font-extrabold">All Properties</span>
     </div>
   </div>
 </section>
@@ -530,9 +556,18 @@ const DEFAULT_AREAS = {
     areas: ["Tenali", "Gandhi Chowk", "Kothapet", "Chenchupet", "Nazarpet", "Ithanagar"]
   }
 };
-
+const SEARCH_LOCATIONS = [
+  "Vijayawada",
+  "Guntur",
+  "Tenali",
+  "Mangalagiri",
+  "Amaravati",
+  "Nellore",
+  "Visakhapatnam",
+  "Tirupati"
+];
 const state = {
-  district: localStorage.getItem("gp_district") || "Guntur",
+  district: localStorage.getItem("gp_district") || "",
   type: "all",
   budget: "all",
   bhk: "",
@@ -603,24 +638,130 @@ function normalizeProperty(row) {
     row.main_image_url ||
     "";
 
+  const amenitiesArray = Array.isArray(row.amenities)
+    ? row.amenities
+    : String(row.amenities || "")
+        .split(",")
+        .map(a => a.trim())
+        .filter(Boolean);
+
+  const searchableText = [
+    row.id,
+    row.title,
+    row.property_title,
+    row.name,
+    row.description,
+    row.short_description,
+
+    row.property_type,
+    row.type,
+    row.listing_type,
+    row.purpose,
+    row.property_for,
+    row.category,
+    row.sub_category,
+
+    row.bhk,
+    row.bedrooms,
+    row.bathrooms,
+    row.floor,
+    row.floor_number,
+    row.total_floors,
+
+    row.location,
+    row.area,
+    row.locality,
+    row.district,
+    row.city,
+    row.landmark,
+    row.address,
+    row.pincode,
+
+    row.price,
+    row.price_text,
+    row.budget,
+    row.rent,
+    row.deposit,
+
+    row.facing,
+    row.furnishing,
+    amenitiesArray.join(" "),
+
+    row.apartment_name,
+    row.flat_number,
+    row.door_number,
+    row.house_type,
+
+    row.plot_area,
+    row.land_area,
+    row.area_sqft,
+    row.builtup_area,
+    row.carpet_area,
+    row.area_unit,
+    row.villa_name,
+    row.villa_number,
+    row.plot_number,
+    row.survey_number,
+    row.road_width,
+    row.approval_type,
+    row.boundary_wall,
+
+    row.commercial_type,
+    row.washroom,
+    row.suitable_for,
+
+    row.room_type,
+    row.sharing_type,
+    row.food_available,
+
+    row.project_name,
+    row.rera_number,
+    row.project_status,
+    row.developer_name,
+    row.builder_name,
+
+    row.owner_name,
+    row.broker_name,
+    row.seller_type,
+    row.status,
+    row.listing_status
+  ].join(" ");
+
   return {
     id: row.id,
-    name: row.title || row.name || "Untitled Property",
-    type: normalizeType(row.property_type || row.type),
-    area: row.location || row.area || "Guntur",
-    district: row.district || "Guntur",
-    price: formatPrice(row.price),
-    priceValue: Number(row.price || 0) / 100000,
-    rawPrice: Number(row.price || 0),
-    size: row.area_sqft ? `${row.area_sqft} sq.ft` : (row.land_area || "N/A"),
-    bhk: row.bedrooms ? String(row.bedrooms) : "N/A",
+
+    name: row.title || row.property_title || row.name || "Untitled Property",
+    type: normalizeType(row.property_type || row.type || row.category),
+    area: row.location || row.area || row.locality || row.city || "",
+    locality: row.locality || row.area || row.location || "",
+    city: row.city || "",
+    district: row.district || "",
+    landmark: row.landmark || "",
+    address: row.address || "",
+
+    price: formatPrice(row.price || row.rent),
+    priceValue: Number(row.price || row.rent || 0) / 100000,
+    rawPrice: Number(row.price || row.rent || 0),
+
+    size: row.area_sqft
+      ? `${row.area_sqft} sq.ft`
+      : row.builtup_area
+        ? `${row.builtup_area} sq.ft`
+        : row.plot_area
+          ? `${row.plot_area} ${row.area_unit || ""}`
+          : row.land_area || "N/A",
+
+    bhk: row.bedrooms || row.bhk ? String(row.bedrooms || row.bhk) : "N/A",
     status: row.listing_status || row.status || "available",
     facing: row.facing || "",
-    amenities: Array.isArray(row.amenities) ? row.amenities : [],
-    img: mainImage || "https://placehold.co/800x520/f3f4f6/735c00?text=Guntur+Properties",
+    amenities: amenitiesArray,
+
+    img: mainImage || "https://placehold.co/800x520/f3f4f6/735c00?text=Properties",
     whatsapp: row.whatsapp_number || row.contact_phone || "919959919999",
     description: row.description || "",
-    sellerType: row.seller_type || ""
+    sellerType: row.seller_type || "",
+
+    searchableText: searchableText.toLowerCase()
   };
 }
 
@@ -651,12 +792,45 @@ function readUrlParams() {
   }
 
   if (location) {
-    if (["Guntur", "Tenali", "Vijayawada"].includes(location)) {
-      state.district = location;
-    } else {
-      state.keyword = q || location;
-    }
+  const apDistricts = [
+    "Alluri Sitharama Raju",
+    "Anakapalli",
+    "Ananthapuramu",
+    "Annamayya",
+    "Bapatla",
+    "Chittoor",
+    "Dr. B.R. Ambedkar Konaseema",
+    "East Godavari",
+    "Eluru",
+    "Guntur",
+    "Kakinada",
+    "Krishna",
+    "Kurnool",
+    "Nandyal",
+    "NTR",
+    "Palnadu",
+    "Parvathipuram Manyam",
+    "Prakasam",
+    "Sri Potti Sriramulu Nellore",
+    "Sri Sathya Sai",
+    "Srikakulam",
+    "Tirupati",
+    "Visakhapatnam",
+    "Vizianagaram",
+    "West Godavari",
+    "YSR Kadapa"
+  ];
+
+  const matchedDistrict = apDistricts.find(
+    district => district.toLowerCase() === location.toLowerCase()
+  );
+
+  if (matchedDistrict) {
+    state.district = matchedDistrict;
+  } else {
+    state.keyword = [q, location].filter(Boolean).join(" ");
   }
+}
 
   if (rawType && !["buy", "rent", "sale"].includes(rawType.toLowerCase())) {
     state.type = normalizeType(rawType) || "all";
@@ -671,65 +845,227 @@ function readUrlParams() {
   if (els.search) els.search.value = state.keyword;
   if (els.mobileSearch) els.mobileSearch.value = state.keyword;
 }
-
 function updateBrand() {
-  const d = DEFAULT_AREAS[state.district] || DEFAULT_AREAS.Guntur;
 
-  els.brand.textContent = state.district + " Properties";
-  els.footerBrand.textContent = state.district + " Properties";
-  els.footerAddress.textContent = d.address;
-  if (els.district) els.district.value = state.district;
+  const d = DEFAULT_AREAS[state.district] || {
+    address: "",
+    areas: []
+  };
 
-  localStorage.setItem("gp_district", state.district);
+  // header brand
+  if (els.brand) {
+    els.brand.textContent = state.district
+      ? state.district + " Properties"
+      : "Properties";
+  }
+
+  // footer brand
+  if (els.footerBrand) {
+    els.footerBrand.textContent = state.district
+      ? state.district + " Properties"
+      : "Properties";
+  }
+
+  // footer address
+  if (els.footerAddress) {
+    els.footerAddress.textContent = d.address || "";
+  }
+
+  // sync dropdown selected location
+  const selectedLocationText =
+    document.getElementById("properties-selected-location");
+
+  if (selectedLocationText) {
+    selectedLocationText.textContent =
+      state.district || "Select Location";
+  }
+
+  // save selected district
+  localStorage.setItem(
+    "gp_district",
+    state.district || ""
+  );
 }
-
 function updateCrumb() {
-  let parts = ["Home", "Search", state.district];
 
-  if (state.keyword) parts.push(state.keyword);
-  if (state.type !== "all") parts.push(title(state.type));
+  let parts = ["Home", "Search"];
+
+  // keyword search
+  if (state.keyword) {
+    parts.push(state.keyword);
+  }
+
+  // property type
+  if (
+    state.type &&
+    state.type !== "all" &&
+    state.type !== "residential"
+  ) {
+    parts.push(title(state.type));
+  }
 
   els.crumb.innerHTML = parts.map((p, i) => `
-    <button class="${i === parts.length - 1 ? 'font-extrabold text-primary' : 'breadcrumb-link'}" data-i="${i}">
+    <button class="${
+      i === parts.length - 1
+        ? 'font-extrabold text-primary'
+        : 'breadcrumb-link'
+    }" data-i="${i}">
       ${p}
     </button>
-    ${i < parts.length - 1 ? '<span class="material-symbols-outlined text-[17px] text-outline">chevron_right</span>' : ''}
+
+    ${
+      i < parts.length - 1
+        ? '<span class="material-symbols-outlined text-[17px] text-outline">chevron_right</span>'
+        : ''
+    }
   `).join("");
 
-  els.crumb.querySelectorAll("button").forEach(b => {
+  els.crumb.querySelectorAll("button").forEach((b) => {
+
     b.onclick = () => {
+
+      // Home or Search
       if (+b.dataset.i <= 1) {
         resetFilters(false);
-      } else if (+b.dataset.i === 2) {
+      }
+
+      // keyword
+      else if (
+        state.keyword &&
+        b.textContent.trim().toLowerCase() ===
+        state.keyword.toLowerCase()
+      ) {
         state.keyword = "";
-        state.type = "all";
-      } else if (b.textContent.trim() === title(state.type)) {
+      }
+
+      // property type
+      else if (
+        b.textContent.trim().toLowerCase() ===
+        title(state.type).toLowerCase()
+      ) {
         state.type = "all";
       }
+
       renderAll();
     };
   });
 
-  els.pill.textContent = [state.district, title(state.type), state.keyword].filter(Boolean).join(" • ");
+  // active pill
+  els.pill.textContent = [
+    state.keyword,
+    state.type !== "all" ? title(state.type) : ""
+  ]
+  .filter(Boolean)
+  .join(" • ") || "All Properties";
 }
 
 function filteredData() {
   let items = [...state.properties];
 
-  items = items.filter(i => i.district === state.district || !i.district);
+  function normalize(value) {
+    return String(value || "")
+      .toLowerCase()
+      .replace(/-/g, " ")
+      .replace(/[^\w\s]/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  function wordMatch(text, word) {
+    if (!word) return true;
+
+    if (word === "house" || word === "houses" || word === "home") {
+      return text.includes("house") || text.includes("home") || text.includes("independent") || text.includes("individual");
+    }
+
+    if (word === "flat" || word === "flats") {
+      return text.includes("flat") || text.includes("apartment");
+    }
+
+    if (word === "apartment" || word === "apartments") {
+      return text.includes("apartment") || text.includes("flat");
+    }
+
+    if (word === "plot" || word === "plots") {
+      return text.includes("plot") || text.includes("land") || text.includes("venture") || text.includes("layout");
+    }
+
+    if (word === "villa" || word === "villas") {
+      return text.includes("villa");
+    }
+
+    if (word === "commercial") {
+      return text.includes("commercial") || text.includes("shop") || text.includes("office") || text.includes("showroom") || text.includes("warehouse");
+    }
+
+    if (word === "2bhk") {
+      return text.includes("2 bhk") || text.includes("2bhk") || text.includes("2 bedroom") || text.includes("2 bedrooms");
+    }
+
+    if (word === "3bhk") {
+      return text.includes("3 bhk") || text.includes("3bhk") || text.includes("3 bedroom") || text.includes("3 bedrooms");
+    }
+
+    if (word === "1bhk") {
+      return text.includes("1 bhk") || text.includes("1bhk") || text.includes("1 bedroom");
+    }
+
+    if (word === "4bhk") {
+      return text.includes("4 bhk") || text.includes("4bhk") || text.includes("4 bedroom") || text.includes("4 bedrooms");
+    }
+
+    return text.includes(word);
+  }
+
+  items = items.filter(i => {
+    const districtText = normalize([
+      i.district,
+      i.city,
+      i.area,
+      i.locality,
+      i.address
+    ].join(" "));
+
+    return districtText.includes(normalize(state.district)) || !i.district;
+  });
 
   if (state.type !== "all") {
-    items = items.filter(i => i.type === state.type);
+    items = items.filter(i => {
+      const text = normalize(i.searchableText || "");
+
+      if (state.type === "apartment") {
+        return text.includes("apartment") || text.includes("flat");
+      }
+
+      if (state.type === "house") {
+        return text.includes("house") || text.includes("independent") || text.includes("individual");
+      }
+
+      if (state.type === "plot") {
+        return text.includes("plot") || text.includes("land") || text.includes("venture") || text.includes("layout");
+      }
+
+      if (state.type === "commercial") {
+        return text.includes("commercial") || text.includes("shop") || text.includes("office") || text.includes("showroom") || text.includes("warehouse");
+      }
+
+      return i.type === state.type || text.includes(normalize(state.type));
+    });
   }
 
   if (state.keyword) {
-    let q = state.keyword.toLowerCase();
-    items = items.filter(i =>
-      i.name.toLowerCase().includes(q) ||
-      i.area.toLowerCase().includes(q) ||
-      i.type.toLowerCase().includes(q) ||
-      i.description.toLowerCase().includes(q)
-    );
+    const words = normalize(state.keyword)
+      .split(" ")
+      .filter(Boolean)
+      .filter(word => !["in", "at", "near", "for", "the", "a", "an", "property", "properties"].includes(word));
+
+    items = items.filter(i => {
+      const text = normalize(i.searchableText || "");
+
+      if (!words.length) return true;
+
+      return words.every(word => wordMatch(text, word));
+    });
   }
 
   if (state.status) {
@@ -750,7 +1086,11 @@ function filteredData() {
   }
 
   if (state.amenities.length) {
-    items = items.filter(i => state.amenities.every(a => i.amenities.includes(a)));
+    items = items.filter(i =>
+      state.amenities.every(a =>
+        i.amenities.map(x => String(x).toLowerCase()).includes(String(a).toLowerCase())
+      )
+    );
   }
 
   if (state.sort === "priceLow") {
@@ -891,7 +1231,9 @@ function renderCards() {
   });
 
   els.heading.textContent = `${items.length} ${title(state.type)} Properties`;
-  els.sub.textContent = `Approved Supabase listings in ${state.district}${state.keyword ? ' for ' + state.keyword : ''}`;
+ els.sub.textContent = state.keyword
+  ? `Approved Supabase listings for ${state.keyword}`
+  : "Approved Supabase listings";
 }
 
 function updateButtons() {
@@ -1005,15 +1347,6 @@ async function loadPropertiesFromSupabase() {
 }
 
 function bindEvents() {
-  if (els.district) {
-    els.district.onchange = () => {
-      state.district = els.district.value;
-      state.keyword = "";
-      if (els.search) els.search.value = "";
-      renderAll();
-    };
-  }
-
   $("header-search-btn")?.addEventListener("click", () => {
     state.keyword = els.search.value.trim();
     renderAll();
@@ -1181,7 +1514,92 @@ document.addEventListener("DOMContentLoaded", () => {
   updateButtons();
   loadPropertiesFromSupabase();
 });
+function renderLocationMenu() {
+
+  const menu = document.getElementById("properties-location-menu");
+
+  if (!menu) return;
+
+  menu.innerHTML = SEARCH_LOCATIONS.map(location => `
+    <button
+      type="button"
+      class="properties-location-option w-full text-left px-4 py-3 rounded-xl hover:bg-gold/10 font-bold"
+      data-location="${location}"
+    >
+      ${location}
+    </button>
+  `).join("");
+
+  menu.querySelectorAll(".properties-location-option")
+    .forEach(button => {
+
+      button.addEventListener("click", () => {
+
+  const selectedLocation = button.dataset.location || "";
+
+  // set district
+  state.district = selectedLocation;
+
+  // clear old keyword search
+  state.keyword = "";
+
+  // update UI
+  document.getElementById(
+    "properties-selected-location"
+  ).textContent = selectedLocation || "Select Location";
+
+  // clear search inputs
+  if (els.search) {
+    els.search.value = "";
+  }
+
+  if (els.mobileSearch) {
+    els.mobileSearch.value = "";
+  }
+
+  // close dropdown
+  menu.classList.add("hidden");
+
+  // update URL
+  const url = new URL(window.location);
+
+  if (selectedLocation) {
+    url.searchParams.set("location", selectedLocation);
+  } else {
+    url.searchParams.delete("location");
+  }
+
+  window.history.replaceState({}, "", url);
+
+  // render filtered properties
+  renderAll();
+
+      });
+    });
+}
+renderLocationMenu();
+
+const locationButton =
+  document.getElementById("properties-location-button");
+
+const locationMenu =
+  document.getElementById("properties-location-menu");
+
+locationButton?.addEventListener("click", () => {
+  locationMenu.classList.toggle("hidden");
+});
+
+document.addEventListener("click", (event) => {
+
+  if (
+    !locationButton.contains(event.target) &&
+    !locationMenu.contains(event.target)
+  ) {
+    locationMenu.classList.add("hidden");
+  }
+});
 </script>
+
  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/config.js"></script>
 <script src="js/supabase.js"></script>
@@ -1193,5 +1611,7 @@ document.addEventListener("DOMContentLoaded", () => {
 <script src="js/api.js"></script>
 <script src="js/auth.js"></script>
 <script src="js/main.js"></script>
+<script src="js/search.js"></script>
+<script src="js/properties.js"></script>
 </body>
 </html>
