@@ -580,44 +580,66 @@
             <input id="price_label" class="input-field" placeholder="Example: ₹75 L" />
           </div>
           <div>
-            <label class="label">District *</label>
-            <select id="district" class="select-field" required>
-              <option value="Guntur">Guntur</option>
-              <option value="Alluri Sitharama Raju">Alluri Sitharama Raju</option>
-              <option value="Anakapalli">Anakapalli</option>
-              <option value="Parvathipuram Manyam">Parvathipuram Manyam</option>
-              <option value="Polavaram">Polavaram</option>
-              <option value="Srikakulam">Srikakulam</option>
-              <option value="Visakhapatnam">Visakhapatnam</option>
-              <option value="Vizianagaram">Vizianagaram</option>
-              <option value="Bapatla">Bapatla</option>
-              <option value="Dr. B.R. Ambedkar Konaseema">Dr. B.R. Ambedkar Konaseema</option>
-              <option value="East Godavari">East Godavari</option>
-              <option value="Eluru">Eluru</option>
-              <option value="Kakinada">Kakinada</option>
-              <option value="Krishna">Krishna</option>
-              <option value="NTR">NTR</option>
-              <option value="Palnadu">Palnadu</option>
-              <option value="Prakasam">Prakasam</option>
-              <option value="Sri Potti Sriramulu Nellore">Sri Potti Sriramulu Nellore</option>
-              <option value="West Godavari">West Godavari</option>
-              <option value="Ananthapuramu">Ananthapuramu</option>
-              <option value="Annamayya">Annamayya</option>
-              <option value="Chittoor">Chittoor</option>
-              <option value="YSR Kadapa">YSR Kadapa</option>
-              <option value="Kurnool">Kurnool</option>
-              <option value="Markapuram">Markapuram</option>
-              <option value="Nandyal">Nandyal</option>
-              <option value="Sri Sathya Sai">Sri Sathya Sai</option>
-              <option value="Tirupati">Tirupati</option>
-            </select>
-          </div>
+  <label class="label">Country *</label>
+  <input
+    id="country"
+    class="input-field"
+    value="India"
+    readonly
+  />
+</div>
 
-          <div>
-  <label class="label">Local Area *</label>
-  <select id="location" class="select-field" required>
-    <option value="">Select district first</option>
+<div>
+  <label class="label">State *</label>
+  <select id="state" class="select-field" required>
+    <option value="Andhra Pradesh" selected>Andhra Pradesh</option>
+    <option value="Telangana">Telangana</option>
+    <option value="Tamil Nadu">Tamil Nadu</option>
+    <option value="Karnataka">Karnataka</option>
+    <option value="Kerala">Kerala</option>
+    <option value="manual">Other / Enter Manually</option>
   </select>
+</div>
+
+<div id="manual-state-box" class="hidden">
+  <label class="label">Enter State Manually *</label>
+  <input
+    id="manual_state"
+    class="input-field"
+    placeholder="Example: Kerala"
+  />
+</div>
+
+<div>
+  <label class="label">District *</label>
+  <select id="district" class="select-field" required>
+    <option value="">Select District</option>
+  </select>
+</div>
+
+<div id="manual-district-box" class="hidden">
+  <label class="label">Enter District Manually *</label>
+  <input
+    id="manual_district"
+    class="input-field"
+    placeholder="Example: Kollam"
+  />
+</div>
+
+<div>
+  <label class="label">City / Local Area *</label>
+  <select id="location" class="select-field" required>
+    <option value="">Select City / Local Area</option>
+  </select>
+</div>
+
+<div id="manual-location-box" class="hidden">
+  <label class="label">Enter City / Local Area Manually *</label>
+  <input
+    id="manual_location"
+    class="input-field"
+    placeholder="Example: Brodipet, Kollam, Benz Circle"
+  />
 </div>
 
 <div>
@@ -1292,7 +1314,72 @@ async function checkPropertyPostingLimit(phone, role) {
     throw new Error(`Your ${role} account can post maximum ${limit} properties.`);
   }
 }
-const DISTRICT_LOCAL_AREAS = {
+const STATE_DISTRICTS = {
+  "Andhra Pradesh": [
+    "Alluri Sitharama Raju",
+    "Anakapalli",
+    "Ananthapuramu",
+    "Annamayya",
+    "Bapatla",
+    "Chittoor",
+    "Dr. B.R. Ambedkar Konaseema",
+    "East Godavari",
+    "Eluru",
+    "Guntur",
+    "Kakinada",
+    "Krishna",
+    "Kurnool",
+    "Nandyal",
+    "NTR",
+    "Palnadu",
+    "Parvathipuram Manyam",
+    "Prakasam",
+    "Sri Potti Sriramulu Nellore",
+    "Sri Sathya Sai",
+    "Srikakulam",
+    "Tirupati",
+    "Visakhapatnam",
+    "Vizianagaram",
+    "West Godavari",
+    "YSR Kadapa"
+  ],
+
+  "Telangana": [
+    "Hyderabad",
+    "Rangareddy",
+    "Medchal Malkajgiri",
+    "Warangal",
+    "Karimnagar",
+    "Khammam",
+    "Nalgonda"
+  ],
+
+  "Tamil Nadu": [
+    "Chennai",
+    "Coimbatore",
+    "Madurai",
+    "Salem",
+    "Tiruchirappalli"
+  ],
+
+  "Karnataka": [
+    "Bengaluru Urban",
+    "Bengaluru Rural",
+    "Mysuru",
+    "Mangaluru",
+    "Hubballi"
+  ],
+
+  "Kerala": [
+    "Kollam",
+    "Thiruvananthapuram",
+    "Ernakulam",
+    "Kozhikode",
+    "Thrissur"
+  ]
+};
+
+const DISTRICT_AREAS = {
   "Guntur": [
     "Guntur",
     "Brodipet",
@@ -1365,28 +1452,128 @@ const DISTRICT_LOCAL_AREAS = {
     "Markapur",
     "Kandukur",
     "Giddalur"
+  ],
+
+  "Kollam": [
+    "Kollam City",
+    "Karunagappally",
+    "Kottarakkara",
+    "Punalur"
   ]
 };
 
-function updateLocalAreaDropdown() {
-  const district = getValue("district");
-  const areaSelect = document.getElementById("location");
-  if (!areaSelect) return;
+function fillSelect(selectId, items, firstText) {
+  const select = document.getElementById(selectId);
+  if (!select) return;
 
-  const areas = DISTRICT_LOCAL_AREAS[district] || [];
+  select.innerHTML = `<option value="">${firstText}</option>`;
 
-  areaSelect.innerHTML = `<option value="">Select Local Area</option>`;
-
-  areas.forEach((area) => {
+  items.forEach((item) => {
     const option = document.createElement("option");
-    option.value = area;
-    option.textContent = area;
-    areaSelect.appendChild(option);
+    option.value = item;
+    option.textContent = item;
+    select.appendChild(option);
+  });
+
+  const manualOption = document.createElement("option");
+  manualOption.value = "manual";
+  manualOption.textContent = "Other / Enter Manually";
+  select.appendChild(manualOption);
+}
+
+function toggleBox(boxId, show) {
+  const box = document.getElementById(boxId);
+  if (box) {
+    box.classList.toggle("hidden", !show);
+  }
+}
+
+function initLocationSystem() {
+  const stateSelect = document.getElementById("state");
+  const districtSelect = document.getElementById("district");
+  const locationSelect = document.getElementById("location");
+
+  if (!stateSelect || !districtSelect || !locationSelect) return;
+
+  fillSelect("district", STATE_DISTRICTS["Andhra Pradesh"], "Select District");
+  fillSelect("location", [], "Select City / Local Area");
+
+  stateSelect.addEventListener("change", () => {
+    const state = stateSelect.value;
+
+    toggleBox("manual-state-box", state === "manual");
+
+    if (state === "manual") {
+      fillSelect("district", [], "Select District");
+      fillSelect("location", [], "Select City / Local Area");
+      toggleBox("manual-district-box", true);
+      toggleBox("manual-location-box", true);
+      return;
+    }
+
+    toggleBox("manual-district-box", false);
+    toggleBox("manual-location-box", false);
+
+    fillSelect("district", STATE_DISTRICTS[state] || [], "Select District");
+    fillSelect("location", [], "Select City / Local Area");
+  });
+
+  districtSelect.addEventListener("change", () => {
+    const district = districtSelect.value;
+
+    toggleBox("manual-district-box", district === "manual");
+
+    if (district === "manual") {
+      fillSelect("location", [], "Select City / Local Area");
+      toggleBox("manual-location-box", true);
+      return;
+    }
+
+    toggleBox("manual-location-box", false);
+    fillSelect("location", DISTRICT_AREAS[district] || [], "Select City / Local Area");
+  });
+
+  locationSelect.addEventListener("change", () => {
+    toggleBox("manual-location-box", locationSelect.value === "manual");
   });
 }
 
-document.getElementById("district")?.addEventListener("change", updateLocalAreaDropdown);
-updateLocalAreaDropdown();
+function getFinalLocationData() {
+  const selectedState = getValue("state");
+  const selectedDistrict = getValue("district");
+  const selectedLocation = getValue("location");
+
+  const finalState =
+    selectedState === "manual"
+      ? getValue("manual_state")
+      : selectedState;
+
+  const finalDistrict =
+    selectedDistrict === "manual"
+      ? getValue("manual_district")
+      : selectedDistrict;
+
+  const finalLocation =
+    selectedLocation === "manual"
+      ? getValue("manual_location")
+      : selectedLocation;
+
+  const isManualPlace =
+    selectedState === "manual" ||
+    selectedDistrict === "manual" ||
+    selectedLocation === "manual";
+
+  return {
+    country: "India",
+    state: finalState,
+    district: finalDistrict,
+    location: finalLocation,
+    is_manual_place: isManualPlace,
+    place_review_status: isManualPlace ? "pending" : "approved"
+  };
+}
+
+document.addEventListener("DOMContentLoaded", initLocationSystem);
 const PROPERTY_EXTRA_FIELDS = {
   flat: [
     ["apartment_name", "Apartment Name", "text", "Example: Sri Sai Residency"],
@@ -1712,13 +1899,16 @@ document.getElementById("use-current-location-btn")?.addEventListener("click", (
         const description = getValue("description");
         const propertyType = getValue("property_type");
         const listingType = getValue("listing_type");
-        const location = getValue("location");
-        const district = getValue("district");
-        const city = district;
+        const locationData = getFinalLocationData();
+const location = locationData.location;
+const district = locationData.district;
+const stateName = locationData.state;
+const countryName = locationData.country;
+const city = locationData.location;
 
-        if (!title || !description || !propertyType || !listingType || !location || !district) {
-          throw new Error("Please fill all required fields.");
-        }
+if (!title || !description || !propertyType || !listingType || !location || !district || !stateName) {
+  throw new Error("Please fill all required fields.");
+}
         if (selectedImageFiles.length < 5) {
   throw new Error("Please upload at least 5 property photos.");
 }
@@ -1755,11 +1945,15 @@ project_unit_type: getValue("project_unit_type"),
           price: getNumber("price"),
           price_label: getValue("price_label"),
 
-          location,
-          area: location,
-          locality: location,
-          district,
-          city,
+          country: countryName,
+state: stateName,
+district,
+city,
+location,
+area: location,
+locality: location,
+is_manual_place: locationData.is_manual_place,
+place_review_status: locationData.place_review_status,
           landmark: getValue("landmark"),
           address: getValue("address"),
           street_name: getValue("street_name"),
