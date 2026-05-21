@@ -19,7 +19,6 @@
 
   function createClient() {
     if (!isConfigured()) return null;
-
     if (!window.GP_SUPABASE_CLIENT) {
       window.GP_SUPABASE_CLIENT = window.supabase.createClient(
         window.GP_CONFIG.SUPABASE_URL,
