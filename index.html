@@ -975,7 +975,7 @@
   }
 
   .desktop-header.header-scrolled #header-location-icon-button {
-    color: #d4af37;
+    color: #14213d;
     background: rgba(212,175,55,.12);
     border-radius: 999px;
     margin-right: 6px;
@@ -3774,12 +3774,12 @@
   }
 
   .desktop-header.header-scrolled{
-    background:rgba(20,26,36,.44) !important;
-    border-bottom:1px solid rgba(255,255,255,.24) !important;
-    backdrop-filter:blur(24px) saturate(180%) !important;
-    -webkit-backdrop-filter:blur(24px) saturate(180%) !important;
-    box-shadow:0 14px 42px rgba(15,23,42,.20) !important;
-  }
+  background:#14213d !important;
+  border-bottom:1px solid rgba(212,175,55,.35) !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+  box-shadow:0 10px 30px rgba(15,23,42,.22) !important;
+}
 
   .desktop-header.header-scrolled .main-nav{
     display:none !important;
@@ -3819,20 +3819,20 @@
   }
 
   .desktop-header.header-scrolled .desktop-header-search{
-    display:flex !important;
-    flex:1 1 auto !important;
-    max-width:700px !important;
-    min-width:360px !important;
-    height:50px !important;
-    align-items:center !important;
-    background:rgba(255,255,255,.92) !important;
-    border:1px solid rgba(255,255,255,.58) !important;
-    border-radius:14px !important;
-    overflow:visible !important;
-    box-shadow:0 10px 28px rgba(15,23,42,.15) !important;
-    backdrop-filter:blur(18px) saturate(170%) !important;
-    -webkit-backdrop-filter:blur(18px) saturate(170%) !important;
-  }
+  display:flex !important;
+  flex:1 1 auto !important;
+  max-width:700px !important;
+  min-width:360px !important;
+  height:50px !important;
+  align-items:center !important;
+  background:#ffffff !important;
+  border:1px solid rgba(212,175,55,.35) !important;
+  border-radius:14px !important;
+  overflow:visible !important;
+  box-shadow:0 8px 22px rgba(15,23,42,.16) !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+}
 
   #header-type-wrap{
     height:100% !important;
@@ -3892,7 +3892,7 @@
     height:42px !important;
     border-radius:999px !important;
     background:rgba(212,175,55,.12) !important;
-    color:#d4af37 !important;
+    color:#14213d !important;
     margin-right:4px !important;
     display:inline-flex !important;
     align-items:center !important;
@@ -3900,7 +3900,7 @@
   }
 
   #header-voice-search-button.listening{
-    background:#d4af37 !important;
+    background:#14213d !important;
     color:#ffffff !important;
     animation:headerVoicePulse 1.1s infinite;
   }
@@ -4199,27 +4199,653 @@
   }
 
 }
-</style>
+button#support-dropdown-btn.header-icon-btn.support {
+  background-color: #2563eb !important;
+  color: #ffffff !important;
+  border-color: #2563eb !important;
+}
 
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "RealEstateAgent",
-    "name": "Guntur Properties",
-    "url": "https://gunturproperties.in/",
-    "logo": "https://gunturproperties.in/assets/images/WhatsApp Image 2026-05-12 at 13.33.30.jpeg",
+button#support-dropdown-btn.header-icon-btn.support .material-symbols-outlined {
+  color: #ffffff !important;
+}
+#right-menu-open-btn {
+  background: transparent !important;
+}
 
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "Main Road, Brodipet",
-      "addressLocality": "Guntur",
-      "addressRegion": "Andhra Pradesh",
-      "postalCode": "522002",
-      "addressCountry": "IN"
-    },
-    "areaServed": ["Guntur", "Vijayawada", "Tenali"],
-    "telephone": "+91-99599-19999"
+#right-menu-open-btn .material-symbols-outlined {
+  color: 14213d!important;
+}
+.search-shell,
+.search-panel,
+.glass-panel {
+  border-radius: 32px !important;
+}
+
+.search-panel.glass-panel {
+  border-radius: 32px !important;
+  overflow: visible !important;
+}
+
+.desktop-search-row {
+  border-radius: 28px !important;
+}
+
+.combined-search-box {
+  border-radius: 999px !important;
+  overflow: hidden !important;
+}
+
+#location-chip {
+  border-radius: 999px 0 0 999px !important;
+}
+
+#property-search {
+  border-radius: 0 !important;
+}
+
+#location-icon-button,
+#voice-search-button,
+#search-button {
+  border-radius: 999px !important;
+}
+.search-panel.glass-panel {
+  border-radius: 32px !important;
+  overflow: hidden !important;
+}
+@media (min-width: 768px) {
+  .search-panel {
+    border-radius: 16px;
   }
+}
+@media (max-width: 1023px) {
+  .search-shell.search-fixed {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    width: auto !important;
+    max-width: 720px !important;
+    margin: 12px auto 0 !important;
+    padding: 0 16px !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    z-index: 20 !important;
+  }
+
+  body.has-fixed-mobile-search {
+    padding-top: 0 !important;
+  }
+}
+/* FINAL MOBILE SCROLLED HEADER SEARCH */
+@media (max-width: 1023px) {
+  .mobile-header {
+    display: block !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 5000 !important;
+    background: #ffffff !important;
+    border-bottom: 1px solid #ececec !important;
+  }
+
+  .mobile-header-search {
+    display: none !important;
+    padding: 0 14px 10px !important;
+    background: #ffffff !important;
+  }
+
+  .mobile-header.mobile-search-scrolled .mobile-header-search {
+    display: block !important;
+  }
+
+  .mobile-header-search-box {
+    height: 50px !important;
+    border-radius: 16px !important;
+    background: #ffffff !important;
+    border: 1px solid #e5e7eb !important;
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08) !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    padding: 0 12px !important;
+    cursor: pointer !important;
+  }
+
+  .mobile-header-search-box > .material-symbols-outlined {
+    color: #6b7280 !important;
+    font-size: 25px !important;
+  }
+
+  .mobile-header-search-box input {
+    flex: 1 !important;
+    min-width: 0 !important;
+    border: 0 !important;
+    outline: 0 !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    color: #151c27 !important;
+    pointer-events: none !important;
+  }
+
+  #mobile-header-search-btn {
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 999px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: #0f72d8 !important;
+    background: transparent !important;
+  }
+
+  .mobile-search-box {
+    cursor: pointer !important;
+  }
+
+  .mobile-search-box input {
+    pointer-events: none !important;
+  }
+
+  .search-shell.search-fixed {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+  }
+
+  body.has-fixed-mobile-search {
+    padding-top: 0 !important;
+  }
+}@media (max-width: 1023px) {
+  #mobile-menu-btn,
+  #mobile-support-open-btn {
+    cursor: pointer;
+  }
+
+  #mobile-support-open-btn {
+    background: #ffffff !important;
+    color: #0f4c81 !important;
+    border: 1px solid #e5e7eb !important;
+  }
+
+  #mobile-support-open-btn .material-symbols-outlined {
+    color: #0f4c81 !important;
+    font-size: 27px !important;
+  }
+
+  #mobile-menu-btn .material-symbols-outlined {
+    color: #151c27 !important;
+  }
+}
+.banner-image-link {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.banner-image-link img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  cursor: pointer;
+}
+/* FINAL: Make Buy in Guntur dropdown smaller */
+/* FINAL: Smaller 99acres-like desktop location mini menu */
+@media (min-width: 1024px) {
+  .desktop-location-mini-menu {
+    position: fixed !important;
+    top: 76px !important;
+    left: 38px !important;
+    width: 640px !important;
+    max-width: calc(100vw - 80px) !important;
+    background: #ffffff !important;
+    border: 0 !important;
+    border-radius: 10px !important;
+    box-shadow: 0 14px 34px rgba(15, 23, 42, 0.20) !important;
+    padding: 24px 28px 0 !important;
+    overflow: hidden !important;
+    z-index: 9999999 !important;
+  }
+
+  .desktop-location-mini-menu h3 {
+    font-size: 26px !important;
+    font-weight: 900 !important;
+    color: #091735 !important;
+    letter-spacing: -0.04em !important;
+    margin: 0 0 24px !important;
+  }
+
+  .desktop-location-mini-tabs {
+    display: flex !important;
+    align-items: center !important;
+    gap: 34px !important;
+    border-bottom: 0 !important;
+    margin-bottom: 6px !important;
+  }
+
+  .desktop-location-mini-tab {
+    position: relative !important;
+    height: 34px !important;
+    color: #7b8798 !important;
+    font-size: 14px !important;
+    font-weight: 800 !important;
+  }
+
+  .desktop-location-mini-tab.active {
+    color: #091735 !important;
+  }
+
+  .desktop-location-mini-tab.active::after {
+    content: "" !important;
+    position: absolute !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: -1px !important;
+    height: 3px !important;
+    border-radius: 999px !important;
+    background: #d4af37 !important;
+  }
+
+  .desktop-location-mini-search {
+    display: grid !important;
+    grid-template-columns: 145px 1fr 110px !important;
+    align-items: center !important;
+    min-height: 56px !important;
+    background: #ffffff !important;
+    border: 0 !important;
+    border-radius: 4px !important;
+    box-shadow: 0 5px 16px rgba(15, 23, 42, 0.12) !important;
+    overflow: visible !important;
+    margin-bottom: 22px !important;
+  }
+
+  .desktop-location-mini-category-wrap {
+    height: 56px !important;
+    position: relative !important;
+  }
+
+  .desktop-location-mini-category {
+    height: 56px !important;
+    padding: 0 16px !important;
+    border-right: 1px solid #e5e7eb !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    color: #243654 !important;
+    font-size: 14px !important;
+    font-weight: 900 !important;
+    background: #ffffff !important;
+  }
+
+  .desktop-location-mini-input {
+    height: 56px !important;
+    padding: 0 18px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    color: #243654 !important;
+  }
+
+  .desktop-location-mini-input .material-symbols-outlined {
+    font-size: 23px !important;
+    color: #243654 !important;
+  }
+
+  .desktop-location-mini-input input {
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    color: #151c27 !important;
+  }
+
+  .desktop-location-mini-input input::placeholder {
+    color: #7b8798 !important;
+  }
+
+  #desktop-location-mini-explore {
+    width: 88px !important;
+    height: 42px !important;
+    margin-right: 10px !important;
+    border-radius: 6px !important;
+    background: #d4af37 !important;
+    color: #ffffff !important;
+    font-size: 14px !important;
+    font-weight: 900 !important;
+    box-shadow: 0 6px 14px rgba(212, 175, 55, 0.25) !important;
+  }
+
+  .desktop-location-mini-category-menu {
+    position: absolute !important;
+    left: 0 !important;
+    top: 58px !important;
+    width: 145px !important;
+    background: #ffffff !important;
+    border: 1px solid #e5e7eb !important;
+    border-radius: 4px !important;
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.14) !important;
+    padding: 6px 0 !important;
+    z-index: 99999999 !important;
+  }
+
+  .desktop-location-mini-category-option {
+    height: 40px !important;
+    padding: 0 14px !important;
+    border-radius: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    color: #243654 !important;
+    font-size: 14px !important;
+    font-weight: 800 !important;
+  }
+
+  .desktop-location-mini-category-option::before {
+    content: "" !important;
+    width: 14px !important;
+    height: 14px !important;
+    border-radius: 999px !important;
+    border: 1.5px solid #7b8798 !important;
+    background: #ffffff !important;
+  }
+
+  .desktop-location-mini-category-option.active::before {
+    border: 4px solid #1677e8 !important;
+  }
+
+  .desktop-location-mini-category-option:hover,
+  .desktop-location-mini-category-option.active {
+    background: #ffffff !important;
+    color: #091735 !important;
+  }
+
+  .desktop-location-mini-chips {
+    margin-top: 0 !important;
+    margin-bottom: 24px !important;
+  }
+
+  .desktop-location-mini-chips p {
+    color: #243654 !important;
+    font-size: 14px !important;
+    font-weight: 800 !important;
+    margin: 0 0 10px !important;
+  }
+
+  .desktop-location-mini-chips button,
+  .desktop-location-mini-footer button {
+    height: 32px !important;
+    padding: 0 13px !important;
+    border-radius: 999px !important;
+    border: 1px solid #dce3ee !important;
+    background: #ffffff !important;
+    color: #405674 !important;
+    font-size: 13px !important;
+    font-weight: 800 !important;
+    margin: 0 6px 8px 0 !important;
+  }
+
+  .desktop-location-mini-chips button:hover,
+  .desktop-location-mini-footer button:hover {
+    background: #eef7ff !important;
+    border-color: #9ed0ff !important;
+    color: #091735 !important;
+  }
+
+  .desktop-location-mini-footer {
+    margin: 0 -28px !important;
+    padding: 14px 28px !important;
+    background: #f5f7fb !important;
+    border-radius: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 20px !important;
+  }
+
+  .desktop-location-mini-footer button {
+    border: 0 !important;
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    height: auto !important;
+    border-radius: 0 !important;
+    color: #405674 !important;
+    font-size: 13px !important;
+  }
+}
+
+.desktop-location-mini-tab.hidden {
+  display: none !important;
+}
+/* =====================================================
+   FINAL THEME OVERRIDE: NAVY BLUE INSTEAD OF GOLD
+   Keep this as the LAST CSS block
+===================================================== */
+
+:root {
+  --gold: #0f4c81 !important;
+  --gold-dark: #082f5f !important;
+  --text: #151c27 !important;
+  --muted: #6b7280 !important;
+  --surface: #f9fbff !important;
+  --line: rgba(15, 76, 129, 0.18) !important;
+}
+
+body {
+  background: #f9fbff !important;
+}
+
+/* Text colors */
+.text-\[\#d4af37\],
+.text-\[\#735c00\],
+.text-primary,
+.text-primary-container {
+  color: #0f4c81 !important;
+}
+
+/* Background colors */
+.bg-\[\#d4af37\],
+.bg-primary-container,
+.btn-gold,
+.banner-btn,
+#search-button,
+#header-search-button,
+#desktop-location-mini-explore,
+.apply-state-filter {
+  background: #0f4c81 !important;
+  color: #ffffff !important;
+}
+
+/* Hover background */
+.hover\:bg-\[\#c59e25\]:hover,
+.hover\:bg-\[\#d4af37\]\/5:hover,
+.hover\:bg-\[\#d4af37\]\/10:hover,
+.hover\:bg-\[\#d4af37\]\/18:hover {
+  background: rgba(15, 76, 129, 0.10) !important;
+}
+
+/* Soft navy backgrounds */
+.bg-\[\#fff8dc\],
+.bg-\[\#d4af37\]\/10,
+.bg-gold\/10,
+.bg-primary-container\/10,
+.desktop-location-mini-category-option.active,
+.header-type-option.active,
+.filter-active {
+  background: rgba(15, 76, 129, 0.10) !important;
+  color: #0f4c81 !important;
+}
+
+/* Borders */
+.border-\[\#d4af37\],
+.border-gold,
+.border-primary-container,
+.border-\[\#d4af37\]\/25,
+.border-\[\#d4af37\]\/30,
+.border-\[\#d4af37\]\/35 {
+  border-color: rgba(15, 76, 129, 0.35) !important;
+}
+
+/* Search tabs active underline */
+.desktop-search-tabs .search-tab.active::after,
+.desktop-location-mini-tab.active::after,
+.banner-dot.active {
+  background: #0f4c81 !important;
+}
+
+/* Header location/search icons */
+#location-icon-button,
+#voice-search-button,
+#header-location-icon-button,
+#header-voice-search-button {
+  background: rgba(15, 76, 129, 0.10) !important;
+  color: #0f4c81 !important;
+}
+
+#location-icon-button:hover,
+#voice-search-button:hover,
+#header-location-icon-button:hover,
+#header-voice-search-button:hover {
+  background: rgba(15, 76, 129, 0.16) !important;
+  color: #082f5f !important;
+}
+
+/* Main category chips */
+#location-chip,
+#header-location-chip,
+.desktop-location-mini-category {
+  background: rgba(15, 76, 129, 0.08) !important;
+  color: #0f4c81 !important;
+  border-color: rgba(15, 76, 129, 0.30) !important;
+}
+
+/* Buttons */
+#search-button,
+#header-search-button,
+#desktop-location-mini-explore,
+.apply-state-filter,
+.request-call-btn,
+.mobile-search-trigger button:last-child,
+.mobile-header-search-box button {
+  background: #0f4c81 !important;
+  color: #ffffff !important;
+  border-color: #0f4c81 !important;
+  box-shadow: 0 10px 22px rgba(15, 76, 129, 0.22) !important;
+}
+
+#search-button:hover,
+#header-search-button:hover,
+#desktop-location-mini-explore:hover,
+.apply-state-filter:hover {
+  background: #082f5f !important;
+}
+
+/* Header scrolled solid navy */
+@media (min-width: 1024px) {
+  .desktop-header.header-scrolled {
+    background: #0b2341 !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.16) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  .desktop-header.header-scrolled::before {
+    display: none !important;
+  }
+
+  .desktop-header.header-scrolled .desktop-header-search {
+    background: #ffffff !important;
+    border: 1px solid rgba(15, 76, 129, 0.25) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+}
+
+/* Mobile brand and icons */
+.mobile-brand-title,
+#mobile-support-open-btn,
+#mobile-support-open-btn .material-symbols-outlined,
+.mobile-mic-btn,
+#mobile-header-search-btn {
+  color: #0f4c81 !important;
+}
+
+/* Right menu */
+.right-menu-section h4,
+.right-menu-service:hover strong,
+.right-menu-link:hover,
+.right-menu-close:hover {
+  color: #0f4c81 !important;
+}
+
+.right-menu-service > .material-symbols-outlined:first-child {
+  background: rgba(15, 76, 129, 0.10) !important;
+  color: #0f4c81 !important;
+}
+
+.right-menu-post-card {
+  background: linear-gradient(135deg, rgba(15, 76, 129, 0.10), #ffffff) !important;
+  border-color: rgba(15, 76, 129, 0.25) !important;
+}
+
+/* Mega menu */
+.group:hover > .nav-link,
+.group:focus-within > .nav-link,
+.group.menu-open > .nav-link {
+  background: rgba(15, 76, 129, 0.16) !important;
+  color: #ffffff !important;
+  box-shadow: none !important;
+}
+
+.mega-card h4,
+.mega-card a:hover {
+  color: #0f4c81 !important;
+}
+
+.mega-card a:hover {
+  background: rgba(15, 76, 129, 0.10) !important;
+}
+
+.mega-promo {
+  background: linear-gradient(180deg, rgba(15, 76, 129, 0.08), #f4f8ff) !important;
+}
+
+/* Banner dots/arrows */
+.banner-dot.active {
+  background: #0f4c81 !important;
+}
+
+.hero-shell .banner-arrow:hover {
+  background: #eef6ff !important;
+  color: #0f4c81 !important;
+}
+button#support-dropdown-btn.header-icon-btn.support {
+  background: #0b2341 !important;
+  color: #ffffff !important;
+  border-color: #0b2341 !important;
+}
+
+button#support-dropdown-btn.header-icon-btn.support .material-symbols-outlined {
+  color: #ffffff !important;
+}
+</style>
+ <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "RealEstateAgent",
+  "name": "Guntur Properties",
+  "url": "https://gunturproperties.in/",
+  "logo": "https://gunturproperties.in/assets/images/WhatsApp Image 2026-05-12 at 13.33.30.jpeg",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Krishna Nagar 1st Line, Opp. Pattabhipuram Main Road Masjid",
+    "addressLocality": "Guntur",
+    "addressRegion": "Andhra Pradesh",
+    "postalCode": "522006",
+    "addressCountry": "IN"
+  },
+  "areaServed": ["Guntur", "Vijayawada", "Tenali"],
+  "telephone": "+91-8500720404"
+}
+</script>
   </script>
 </head>
 
@@ -4234,7 +4860,7 @@
     <img
       alt="Guntur Properties Logo"
       class="w-11 h-11 rounded-lg object-cover"
-      src="assets/images/WhatsApp Image 2026-05-12 at 13.33.30.jpeg"
+      src="assets/images/guntur.png"
       onerror="this.src='https://placehold.co/80x80/d4af37/ffffff?text=GP'"
     />
 
@@ -4260,11 +4886,11 @@
     <h3>Explore real estate in...</h3>
 
     <div class="desktop-location-mini-tabs">
-      <button type="button" class="desktop-location-mini-tab active" data-mini-type="Buy">Buy</button>
-      <button type="button" class="desktop-location-mini-tab" data-mini-type="Rent">Rent / Lease</button>
-      <button type="button" class="desktop-location-mini-tab" data-mini-type="Plots">Plots/Land</button>
-      <button type="button" class="desktop-location-mini-tab" data-mini-type="PG">PG / Co-living</button>
-    </div>
+  <button type="button" class="desktop-location-mini-tab active" data-mini-type="Buy">Buy</button>
+  <button type="button" class="desktop-location-mini-tab" data-mini-type="Rent">Rent / Lease</button>
+  <button type="button" class="desktop-location-mini-tab" data-mini-type="Plots">Plots/Land</button>
+  <button type="button" class="desktop-location-mini-tab pg-tab" data-mini-type="PG">PG / Co-living</button>
+</div>
 
     <div class="desktop-location-mini-search">
       <div class="desktop-location-mini-category-wrap">
@@ -4584,7 +5210,6 @@
             </div>
           </div>
         </div>
-
      <div class="group h-full flex items-center">
   <a class="nav-link">News &<br class="hidden xl:block"/> Updates <span class="material-symbols-outlined text-sm">expand_more</span></a>
   <div class="mega-menu">
@@ -4627,15 +5252,12 @@
     <span>Post property</span>
     <small>FREE</small>
   </a>
-
   <div class="support-dropdown-wrap">
   <button type="button" id="support-dropdown-btn" class="header-icon-btn support" aria-label="Support">
     <span class="material-symbols-outlined">support_agent</span>
   </button>
-
   <div id="support-dropdown" class="support-dropdown">
     <h4>CONTACT US</h4>
-
     <div class="support-row">
       <span class="material-symbols-outlined">call</span>
       <div>
@@ -4644,7 +5266,6 @@
         <a href="tel:+918500720404">+91 8500720404</a>
       </div>
     </div>
-
     <div class="support-row">
       <span class="material-symbols-outlined">call</span>
       <div>
@@ -4653,35 +5274,28 @@
       </div>
       <span class="material-symbols-outlined support-arrow">chevron_right</span>
     </div>
-
     <a href="contact.html" class="request-call-btn">
       <span class="material-symbols-outlined">phone_callback</span>
       Request a Call Back
     </a>
-
     <p class="support-faq">
       To check all the FAQ <a href="contact.html#faq">click here</a>
     </p>
   </div>
 </div>
-
   <div class="profile-dropdown-wrap">
   <button type="button" id="profile-dropdown-btn" class="header-profile-btn" aria-label="Profile">
     <span id="profile-avatar-text" class="profile-avatar-text">
       <span class="material-symbols-outlined">account_circle</span>
     </span>
-
     <span class="profile-red-dot" id="profile-red-dot"></span>
-
     <span class="material-symbols-outlined profile-arrow" id="profile-arrow">
       expand_more
     </span>
   </button>
-
   <div id="profile-dropdown" class="profile-dropdown">
     <div id="profile-guest-menu">
       <a href="login.html" class="profile-login-link">LOGIN / REGISTER</a>
-
       <div class="profile-menu-block">
         <p class="profile-menu-heading">My Activity</p>
         <a href="login.html?next=recent-searches">Recently Searched</a>
@@ -4689,15 +5303,12 @@
         <a href="login.html?next=shortlisted">Shortlisted</a>
         <a href="login.html?next=contacted">Contacted</a>
       </div>
-
       <a href="post-property.html" class="profile-post-property">
         Post Property <small>FREE</small>
       </a>
     </div>
-
     <div id="profile-user-menu" class="hidden">
       <p id="profile-user-name" class="profile-user-name">User</p>
-
       <div class="profile-menu-block">
         <p class="profile-menu-heading">My Activity</p>
         <a href="user-panel.html#recent-searches">Recently Searched</a>
@@ -4705,111 +5316,109 @@
         <a href="user-panel.html#shortlisted">Shortlisted</a>
         <a href="user-panel.html#contacted">Contacted</a>
       </div>
-
       <div class="profile-menu-divider"></div>
-
       <a href="profile.html">Modify Profile</a>
       <a href="change-password.html">Change Password</a>
       <button type="button" id="profile-logout-btn">Logout</button>
     </div>
   </div>
 </div>
-
  <button type="button" id="right-menu-open-btn" class="header-menu-btn" aria-label="Open menu">
   <span class="material-symbols-outlined">menu</span>
 </button>
 </div>
     </div>
   </nav>
-
   <!-- Mobile Header -->
   <header class="mobile-header">
-    <div class="mobile-header-inner">
-      <div class="mobile-brand">
-        <button id="mobile-menu-btn" aria-label="Open menu" class="w-9 h-9 flex items-center justify-center">
-          <span class="material-symbols-outlined text-[32px]">menu</span>
-        </button>
-        <a href="index.html" class="mobile-brand flex items-center">
-          <img 
-  alt="Guntur Properties Logo" 
-  src="assets/images/WhatsApp Image 2026-05-12 at 13.33.30.jpeg" 
-  onerror="this.src='https://placehold.co/80x80/d4af37/ffffff?text=GP'" 
-/>
-          <span class="mobile-brand-title">Guntur<br/>Properties</span>
-        </a>
-      </div>
-      <div class="mobile-contact-actions">
-  <a href="post-property.html" class="mobile-post-property-btn">
-    Post
-    <small>FREE</small>
-  </a>
-
-  <a href="login.html" class="mobile-action-call" aria-label="Profile">
-    <span class="material-symbols-outlined">account_circle</span>
-  </a>
-</div>
+  <div class="mobile-header-inner">
+    <div class="mobile-brand">
+      <button id="mobile-menu-btn" aria-label="Open menu" class="w-9 h-9 flex items-center justify-center">
+        <span class="material-symbols-outlined text-[32px]">menu</span>
+      </button>
+      <a href="index.html" class="mobile-brand flex items-center">
+        <img 
+          alt="Guntur Properties Logo" 
+          src="assets/images/guntur.png" 
+          onerror="this.src='https://placehold.co/80x80/d4af37/ffffff?text=GP'" 
+        />
+        <span class="mobile-brand-title">Guntur<br/>Properties</span>
+      </a>
     </div>
-  </header>
-
+    <div class="mobile-contact-actions">
+      <a href="post-property.html" class="mobile-post-property-btn">
+        Post
+        <small>FREE</small>
+      </a>
+       <button type="button" id="mobile-support-open-btn" class="mobile-action-call" aria-label="Support">
+    <span class="material-symbols-outlined">support_agent</span>
+  </button>
+    </div>
+  </div>
+  <!-- Appears only after scrolling past main mobile search -->
+  <div class="mobile-header-search" id="mobile-header-search">
+    <div class="mobile-header-search-box">
+      <span class="material-symbols-outlined">search</span>
+      <input
+        type="text"
+        id="mobile-header-search-input"
+        placeholder='Search "3 BHK flats in Guntur"'
+        readonly
+      />
+      <button type="button" id="mobile-header-search-btn">
+        <span class="material-symbols-outlined">mic</span>
+      </button>
+    </div>
+  </div>
+</header>
 <nav class="mobile-shortcuts no-scrollbar" aria-label="Mobile quick navigation">
   <a href="properties.html?purpose=buy" class="mobile-shortcut">
     <span class="icon-wrap"><span class="material-symbols-outlined">home_pin</span></span>
     <span>Buy</span>
   </a>
-
   <a href="properties.html?purpose=rent" class="mobile-shortcut">
     <span class="icon-wrap"><span class="material-symbols-outlined">key</span></span>
     <span>Rent</span>
   </a>
-
   <a href="projects.html" class="mobile-shortcut">
     <span class="icon-wrap"><span class="material-symbols-outlined">apartment</span></span>
     <span>New Projects</span>
   </a>
-
-  <a href="news-updates.html" class="mobile-shortcut">
+  <a href="news.html" class="mobile-shortcut">
     <span class="icon-wrap"><span class="material-symbols-outlined">newspaper</span></span>
     <span>Insights</span>
   </a>
-
   <a href="services.html" class="mobile-shortcut">
     <span class="icon-wrap"><span class="material-symbols-outlined">construction</span></span>
     <span>Services</span>
   </a>
 </nav>
-
   <main id="main-content" class="pt-[86px] lg:pt-[100px]">
     <!-- Centered Smaller Banner -->
     <section class="relative">
       <div class="hero-shell">
         <div class="banner-wrap" aria-label="Home banners">
           <div class="banner-track" id="banner-track"></div>
-
           <button id="banner-prev" class="banner-arrow banner-prev" type="button" aria-label="Previous banner">
             <span class="material-symbols-outlined">chevron_left</span>
           </button>
           <button id="banner-next" class="banner-arrow banner-next" type="button" aria-label="Next banner">
             <span class="material-symbols-outlined">chevron_right</span>
           </button>
-
           <div class="banner-dots" id="banner-dots" aria-label="Banner controls"></div>
         </div>
       </div>
 <!-- MOBILE SEARCH -->
 <div class="mobile-search-home">
-
   <div class="mobile-search-box">
-
     <span class="material-symbols-outlined mobile-search-icon">
       search
     </span>
-
     <input
       type="text"
       id="mobile-home-search"
       placeholder='Search "3 BHK flats for sale in Hyderabad"'
     />
-
     <button
       type="button"
       class="mobile-mic-btn"
@@ -4818,68 +5427,49 @@
         mic
       </span>
     </button>
-
   </div>
 <div class="mobile-search-overlay">
-
   <div class="mobile-search-head">
-
     <div class="mobile-search-tabs">
       <button class="active">Buy</button>
       <button>Rent/PG</button>
       <button>Commercial</button>
     </div>
-
     <div class="mobile-search-input-box">
-
       <input
   type="text"
   id="mobile-overlay-search"
   placeholder="Search properties..."
 />
-
       <span class="material-symbols-outlined">
         my_location
       </span>
-
       <span class="material-symbols-outlined">
         mic
       </span>
-
     </div>
-
   </div>
-
   <div class="mobile-search-body">
-
     <h3 class="font-black text-xl mb-4">
       Last searched..
     </h3>
-
     <div class="space-y-5">
-
       <div class="flex items-center justify-between">
         <span>Buy in Guntur, Independent House/Villa</span>
         <span class="material-symbols-outlined">north_east</span>
       </div>
-
       <hr>
-
       <div class="flex items-center justify-between">
         <span>Buy in Delhi / NCR</span>
         <span class="material-symbols-outlined">north_east</span>
       </div>
-
     </div>
-
   </div>
-
 </div>
 </div>
       <!-- Search Section: desktop slightly below banner, mobile app style -->
       <div class="search-shell">
         <div class="search-panel glass-panel">
-
           <div class="desktop-search-tabs" id="search-tabs">
             <button type="button" data-search-tab="buy" class="search-tab active">Buy</button>
             <button type="button" data-search-tab="rent" class="search-tab">Rent</button>
@@ -4889,7 +5479,6 @@
             <button type="button" data-search-tab="plots" class="search-tab">Plots/Land</button>
             <button type="button" data-search-tab="post" class="search-tab post-property-tab">Post Property <small>FREE</small></button>
           </div>
-
           <div class="desktop-search-row">
             <div id="combined-search-wrap">
               <div class="combined-search-box">
@@ -4897,7 +5486,6 @@
                   <span class="location-chip-label">All Residential</span>
                   <span class="material-symbols-outlined location-chip-arrow">expand_more</span>
                 </button>
-
                 <input
                   id="property-search"
                   type="text"
@@ -4905,23 +5493,18 @@
                 />
               </div>
             </div>
-
             <button id="location-icon-button" type="button" aria-label="Select state">
               <span class="material-symbols-outlined">location_on</span>
             </button>
-
             <button id="voice-search-button" type="button" class="voice-search-button" aria-label="Search by voice">
               <span class="material-symbols-outlined">mic</span>
             </button>
-
             <button id="search-button" type="button">
               <span class="material-symbols-outlined">search</span>
               Search
             </button>
           </div>
-
           <div id="main-search-filter-panel" class="main-search-filter-panel"></div>
-
           <div id="main-location-filter-panel" class="main-location-filter-panel">
             <div class="location-filter-head">
               <h3>Select State</h3>
@@ -4929,9 +5512,7 @@
                 <span class="material-symbols-outlined">close</span>
               </button>
             </div>
-
             <p class="location-filter-label">Location State</p>
-
             <div class="state-dropdown-grid">
               <button type="button" class="state-option active" data-state="Andhra Pradesh">Andhra Pradesh</button>
               <button type="button" class="state-option" data-state="Telangana">Telangana</button>
@@ -4940,12 +5521,10 @@
               <button type="button" class="state-option" data-state="Kerala">Kerala</button>
               <button type="button" class="state-option" data-state="manual">Other / Manual</button>
             </div>
-
             <div id="manual-state-search-box" class="manual-state-search-box hidden">
               <label>Enter state manually</label>
               <input id="manual-state-search" placeholder="Example: Maharashtra" />
             </div>
-
             <button type="button" id="apply-state-filter" class="apply-state-filter">
               Apply Location
             </button>
@@ -4953,7 +5532,6 @@
         </div>
       </div>
     </section>
-
     <!-- Recent Searches -->
     <section id="recent-searches-section" class="max-w-7xl mx-auto px-6 py-12 hidden">
       <div class="flex items-center justify-between mb-8">
@@ -4965,7 +5543,6 @@
       </div>
       <div id="recent-searches-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
     </section>
-
     <!-- No static cards because database is not connected yet -->
     <div class="space-y-14 pb-24 pt-12" id="property-container">
       <section class="max-w-7xl mx-auto px-6">
@@ -4982,7 +5559,6 @@
           <p class="text-sm mt-1">Connect Supabase and approve properties to show real cards here.</p>
         </div>
       </section>
-
       <section class="max-w-7xl mx-auto px-6">
         <div class="flex flex-col md:flex-row md:justify-between md:items-end gap-3 mb-8">
           <div>
@@ -4997,7 +5573,6 @@
           <p class="text-sm mt-1">This area is ready for real property data only.</p>
         </div>
       </section>
-
       <section class="max-w-7xl mx-auto px-6">
         <div class="flex flex-col md:flex-row md:justify-between md:items-end gap-3 mb-8">
           <div>
@@ -5036,14 +5611,13 @@
       </section>
     </div>
   </main>
-
   <!-- Footer -->
   <footer class="footer-desktop bg-surface-container-low border-t border-outline-variant/30 pt-16 pb-8">
     <div class="max-w-7xl mx-auto px-6">
       <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
         <div class="col-span-1">
           <div class="flex items-center gap-3 mb-4">
-            <img alt="Guntur Properties Logo" class="w-12 h-12 rounded-lg object-cover" src="assets/images/WhatsApp Image 2026-05-12 at 13.33.30.jpeg" onerror="this.src='https://placehold.co/80x80/d4af37/ffffff?text=GP'" />
+            <img alt="Guntur Properties Logo" class="w-12 h-12 rounded-lg object-cover" src="assets/images/guntur.png" onerror="this.src='https://placehold.co/80x80/d4af37/ffffff?text=GP'" />
             <div class="flex flex-col">
               <span class="text-xl font-bold tracking-tight text-[#d4af37]">Guntur Properties</span>
               <span class="text-[10px] uppercase tracking-widest text-outline font-bold">Real Estate Excellence</span>
@@ -5053,12 +5627,11 @@
             Your trusted property partner for residential, commercial, rental, project and service listings in Guntur.
           </p>
           <div class="flex gap-4">
-            <a aria-label="Call" class="w-10 h-10 rounded-full bg-white border border-outline-variant flex items-center justify-center text-secondary hover:text-[#d4af37] transition-all" href="tel:+919959919999"><span class="material-symbols-outlined text-xl">call</span></a>
-            <a aria-label="WhatsApp" class="w-10 h-10 rounded-full bg-white border border-outline-variant flex items-center justify-center text-secondary hover:text-[#d4af37] transition-all" href="https://wa.me/919959919999"><span class="material-symbols-outlined text-xl">chat</span></a>
-            <a aria-label="Email" class="w-10 h-10 rounded-full bg-white border border-outline-variant flex items-center justify-center text-secondary hover:text-[#d4af37] transition-all" href="mailto:info@gunturproperties.in"><span class="material-symbols-outlined text-xl">mail</span></a>
+            <a aria-label="Call" class="w-10 h-10 rounded-full bg-white border border-outline-variant flex items-center justify-center text-secondary hover:text-[#d4af37] transition-all" href="tel:+918500720404"><span class="material-symbols-outlined text-xl">call</span></a>
+            <a aria-label="WhatsApp" class="w-10 h-10 rounded-full bg-white border border-outline-variant flex items-center justify-center text-secondary hover:text-[#d4af37] transition-all" href="https://wa.me/918500720404"><span class="material-symbols-outlined text-xl">chat</span></a>
+            <a aria-label="Email" class="w-10 h-10 rounded-full bg-white border border-outline-variant flex items-center justify-center text-secondary hover:text-[#d4af37] transition-all" href="mailto:@gunturproperties.in"><span class="material-symbols-outlined text-xl">mail</span></a>
           </div>
         </div>
-
         <div>
           <h4 class="font-bold text-on-surface mb-6 uppercase tracking-wider text-xs">Company</h4>
           <ul class="space-y-4">
@@ -5068,7 +5641,6 @@
             <li><a class="text-secondary text-sm hover:text-[#d4af37]" href="contact.html">Contact Us</a></li>
           </ul>
         </div>
-
         <div>
           <h4 class="font-bold text-on-surface mb-6 uppercase tracking-wider text-xs">Legal</h4>
           <ul class="space-y-4">
@@ -5078,57 +5650,49 @@
             <li><a class="text-secondary text-sm hover:text-[#d4af37]" href="disclaimer.html">Disclaimer</a></li>
           </ul>
         </div>
-
         <div>
           <h4 class="font-bold text-on-surface mb-6 uppercase tracking-wider text-xs">Contact</h4>
           <ul class="space-y-4">
             <li class="flex items-start gap-3">
               <span class="material-symbols-outlined text-[#d4af37] text-sm mt-1">location_on</span>
-              <span class="text-secondary text-sm">Main Road, Brodipet, Guntur, Andhra Pradesh - 522002</span>
+              <span class="text-secondary text-sm">Krishna Nagar 1st Line opp.Pattabhipuram Main Road Masjid , Guntur, Andhra Pradesh - 522006</span>
             </li>
             <li class="flex items-center gap-3">
               <span class="material-symbols-outlined text-[#d4af37] text-sm">call</span>
-              <span class="text-secondary text-sm">+91 99599 19999</span>
+              <span class="text-secondary text-sm">+91 8500720404</span>
             </li>
           </ul>
         </div>
       </div>
-
       <div class="border-t border-outline-variant/30 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
         <p class="text-outline text-xs">Guntur Properties © 2026. All rights reserved.</p>
         <p class="text-outline text-xs flex items-center gap-1">Designed for Guntur real estate</p>
       </div>
     </div>
   </footer>
-
   <!-- Mobile bottom navigation only -->
  <nav class="mobile-bottom-nav" aria-label="Mobile bottom navigation">
   <a href="index.html" class="mobile-bottom-item active">
     <span class="material-symbols-outlined">home</span>
     Home
   </a>
-
-  <a href="news-updates.html" class="mobile-bottom-item">
+  <a href="news.html" class="mobile-bottom-item">
     <span class="material-symbols-outlined">newspaper</span>
     News
   </a>
-
   <a href="login.html?next=chats" class="mobile-bottom-item">
     <span class="material-symbols-outlined">chat</span>
     Chats
   </a>
-
   <a href="login.html?next=saved" class="mobile-bottom-item">
     <span class="material-symbols-outlined">bookmark</span>
     Saved
   </a>
-
   <a href="login.html?next=profile" class="mobile-bottom-item">
     <span class="material-symbols-outlined">person</span>
     Profile
   </a>
 </nav>
-
   <!-- Mobile search page overlay -->
   <!-- Floating Chat Button -->
   <div class="floating-chat fixed bottom-6 right-6 z-[60]">
@@ -5136,7 +5700,6 @@
       <span class="material-symbols-outlined text-3xl">chat</span>
       <span class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full border-2 border-white"></span>
     </button>
-
     <div class="absolute bottom-20 right-0 w-[350px] md:w-[400px] bg-white rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.2)] border border-outline-variant overflow-hidden" id="chat-window">
       <div class="bg-[#132f4c] p-6 text-white relative">
         <button class="absolute top-4 right-4 hover:bg-white/10 p-1 rounded-full transition-colors" id="chat-close" aria-label="Close chat">
@@ -5160,38 +5723,34 @@
             <span class="material-symbols-outlined text-lg text-[#d4af37]">construction</span> Services
           </a>
         </div>
-        <a href="https://wa.me/919959919999" target="_blank" rel="noopener" class="w-full bg-[#25D366] text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:brightness-110 transition-all">
+        <a href="https://wa.me/918500720404" target="_blank" rel="noopener" class="w-full bg-[#25D366] text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:brightness-110 transition-all">
           <span class="material-symbols-outlined">chat</span> Chat on WhatsApp
         </a>
-        <a href="tel:+919959919999" class="w-full bg-white border border-outline-variant text-on-surface py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-surface-container-low transition-all">
+        <a href="tel:+918500720404" class="w-full bg-white border border-outline-variant text-on-surface py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-surface-container-low transition-all">
           <span class="material-symbols-outlined">headset_mic</span> Talk to Our Agent
         </a>
       </div>
     </div>
   </div>
 <div id="right-menu-overlay" class="right-menu-overlay"></div>
-
 <aside id="right-menu-drawer" class="right-menu-drawer">
   <div class="right-menu-head">
     <div class="flex items-center gap-3">
       <img
-        src="assets/images/WhatsApp Image 2026-05-12 at 13.33.30.jpeg"
+        src="assets/images/guntur.png"
         onerror="this.src='https://placehold.co/80x80/d4af37/ffffff?text=GP'"
         alt="Guntur Properties"
         class="w-10 h-10 rounded-xl object-cover"
       />
-
       <div>
         <p class="right-menu-title">Guntur Properties</p>
         <p class="right-menu-subtitle">Trusted. Transparent. Together.</p>
       </div>
     </div>
-
     <button type="button" id="right-menu-close-btn" class="right-menu-close">
       <span class="material-symbols-outlined">close</span>
     </button>
   </div>
-
   <div class="right-menu-body">
     <a href="post-property.html" class="right-menu-post-card">
       <div>
@@ -5200,10 +5759,8 @@
       </div>
       <span>FREE</span>
     </a>
-
     <div class="right-menu-section">
       <h4>Explore Services</h4>
-
       <a href="services.html?category=building-services" class="right-menu-service">
         <span class="material-symbols-outlined">construction</span>
         <div>
@@ -5212,7 +5769,6 @@
         </div>
         <span class="material-symbols-outlined arrow">chevron_right</span>
       </a>
-
       <a href="services.html?category=design-services" class="right-menu-service">
         <span class="material-symbols-outlined">architecture</span>
         <div>
@@ -5221,7 +5777,6 @@
         </div>
         <span class="material-symbols-outlined arrow">chevron_right</span>
       </a>
-
       <a href="services.html?category=construction-support" class="right-menu-service">
         <span class="material-symbols-outlined">engineering</span>
         <div>
@@ -5231,10 +5786,8 @@
         <span class="material-symbols-outlined arrow">chevron_right</span>
       </a>
     </div>
-
     <div class="right-menu-section">
       <h4>Quick Links</h4>
-
       <a href="properties.html?purpose=buy" class="right-menu-link">Buy Properties</a>
       <a href="properties.html?purpose=rent" class="right-menu-link">Rent Properties</a>
       <a href="properties.html?type=plots" class="right-menu-link">Plots / Land</a>
@@ -5243,27 +5796,21 @@
     </div>
   </div>
 </aside>
-  
 <script id="FINAL_MAIN_SEARCH_SYSTEM_KEEP_THIS_ONLY">
 document.addEventListener("DOMContentLoaded", function () {
   const searchPanel = document.querySelector(".search-panel");
   const filterPanel = document.getElementById("main-search-filter-panel");
   const locationPanel = document.getElementById("main-location-filter-panel");
-
   const categoryChip = document.getElementById("location-chip");
   const locationBtn = document.getElementById("location-icon-button");
   const locationCloseBtn = document.getElementById("location-filter-close");
   const applyStateBtn = document.getElementById("apply-state-filter");
-
   const searchInput = document.getElementById("property-search");
   const voiceBtn = document.getElementById("voice-search-button");
   const searchBtn = document.getElementById("search-button");
-
   let activeKey = "buy";
   let selectedState = localStorage.getItem("gp_selected_state") || "Andhra Pradesh";
-
   if (!searchPanel || !filterPanel || !locationPanel || !categoryChip) return;
-
   const FILTERS = {
     buy: {
       label: "All Residential",
@@ -5388,14 +5935,12 @@ document.addEventListener("DOMContentLoaded", function () {
       `
     }
   };
-
   function setCategoryChipLabel(label) {
     categoryChip.innerHTML = `
       <span class="location-chip-label">${label}</span>
       <span class="material-symbols-outlined location-chip-arrow">expand_more</span>
     `;
   }
-
   function renderCategoryFilter(key) {
     const config = FILTERS[key] || FILTERS.buy;
     activeKey = key;
@@ -5404,38 +5949,31 @@ document.addEventListener("DOMContentLoaded", function () {
     if (searchInput) searchInput.placeholder = config.placeholder;
     bindCategoryActions();
   }
-
   function openCategoryFilter() {
     closeLocationFilter();
     renderCategoryFilter(activeKey);
     searchPanel.classList.add("category-open");
   }
-
   function closeCategoryFilter() {
     searchPanel.classList.remove("category-open");
   }
-
   function toggleCategoryFilter() {
     closeLocationFilter();
     searchPanel.classList.contains("category-open") ? closeCategoryFilter() : openCategoryFilter();
   }
-
   function openLocationFilter() {
     closeCategoryFilter();
     locationPanel.classList.add("active");
   }
-
   function closeLocationFilter() {
     locationPanel.classList.remove("active");
   }
-
   function bindCategoryActions() {
     filterPanel.querySelectorAll("[data-filter-clear]").forEach(btn => {
       btn.addEventListener("click", () => {
         filterPanel.querySelectorAll("input").forEach(input => input.checked = false);
       });
     });
-
     filterPanel.querySelectorAll("[data-switch-tab]").forEach(link => {
       link.addEventListener("click", event => {
         event.preventDefault();
@@ -5449,21 +5987,17 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     });
   }
-
   categoryChip.addEventListener("click", function (event) {
     event.preventDefault();
     event.stopPropagation();
     toggleCategoryFilter();
   });
-
   locationBtn?.addEventListener("click", function (event) {
     event.preventDefault();
     event.stopPropagation();
     openLocationFilter();
   });
-
   locationCloseBtn?.addEventListener("click", closeLocationFilter);
-
   document.querySelectorAll(".state-option").forEach(btn => {
     btn.classList.toggle("active", btn.dataset.state === selectedState);
     btn.addEventListener("click", () => {
@@ -5473,7 +6007,6 @@ document.addEventListener("DOMContentLoaded", function () {
       document.getElementById("manual-state-search-box")?.classList.toggle("hidden", selectedState !== "manual");
     });
   });
-
   applyStateBtn?.addEventListener("click", () => {
     const manualState = document.getElementById("manual-state-search")?.value.trim();
     if (selectedState === "manual") {
@@ -5486,7 +6019,6 @@ document.addEventListener("DOMContentLoaded", function () {
     localStorage.setItem("gp_selected_state", selectedState);
     closeLocationFilter();
   });
-
   document.querySelectorAll(".desktop-search-tabs .search-tab").forEach(tab => {
     tab.addEventListener("click", () => {
       const key = tab.dataset.searchTab || "buy";
@@ -5501,24 +6033,20 @@ document.addEventListener("DOMContentLoaded", function () {
       closeLocationFilter();
     });
   });
-
   document.addEventListener("click", function (event) {
     if (!event.target.closest(".search-panel")) {
       closeCategoryFilter();
       closeLocationFilter();
     }
   });
-
   filterPanel.addEventListener("click", event => event.stopPropagation());
   locationPanel.addEventListener("click", event => event.stopPropagation());
-
   function runFinalSearch() {
     const config = FILTERS[activeKey] || FILTERS.buy;
     const keyword = searchInput?.value.trim() || "";
     const selectedFilters = [...filterPanel.querySelectorAll("input:checked")]
       .map(input => input.dataset.filterValue)
       .filter(Boolean);
-
     const params = new URLSearchParams();
     if (keyword) params.set("q", keyword);
     params.set("state", selectedState);
@@ -5527,20 +6055,16 @@ document.addEventListener("DOMContentLoaded", function () {
     if (selectedFilters.length) params.set("filters", selectedFilters.join(","));
     window.location.href = "properties.html?" + params.toString();
   }
-
   searchBtn?.addEventListener("click", runFinalSearch);
-
   searchInput?.addEventListener("keydown", function(event){
     if(event.key === "Enter"){
       event.preventDefault();
       runFinalSearch();
     }
   });
-
   renderCategoryFilter(activeKey);
   closeCategoryFilter();
   closeLocationFilter();
-
   if (voiceBtn && searchInput) {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) {
@@ -5552,23 +6076,19 @@ document.addEventListener("DOMContentLoaded", function () {
       recognition.lang = "en-IN";
       recognition.interimResults = false;
       recognition.maxAlternatives = 1;
-
       voiceBtn.addEventListener("click", () => {
         voiceBtn.classList.add("listening");
         recognition.start();
       });
-
       recognition.onresult = function(event) {
         searchInput.value = event.results[0][0].transcript;
         voiceBtn.classList.remove("listening");
         searchInput.focus();
       };
-
       recognition.onerror = function() {
         voiceBtn.classList.remove("listening");
         alert("Voice search failed. Please try again.");
       };
-
       recognition.onend = function() {
         voiceBtn.classList.remove("listening");
       };
@@ -5576,7 +6096,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 </script>
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     /*
@@ -5595,7 +6114,6 @@ document.addEventListener("DOMContentLoaded", function () {
     ) {
       supabaseClient = window.supabase.createClient(GP_SUPABASE_URL, GP_SUPABASE_ANON_KEY);
     }
-
     const FALLBACK_BANNERS = [
       {
         title: "Find Your Perfect Property in Guntur",
@@ -5630,13 +6148,11 @@ document.addEventListener("DOMContentLoaded", function () {
         button_link: "services.html"
       }
     ];
-
     let banners = [];
     let currentBanner = 0;
     let bannerTimer = null;
     let selectedType = "Buy";
     let selectedMobileType = "Buy";
-
     function slugify(text) {
       return String(text || "")
         .toLowerCase()
@@ -5649,14 +6165,12 @@ document.addEventListener("DOMContentLoaded", function () {
         .replace(/-+/g, "-")
         .replace(/^-|-$/g, "");
     }
-
     async function loadHomeBanners() {
       if (!supabaseClient) {
         banners = FALLBACK_BANNERS;
         renderBanners();
         return;
       }
-
       try {
         const { data, error } = await supabaseClient
           .from("home_banners")
@@ -5664,41 +6178,29 @@ document.addEventListener("DOMContentLoaded", function () {
           .eq("is_active", true)
           .order("display_order", { ascending: true })
           .limit(8);
-
         if (error) throw error;
-
         banners = data && data.length ? data : FALLBACK_BANNERS;
       } catch (error) {
         console.error("Banner loading failed:", error);
         banners = FALLBACK_BANNERS;
       }
-
       renderBanners();
     }
-
     function renderBanners() {
       const track = document.getElementById("banner-track");
       const dots = document.getElementById("banner-dots");
       if (!track || !dots) return;
-
       track.innerHTML = "";
       dots.innerHTML = "";
-
       banners.slice(0, 8).forEach((banner, index) => {
         const slide = document.createElement("article");
         slide.className = "banner-slide";
         slide.innerHTML = `
-          <img src="${banner.image_url}" alt="${banner.title}" loading="${index === 0 ? "eager" : "lazy"}">
-          <div class="banner-overlay"></div>
-          <div class="banner-content">
-            <span class="banner-badge"><span class="material-symbols-outlined text-[14px]">stars</span>${banner.badge || "Featured"}</span>
-            <h1>${banner.title || "Guntur Properties"}</h1>
-            <p>${banner.subtitle || ""}</p>
-            ${banner.button_text ? `<a class="banner-btn" href="${banner.button_link || "properties.html"}">${banner.button_text}</a>` : ""}
-          </div>
-        `;
+  <a href="${banner.button_link || "properties.html"}" class="banner-image-link" aria-label="${banner.title || "Open banner"}">
+    <img src="${banner.image_url}" alt="${banner.title || "Guntur Properties Banner"}" loading="${index === 0 ? "eager" : "lazy"}">
+  </a>
+`;
         track.appendChild(slide);
-
         const dot = document.createElement("button");
         dot.type = "button";
         dot.className = "banner-dot";
@@ -5706,41 +6208,32 @@ document.addEventListener("DOMContentLoaded", function () {
         dot.addEventListener("click", () => goToBanner(index));
         dots.appendChild(dot);
       });
-
       goToBanner(0);
       startBannerTimer();
     }
-
     function goToBanner(index) {
       if (!banners.length) return;
       currentBanner = (index + banners.length) % banners.length;
-
       const track = document.getElementById("banner-track");
       if (track) track.style.transform = `translateX(-${currentBanner * 100}%)`;
-
       document.querySelectorAll(".banner-dot").forEach((dot, i) => {
         dot.classList.toggle("active", i === currentBanner);
       });
     }
-
     function nextBanner() { goToBanner(currentBanner + 1); }
     function prevBanner() { goToBanner(currentBanner - 1); }
-
     function startBannerTimer() {
       clearInterval(bannerTimer);
       bannerTimer = setInterval(nextBanner, 4500);
     }
-
     function bindMegaMenus() {
       function closeAllMegaMenus() {
         document.querySelectorAll(".main-nav > .group").forEach(item => item.classList.remove("menu-open"));
       }
-
       document.querySelectorAll(".main-nav > .group").forEach(menu => {
         const navLink = menu.querySelector(".nav-link");
         const megaMenu = menu.querySelector(".mega-menu");
         if (!navLink || !megaMenu) return;
-
         navLink.addEventListener("click", event => {
           event.preventDefault();
           event.stopPropagation();
@@ -5748,19 +6241,15 @@ document.addEventListener("DOMContentLoaded", function () {
           closeAllMegaMenus();
           if (!isOpen) menu.classList.add("menu-open");
         });
-
         megaMenu.addEventListener("click", event => event.stopPropagation());
       });
-
       document.addEventListener("click", event => {
         if (!event.target.closest(".main-nav")) closeAllMegaMenus();
       });
-
       document.addEventListener("keydown", event => {
         if (event.key === "Escape") closeAllMegaMenus();
       });
     }
-
     async function trackSearch(searchText, location, listingType) {
       if (!supabaseClient) return;
       try {
@@ -5775,7 +6264,6 @@ document.addEventListener("DOMContentLoaded", function () {
         console.warn("Search tracking failed:", error);
       }
     }
-
     async function trackServiceClick(serviceName) {
       if (!supabaseClient) return;
       try {
@@ -5788,7 +6276,6 @@ document.addEventListener("DOMContentLoaded", function () {
         console.warn("Service tracking failed:", error);
       }
     }
-
     function getSessionId() {
       let sessionId = localStorage.getItem("gp_session_id");
       if (!sessionId) {
@@ -5797,7 +6284,6 @@ document.addEventListener("DOMContentLoaded", function () {
       }
       return sessionId;
     }
-
     function runSearch(searchText, location, listingType) {
       const params = new URLSearchParams();
       if (searchText) params.set("q", searchText);
@@ -5806,7 +6292,6 @@ document.addEventListener("DOMContentLoaded", function () {
       trackSearch(searchText, location, listingType);
       window.location.href = "properties.html?" + params.toString();
     }
-
     function initSearch() {
       document.querySelectorAll(".search-tab").forEach(button => {
         button.addEventListener("click", () => {
@@ -5815,11 +6300,9 @@ document.addEventListener("DOMContentLoaded", function () {
           button.classList.add("active");
         });
       });
-
       const locationBtn = document.getElementById("location-icon-button");
       const locationChip = document.getElementById("location-chip");
       const locationMenu = document.getElementById("location-menu");
-
       [locationBtn, locationChip].forEach(btn => {
         if (!btn) return;
         btn.addEventListener("click", event => {
@@ -5827,32 +6310,27 @@ document.addEventListener("DOMContentLoaded", function () {
           locationMenu?.classList.toggle("hidden");
         });
       });
-
       document.querySelectorAll(".location-option").forEach(option => {
         option.addEventListener("click", () => {
           document.getElementById("selected-location").textContent = option.dataset.location;
           locationMenu?.classList.add("hidden");
         });
       });
-
       document.addEventListener("click", event => {
         if (!event.target.closest("#combined-search-wrap")) {
           locationMenu?.classList.add("hidden");
         }
       });
     }
-
     function initMobileSearch() {
       const overlay = document.getElementById("mobile-search-overlay");
       document.getElementById("open-mobile-search")?.addEventListener("click", () => {
         overlay?.classList.add("active");
         setTimeout(() => document.getElementById("mobile-search-input")?.focus(), 100);
       });
-
       document.getElementById("close-mobile-search")?.addEventListener("click", () => {
         overlay?.classList.remove("active");
       });
-
       document.querySelectorAll("[data-mobile-type]").forEach(button => {
         button.addEventListener("click", () => {
           selectedMobileType = button.dataset.mobileType || "Buy";
@@ -5860,27 +6338,23 @@ document.addEventListener("DOMContentLoaded", function () {
           button.classList.add("active");
         });
       });
-
       document.querySelectorAll(".locality-chip").forEach(chip => {
         chip.addEventListener("click", () => {
           const input = document.getElementById("mobile-search-input");
           if (input) input.value = chip.dataset.chip || chip.textContent.replace("+", "").trim();
         });
       });
-
       document.getElementById("mobile-search-input")?.addEventListener("keydown", event => {
         if (event.key === "Enter") {
           runSearch(event.target.value.trim(), "Guntur", selectedMobileType);
         }
       });
     }
-
     function initChat() {
       const chatWindow = document.getElementById("chat-window");
       document.getElementById("chat-toggle")?.addEventListener("click", () => chatWindow?.classList.toggle("active"));
       document.getElementById("chat-close")?.addEventListener("click", () => chatWindow?.classList.remove("active"));
     }
-
     function bindServiceTracking() {
       document.querySelectorAll('a[href*="services.html?service="]').forEach(link => {
         link.addEventListener("click", () => {
@@ -5891,7 +6365,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
       });
     }
-
     document.addEventListener("DOMContentLoaded", () => {
       getSessionId();
       bindMegaMenus();
@@ -5899,168 +6372,250 @@ document.addEventListener("DOMContentLoaded", function () {
       initMobileSearch();
       initChat();
       bindServiceTracking();
-
       document.getElementById("banner-prev")?.addEventListener("click", () => {
         prevBanner();
         startBannerTimer();
       });
-
       document.getElementById("banner-next")?.addEventListener("click", () => {
         nextBanner();
         startBannerTimer();
       });
     });
-   
 document.getElementById("desktop-location-btn")?.addEventListener("click", function (event) {
   event.preventDefault();
   event.stopPropagation();
 });
-
 /* Buy in Guntur mini search menu */
 (function () {
   let miniType = "Buy";
-
   function $(id) {
     return document.getElementById(id);
   }
-
   function mapMiniType(type) {
     if (type === "Rent") return { purpose: "rent", type: "all" };
     if (type === "Plots") return { purpose: "buy", type: "plots" };
     if (type === "PG") return { purpose: "rent", type: "pg" };
     return { purpose: "buy", type: "all" };
   }
-
   function setSelectedLocation(location) {
     const value = location || "Guntur";
-
     const label = $("desktop-selected-location");
     if (label) label.textContent = value;
-
     const mainLabel = $("selected-location");
     if (mainLabel) mainLabel.textContent = value;
-
     const headerLabel = $("header-selected-location");
     if (headerLabel) headerLabel.textContent = value;
-
     window.selectedLocation = value;
   }
-
   function goMiniSearch(locationValue) {
     const input = $("desktop-location-mini-input");
     const location = locationValue || input?.value?.trim() || $("desktop-selected-location")?.textContent?.trim() || "Guntur";
     const mapped = mapMiniType(miniType);
-
     setSelectedLocation(location);
-
     const params = new URLSearchParams();
     params.set("location", location);
     params.set("purpose", mapped.purpose);
     params.set("type", mapped.type);
-
     window.location.href = "properties.html?" + params.toString();
   }
-
   function initDesktopLocationMini() {
     const wrap = $("desktop-location-mini-wrap");
     const btn = $("desktop-location-btn");
     const input = $("desktop-location-mini-input");
     const exploreBtn = $("desktop-location-mini-explore");
-
     if (!wrap || !btn) return;
-
     btn.addEventListener("click", function (event) {
       event.preventDefault();
       event.stopPropagation();
-
       wrap.classList.toggle("menu-open");
-
       setTimeout(() => {
         input?.focus();
       }, 120);
     });
-
     document.querySelectorAll(".desktop-location-mini-tab").forEach((tab) => {
       tab.addEventListener("click", function (event) {
         event.preventDefault();
         event.stopPropagation();
-
         miniType = tab.dataset.miniType || "Buy";
-
         document.querySelectorAll(".desktop-location-mini-tab").forEach((item) => {
           item.classList.remove("active");
         });
-
         tab.classList.add("active");
       });
     });
-
     document
       .querySelectorAll(".desktop-location-mini-chips button, .desktop-location-mini-footer button")
       .forEach((chip) => {
         chip.addEventListener("click", function (event) {
           event.preventDefault();
           event.stopPropagation();
-
           goMiniSearch(chip.dataset.location || chip.textContent.trim());
         });
       });
-
     exploreBtn?.addEventListener("click", function (event) {
       event.preventDefault();
       event.stopPropagation();
-
       goMiniSearch();
     });
-
     input?.addEventListener("keydown", function (event) {
       if (event.key === "Enter") {
         event.preventDefault();
         goMiniSearch();
       }
     });
-
     document.addEventListener("click", function (event) {
       if (!event.target.closest("#desktop-location-mini-wrap")) {
         wrap.classList.remove("menu-open");
       }
     });
   }
-
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", initDesktopLocationMini);
   } else {
     initDesktopLocationMini();
   }
 })();
-
 document.addEventListener("DOMContentLoaded", function () {
   const wrap = document.getElementById("desktop-location-mini-wrap");
   const btn = document.getElementById("desktop-location-btn");
   const input = document.getElementById("desktop-location-mini-input");
   const explore = document.getElementById("desktop-location-mini-explore");
-  let selectedMiniCategory = "Residential";
 
-const categoryBtn = document.getElementById("desktop-location-mini-category-btn");
-const categoryMenu = document.getElementById("desktop-location-mini-category-menu");
-const categoryLabel = document.getElementById("desktop-location-mini-category-label");
+  const categoryBtn = document.getElementById("desktop-location-mini-category-btn");
+  const categoryMenu = document.getElementById("desktop-location-mini-category-menu");
+  const categoryLabel = document.getElementById("desktop-location-mini-category-label");
+
+  const pgTab = document.querySelector('.desktop-location-mini-tab[data-mini-type="PG"]');
+  const buyTab = document.querySelector('.desktop-location-mini-tab[data-mini-type="Buy"]');
+
+  let selectedMiniCategory = "Residential";
+  let selectedMiniType = "Buy";
 
   if (!wrap || !btn) {
     console.log("Mini search wrapper/button missing");
     return;
   }
 
-  btn.addEventListener("click", function (e) {
-    e.preventDefault();
-    e.stopPropagation();
-    wrap.classList.toggle("menu-open");
-    setTimeout(() => input?.focus(), 100);
-  });
+  function updateMiniCategoryUI() {
+    if (categoryLabel) {
+      categoryLabel.textContent = selectedMiniCategory;
+    }
+
+    document.querySelectorAll(".desktop-location-mini-category-option").forEach(function (item) {
+      item.classList.toggle("active", item.dataset.category === selectedMiniCategory);
+    });
+
+    if (selectedMiniCategory === "Commercial") {
+      pgTab?.classList.add("hidden");
+
+      if (selectedMiniType === "PG") {
+        selectedMiniType = "Buy";
+
+        document.querySelectorAll(".desktop-location-mini-tab").forEach(function (item) {
+          item.classList.remove("active");
+        });
+
+        buyTab?.classList.add("active");
+      }
+    } else {
+      pgTab?.classList.remove("hidden");
+    }
+  }
+
+  function getPurposeAndType() {
+    if (selectedMiniCategory === "Commercial") {
+      if (selectedMiniType === "Rent") {
+        return { purpose: "rent", type: "commercial" };
+      }
+
+      if (selectedMiniType === "Plots") {
+        return { purpose: "buy", type: "commercial-plots" };
+      }
+
+      return { purpose: "buy", type: "commercial" };
+    }
+
+    if (selectedMiniType === "Rent") {
+      return { purpose: "rent", type: "all" };
+    }
+
+    if (selectedMiniType === "Plots") {
+      return { purpose: "buy", type: "plots" };
+    }
+
+    if (selectedMiniType === "PG") {
+      return { purpose: "rent", type: "pg" };
+    }
+
+    return { purpose: "buy", type: "all" };
+  }
+
+  function goMiniSearch(locationValue) {
+    const location = locationValue || input?.value.trim() || "Guntur";
+    const mapped = getPurposeAndType();
+
+    window.location.href =
+      "properties.html?location=" +
+      encodeURIComponent(location) +
+      "&purpose=" +
+      encodeURIComponent(mapped.purpose) +
+      "&type=" +
+      encodeURIComponent(mapped.type);
+  }
+
+  let miniMenuTimer = null;
+
+function openMiniMenu() {
+  wrap.classList.add("menu-open");
+
+  clearTimeout(miniMenuTimer);
+
+  miniMenuTimer = setTimeout(function () {
+    wrap.classList.remove("menu-open");
+    categoryMenu?.classList.remove("active");
+  }, 6000); // stays for 6 seconds
+}
+
+function closeMiniMenu() {
+  clearTimeout(miniMenuTimer);
+  wrap.classList.remove("menu-open");
+  categoryMenu?.classList.remove("active");
+}
+
+btn.addEventListener("click", function (e) {
+  e.preventDefault();
+  e.stopPropagation();
+
+  if (wrap.classList.contains("menu-open")) {
+    closeMiniMenu();
+  } else {
+    openMiniMenu();
+
+    setTimeout(function () {
+      input?.focus();
+    }, 100);
+  }
+});
+
+wrap.addEventListener("mouseenter", function () {
+  clearTimeout(miniMenuTimer);
+});
+
+wrap.addEventListener("mouseleave", function () {
+  miniMenuTimer = setTimeout(function () {
+    wrap.classList.remove("menu-open");
+    categoryMenu?.classList.remove("active");
+  }, 2500); // after mouse leaves, close after 2.5 seconds
+});
 
   document.querySelectorAll(".desktop-location-mini-tab").forEach(function (tab) {
     tab.addEventListener("click", function (e) {
       e.preventDefault();
       e.stopPropagation();
+
+      if (tab.classList.contains("hidden")) return;
+
+      selectedMiniType = tab.dataset.miniType || "Buy";
 
       document.querySelectorAll(".desktop-location-mini-tab").forEach(function (item) {
         item.classList.remove("active");
@@ -6069,40 +6624,34 @@ const categoryLabel = document.getElementById("desktop-location-mini-category-la
       tab.classList.add("active");
     });
   });
-categoryBtn?.addEventListener("click", function (e) {
-  e.preventDefault();
-  e.stopPropagation();
-  categoryMenu?.classList.toggle("active");
-});
 
-document.querySelectorAll(".desktop-location-mini-category-option").forEach(function (option) {
-  option.addEventListener("click", function (e) {
+  categoryBtn?.addEventListener("click", function (e) {
     e.preventDefault();
     e.stopPropagation();
 
-    selectedMiniCategory = option.dataset.category || "Residential";
-
-    document.querySelectorAll(".desktop-location-mini-category-option").forEach(function (item) {
-      item.classList.remove("active");
-    });
-
-    option.classList.add("active");
-
-    if (categoryLabel) {
-      categoryLabel.textContent = selectedMiniCategory;
-    }
-
-    categoryMenu?.classList.remove("active");
+    categoryMenu?.classList.toggle("active");
   });
-});
+
+  document.querySelectorAll(".desktop-location-mini-category-option").forEach(function (option) {
+    option.addEventListener("click", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      selectedMiniCategory = option.dataset.category || "Residential";
+
+      updateMiniCategoryUI();
+
+      categoryMenu?.classList.remove("active");
+    });
+  });
+
   document.querySelectorAll(".desktop-location-mini-chips button, .desktop-location-mini-footer button").forEach(function (chip) {
     chip.addEventListener("click", function (e) {
       e.preventDefault();
       e.stopPropagation();
 
       const location = chip.dataset.location || chip.textContent.trim();
-      const finalType = selectedMiniCategory === "Commercial" ? "commercial" : "all";
-window.location.href = "properties.html?location=" + encodeURIComponent(location) + "&purpose=buy&type=" + finalType;
+      goMiniSearch(location);
     });
   });
 
@@ -6110,42 +6659,41 @@ window.location.href = "properties.html?location=" + encodeURIComponent(location
     e.preventDefault();
     e.stopPropagation();
 
-    const location = input?.value.trim() || "Guntur";
-    const finalType = selectedMiniCategory === "Commercial" ? "commercial" : "all";
-window.location.href = "properties.html?location=" + encodeURIComponent(location) + "&purpose=buy&type=" + finalType;
+    goMiniSearch();
   });
 
- document.addEventListener("click", function (e) {
+  input?.addEventListener("keydown", function (e) {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      goMiniSearch();
+    }
+  });
+
+  document.addEventListener("click", function (e) {
   if (!e.target.closest("#desktop-location-mini-wrap")) {
-    wrap.classList.remove("menu-open");
+    closeMiniMenu();
   }
-
-  categoryMenu?.classList.remove("active");
-});
 });
 
+  updateMiniCategoryUI();
+});
 </script>
 <script>
 document.addEventListener("DOMContentLoaded", function () {
   const supportBtn = document.getElementById("support-dropdown-btn");
   const supportDropdown = document.getElementById("support-dropdown");
-
   if (!supportBtn || !supportDropdown) return;
-
   supportBtn.addEventListener("click", function (event) {
     event.preventDefault();
     event.stopPropagation();
     supportDropdown.classList.toggle("active");
   });
-
   supportDropdown.addEventListener("click", function (event) {
     event.stopPropagation();
   });
-
   document.addEventListener("click", function () {
     supportDropdown.classList.remove("active");
   });
-
   document.addEventListener("keydown", function (event) {
     if (event.key === "Escape") {
       supportDropdown.classList.remove("active");
@@ -6158,29 +6706,22 @@ document.addEventListener("DOMContentLoaded", function () {
   const wrap = document.querySelector(".profile-dropdown-wrap");
   const btn = document.getElementById("profile-dropdown-btn");
   const dropdown = document.getElementById("profile-dropdown");
-
   const guestMenu = document.getElementById("profile-guest-menu");
   const userMenu = document.getElementById("profile-user-menu");
   const userName = document.getElementById("profile-user-name");
   const avatarText = document.getElementById("profile-avatar-text");
   const redDot = document.getElementById("profile-red-dot");
   const logoutBtn = document.getElementById("profile-logout-btn");
-
   if (!wrap || !btn || !dropdown) return;
-
   function getStoredProfile(){
     const phone = localStorage.getItem("gp_auth_phone") || "";
     const role = localStorage.getItem("gp_auth_role") || "";
-
     let name = "";
-
     const possibleKeys = ["gp_user", "currentUser", "loggedInUser", "profile"];
-
     for (const key of possibleKeys) {
       try {
         const raw = localStorage.getItem(key);
         if (!raw) continue;
-
         const parsed = JSON.parse(raw);
         name =
           parsed.full_name ||
@@ -6188,18 +6729,15 @@ document.addEventListener("DOMContentLoaded", function () {
           parsed.user?.full_name ||
           parsed.profile?.full_name ||
           "";
-
         if (name) break;
       } catch (_) {}
     }
-
     return {
       phone,
       role,
       name
     };
   }
-
   function initials(name, phone){
     if (name) {
       return name
@@ -6210,104 +6748,91 @@ document.addEventListener("DOMContentLoaded", function () {
         .join("")
         .toUpperCase();
     }
-
     if (phone) {
       return "U";
     }
-
     return "";
   }
-
   function renderProfileMenu(){
     const profile = getStoredProfile();
     const isLoggedIn = !!profile.phone;
-
     if (isLoggedIn) {
       guestMenu.classList.add("hidden");
       userMenu.classList.remove("hidden");
-
       const displayName = profile.name || "My Profile";
       userName.textContent = displayName;
-
       avatarText.classList.add("logged-in");
       avatarText.textContent = initials(displayName, profile.phone);
-
       redDot.classList.add("hidden");
     } else {
       guestMenu.classList.remove("hidden");
       userMenu.classList.add("hidden");
-
       avatarText.classList.remove("logged-in");
       avatarText.innerHTML = '<span class="material-symbols-outlined">account_circle</span>';
-
       redDot.classList.remove("hidden");
     }
   }
-
   btn.addEventListener("click", function (event) {
     event.preventDefault();
     event.stopPropagation();
-
     renderProfileMenu();
-
     dropdown.classList.toggle("active");
     wrap.classList.toggle("active");
   });
-
   dropdown.addEventListener("click", function (event) {
     event.stopPropagation();
   });
-
   document.addEventListener("click", function () {
     dropdown.classList.remove("active");
     wrap.classList.remove("active");
   });
-
   document.addEventListener("keydown", function (event) {
     if (event.key === "Escape") {
       dropdown.classList.remove("active");
       wrap.classList.remove("active");
     }
   });
-
   logoutBtn?.addEventListener("click", function () {
     localStorage.removeItem("gp_auth_phone");
     localStorage.removeItem("gp_auth_role");
     localStorage.removeItem("gp_user");
     localStorage.removeItem("gp_phone");
     localStorage.removeItem("gp_role");
-
     window.location.href = "index.html";
   });
-
   renderProfileMenu();
 });
 </script>
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-  const openBtn = document.getElementById("right-menu-open-btn");
+  const openButtons = document.querySelectorAll(
+    "#right-menu-open-btn, #mobile-menu-btn, #mobile-support-open-btn"
+  );
+
   const closeBtn = document.getElementById("right-menu-close-btn");
   const drawer = document.getElementById("right-menu-drawer");
   const overlay = document.getElementById("right-menu-overlay");
 
-  if (!openBtn || !closeBtn || !drawer || !overlay) return;
+  if (!closeBtn || !drawer || !overlay) return;
 
-  function openMenu(){
+  function openMenu() {
     drawer.classList.add("active");
     overlay.classList.add("active");
     document.body.style.overflow = "hidden";
   }
 
-  function closeMenu(){
+  function closeMenu() {
     drawer.classList.remove("active");
     overlay.classList.remove("active");
     document.body.style.overflow = "";
   }
 
-  openBtn.addEventListener("click", function (event) {
-    event.preventDefault();
-    event.stopPropagation();
-    openMenu();
+  openButtons.forEach(function (btn) {
+    btn.addEventListener("click", function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+      openMenu();
+    });
   });
 
   closeBtn.addEventListener("click", closeMenu);
@@ -6319,53 +6844,74 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  drawer.querySelectorAll("a").forEach(function(link){
+  drawer.querySelectorAll("a").forEach(function (link) {
     link.addEventListener("click", closeMenu);
   });
 });
 </script>
-
-
-
-<script src="js/config.js"></script>
-<script src="js/supabase.js"></script>
-<script src="js/validation.js"></script>
-<script src="js/toast.js"></script>
-<script src="js/error-logger.js"></script>
-<script src="js/network-status.js"></script>
-<script src="js/analytics.js"></script>
-<script src="js/api.js"></script>
-<script src="js/auth.js"></script>
-<script src="js/main.js"></script>
-
-<script src="js/search-location.js"></script>
-
-
-<script src="js/search.js"></script>
-
-
 <script>
 /* FINAL: compact desktop header appears only after scrolling below the main search section */
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function () { 
   const header = document.querySelector(".desktop-header");
   const searchShell = document.querySelector(".search-shell");
+function updateScrolledHeader() {
+  if (!header) return;
 
-  function updateScrolledHeader() {
-    if (!header || window.innerWidth < 1024) return;
+  const mobileHeader = document.querySelector(".mobile-header");
+  const mobileSearchHome = document.querySelector(".mobile-search-home");
 
-    let triggerPoint = 260;
-    if (searchShell) {
-      const rect = searchShell.getBoundingClientRect();
-      triggerPoint = window.scrollY + rect.top + rect.height - 12;
+  if (window.innerWidth < 1024) {
+    header.classList.remove("header-scrolled");
+    searchShell?.classList.remove("search-fixed");
+    document.body.classList.remove("has-fixed-mobile-search");
+
+    let triggerPoint = 220;
+
+    if (mobileSearchHome) {
+      const rect = mobileSearchHome.getBoundingClientRect();
+
+      // Show header search after crossing main mobile search section
+      triggerPoint = window.scrollY + rect.top + rect.height - 8;
     }
 
-    header.classList.toggle("header-scrolled", window.scrollY > triggerPoint);
+    mobileHeader?.classList.toggle(
+      "mobile-search-scrolled",
+      window.scrollY >= triggerPoint
+    );
+
+    return;
   }
 
+  // Desktop: header scrolled starts after crossing main header height
+  mobileHeader?.classList.remove("mobile-search-scrolled");
+
+  const triggerPoint = header.offsetHeight || 76;
+
+  header.classList.toggle("header-scrolled", window.scrollY >= triggerPoint);
+}
   window.addEventListener("scroll", updateScrolledHeader, { passive: true });
   window.addEventListener("resize", updateScrolledHeader);
   updateScrolledHeader();
-
+  const mobileMainSearchBox = document.querySelector(".mobile-search-box");
+const mobileHeaderSearchBox = document.querySelector(".mobile-header-search-box");
+const mobileOverlay = document.querySelector(".mobile-search-overlay");
+const mobileOverlayInput = document.getElementById("mobile-overlay-search");
+function openMobileSearchPage() {
+  if (!mobileOverlay) return;
+  mobileOverlay.classList.add("active");
+  document.body.style.overflow = "hidden";
+  setTimeout(function () {
+    mobileOverlayInput?.focus();
+  }, 150);
+}
+mobileMainSearchBox?.addEventListener("click", function (event) {
+  event.preventDefault();
+  openMobileSearchPage();
+});
+mobileHeaderSearchBox?.addEventListener("click", function (event) {
+  event.preventDefault();
+  openMobileSearchPage();
+});
   const headerTypeBtn = document.getElementById("header-type-btn");
   const headerTypeMenu = document.getElementById("header-type-menu");
   const headerTypeLabel = document.getElementById("header-selected-type");
@@ -6373,94 +6919,74 @@ document.addEventListener("DOMContentLoaded", function () {
   const headerSearchBtn = document.getElementById("header-search-button");
   const headerVoiceBtn = document.getElementById("header-voice-search-button");
   const headerLocationBtn = document.getElementById("header-location-icon-button");
-
   let selectedPurpose = "buy";
   let selectedType = "all";
-
   headerTypeBtn?.addEventListener("click", function (event) {
     event.preventDefault();
     event.stopPropagation();
     headerTypeMenu?.classList.toggle("hidden");
     headerTypeBtn.setAttribute("aria-expanded", headerTypeMenu?.classList.contains("hidden") ? "false" : "true");
   });
-
   document.querySelectorAll(".header-type-option").forEach(function (btn) {
     btn.addEventListener("click", function (event) {
       event.preventDefault();
       event.stopPropagation();
-
       selectedPurpose = btn.dataset.purpose || "buy";
       selectedType = btn.dataset.type || "all";
-
       if (headerTypeLabel) {
         headerTypeLabel.textContent = btn.textContent.trim();
       }
-
       document.querySelectorAll(".header-type-option").forEach(function (item) {
         item.classList.remove("active");
       });
-
       btn.classList.add("active");
       headerTypeMenu?.classList.add("hidden");
       headerTypeBtn?.setAttribute("aria-expanded", "false");
     });
   });
-
   function runScrolledHeaderSearch() {
     const q = headerSearchInput?.value.trim() || "";
     const params = new URLSearchParams();
-
     if (q) params.set("q", q);
     params.set("purpose", selectedPurpose);
     params.set("type", selectedType);
-
     window.location.href = "properties.html?" + params.toString();
   }
-
   headerSearchBtn?.addEventListener("click", runScrolledHeaderSearch);
-
   headerSearchInput?.addEventListener("keydown", function (event) {
     if (event.key === "Enter") {
       event.preventDefault();
       runScrolledHeaderSearch();
     }
   });
-
   headerLocationBtn?.addEventListener("click", function (event) {
     event.preventDefault();
     event.stopPropagation();
-
     const locationWrap = document.querySelector(".desktop-header > div #desktop-location-mini-wrap") || document.getElementById("desktop-location-mini-wrap");
     if (locationWrap) {
       locationWrap.classList.toggle("menu-open");
     }
   });
-
   if (headerVoiceBtn && headerSearchInput) {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-
     if (SpeechRecognition) {
       const recognition = new SpeechRecognition();
       recognition.lang = "en-IN";
       recognition.interimResults = false;
       recognition.maxAlternatives = 1;
-
       headerVoiceBtn.addEventListener("click", function () {
         headerVoiceBtn.classList.add("listening");
         recognition.start();
       });
-
       recognition.onresult = function (event) {
         headerSearchInput.value = event.results[0][0].transcript;
         headerVoiceBtn.classList.remove("listening");
         headerSearchInput.focus();
       };
-
       recognition.onerror = function () {
         headerVoiceBtn.classList.remove("listening");
         alert("Voice search failed. Please try again.");
       };
-
       recognition.onend = function () {
         headerVoiceBtn.classList.remove("listening");
       };
@@ -6470,105 +6996,66 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
   }
-
   document.addEventListener("click", function () {
     headerTypeMenu?.classList.add("hidden");
     headerTypeBtn?.setAttribute("aria-expanded", "false");
   });
 });
-
-
 document.addEventListener("DOMContentLoaded", () => {
-
   const mobileSearchBar =
     document.querySelector(".mobile-search-box");
-
   const mobileOverlay =
     document.querySelector(".mobile-search-overlay");
-
   if (mobileSearchBar && mobileOverlay) {
-
     mobileSearchBar.addEventListener("click", () => {
       mobileOverlay.classList.add("active");
       document.body.style.overflow = "hidden";
     });
-
   }
-
   /* CLOSE OVERLAY */
   document.querySelectorAll("[data-close-mobile-search]")
     .forEach(btn => {
-
       btn.addEventListener("click", () => {
         mobileOverlay.classList.remove("active");
         document.body.style.overflow = "";
       });
-
     });
-
 });
-
-
 document.addEventListener("DOMContentLoaded", () => {
-
   const mobileSearchBar =
     document.querySelector(".mobile-search-box");
-
   const mobileOverlay =
     document.querySelector(".mobile-search-overlay");
-
   const mobileOverlayInput =
     document.querySelector("#mobile-overlay-search");
-
   /* OPEN OVERLAY */
   if (mobileSearchBar && mobileOverlay) {
-
     mobileSearchBar.addEventListener("click", () => {
-
       mobileOverlay.classList.add("active");
-
       document.body.style.overflow = "hidden";
-
       setTimeout(() => {
         mobileOverlayInput?.focus();
       }, 200);
-
     });
-
   }
-
   /* ENTER SEARCH */
   mobileOverlayInput?.addEventListener("keydown", (e) => {
-
     if (e.key === "Enter") {
-
       const value =
         mobileOverlayInput.value.trim();
-
       if (!value) return;
-
       window.location.href =
         `properties.html?q=${encodeURIComponent(value)}`;
-
     }
-
   });
-
   /* CLOSE OVERLAY */
   mobileOverlay.addEventListener("click", (e) => {
-
     if (e.target === mobileOverlay) {
-
       mobileOverlay.classList.remove("active");
-
       document.body.style.overflow = "";
-
     }
-
   });
-
 });
-
 </script>
 <script src="js/config.js"></script>
 <script src="js/supabase.js"></script>
@@ -6581,6 +7068,5 @@ document.addEventListener("DOMContentLoaded", () => {
 <script src="js/auth.js"></script>
 <script src="js/main.js"></script>
 <script src="js/search-location.js"></script>
-<script src="js/search.js"></script>
 </body>
 </html>
