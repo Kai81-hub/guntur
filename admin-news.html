@@ -12,9 +12,9 @@
 
 <style>
 body{margin:0;font-family:Manrope,sans-serif;background:#f9f9ff;color:#151c27}
-.btn-gold{background:linear-gradient(180deg,#ffe088,#d4af37);color:#241a00}
-.panel-card{background:#fff;border:1px solid rgba(208,197,175,.45);border-radius:26px;box-shadow:0 15px 38px rgba(15,23,42,.06)}
-.input{width:100%;border:1px solid #d0c5af;border-radius:16px;padding:14px;background:white}
+.btn-gold{background:linear-gradient(180deg,#d9ecff,#0f4c81);color:#ffffff}
+.panel-card{background:#fff;border:1px solid rgba(203,213,225,.45);border-radius:26px;box-shadow:0 15px 38px rgba(15,23,42,.06)}
+.input{width:100%;border:1px solid #cbd5e1;border-radius:16px;padding:14px;background:white}
 </style>
 </head>
 
@@ -25,7 +25,7 @@ body{margin:0;font-family:Manrope,sans-serif;background:#f9f9ff;color:#151c27}
       <h1 class="text-3xl font-black">Admin News Post</h1>
       <p class="text-[#476080]">Post news and updates with Cloudinary photo upload.</p>
     </div>
-    <a href="admin-panel.html" class="px-5 py-3 rounded-2xl border border-[#d0c5af] font-black text-[#735c00]">Back to Admin</a>
+    <a href="admin-panel.html" class="px-5 py-3 rounded-2xl border border-[#cbd5e1] font-black text-[#082f5f]">Back to Admin</a>
   </header>
 
   <section class="panel-card p-6">
@@ -45,8 +45,8 @@ body{margin:0;font-family:Manrope,sans-serif;background:#f9f9ff;color:#151c27}
       <textarea id="news-summary" class="input" rows="3" placeholder="Short summary"></textarea>
       <textarea id="news-content" class="input" rows="9" placeholder="Full news content" required></textarea>
 
-      <div class="rounded-2xl border border-[#d0c5af] p-4 bg-[#f9f9ff]">
-        <label class="font-black text-[#735c00] block mb-2">News Photo</label>
+      <div class="rounded-2xl border border-[#cbd5e1] p-4 bg-[#f9f9ff]">
+        <label class="font-black text-[#082f5f] block mb-2">News Photo</label>
         <input id="news-photo" type="file" accept="image/*" class="input"/>
         <p class="text-sm text-[#476080] mt-2">Photo uploads automatically to Cloudinary.</p>
       </div>
@@ -93,7 +93,7 @@ function checkAdmin(){
   }
   if(role !== "admin"){
     document.body.innerHTML = `<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;font-family:Manrope,sans-serif">
-      <div style="background:white;border:1px solid #d0c5af;border-radius:28px;padding:34px;text-align:center">
+      <div style="background:white;border:1px solid #cbd5e1;border-radius:28px;padding:34px;text-align:center">
         <h1>Access Denied</h1>
         <p>Only admin can post news.</p>
         <a href="index.html">Go Home</a>
