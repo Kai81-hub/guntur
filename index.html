@@ -5401,10 +5401,10 @@ button#support-dropdown-btn.header-icon-btn.support .material-symbols-outlined {
       <p id="profile-user-name" class="profile-user-name">User</p>
       <div class="profile-menu-block">
         <p class="profile-menu-heading">My Activity</p>
-        <a href="user-panel.html#recent-searches">Recently Searched</a>
-        <a href="user-panel.html#recently-viewed">Recently Viewed</a>
-        <a href="user-panel.html#shortlisted">Shortlisted</a>
-        <a href="user-panel.html#contacted">Contacted</a>
+        <a href="#" data-role-panel-link data-section="recent-searches">Recently Searched</a>
+<a href="#" data-role-panel-link data-section="recently-viewed">Recently Viewed</a>
+<a href="#" data-role-panel-link data-section="shortlisted">Shortlisted</a>
+<a href="#" data-role-panel-link data-section="contacted">Contacted</a>
       </div>
       <div class="profile-menu-divider"></div>
       <a href="profile.html">Modify Profile</a>
@@ -7119,6 +7119,43 @@ document.addEventListener("DOMContentLoaded", () => {
       mobileOverlay.classList.remove("active");
       document.body.style.overflow = "";
     }
+  });
+});
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const rolePanels = {
+    user: "user-panel.html",
+    owner: "owner-panel.html",
+    broker: "broker-panel.html",
+    developer: "developer-panel.html",
+    staff: "staff-panel.html",
+    admin: "admin-panel.html"
+  };
+
+  function getCurrentRole() {
+    return String(
+      localStorage.getItem("gp_auth_role") ||
+      localStorage.getItem("gp_role") ||
+      "user"
+    ).toLowerCase();
+  }
+
+  document.querySelectorAll("[data-role-panel-link]").forEach(function (link) {
+    link.addEventListener("click", function (e) {
+      e.preventDefault();
+
+      const role = getCurrentRole();
+      const panel = rolePanels[role] || "user-panel.html";
+      const section = link.dataset.section || "";
+
+      if (role === "admin") {
+        window.location.href = "admin-panel.html";
+        return;
+      }
+
+      window.location.href = panel + (section ? "#" + section : "");
+    });
   });
 });
 </script>
