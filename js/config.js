@@ -10,8 +10,8 @@ window.GP_CONFIG = {
   SUPABASE_URL: "https://mpuwfytcyjrsdkgaqaip.supabase.co",
   SUPABASE_ANON_KEY: "sb_publishable_Cw3RO0xumC7MRdfOt16HBQ_Ae6PpWOK",
 
-  DEFAULT_PHONE: "919959919999",
-  DEFAULT_WHATSAPP: "919959919999",
+  DEFAULT_PHONE: "918500720404",
+  DEFAULT_WHATSAPP: "918500720404",
   DEFAULT_DISTRICT: "Guntur",
 
   STORAGE_BUCKETS: {
@@ -42,6 +42,7 @@ window.GP_CONFIG = {
     serviceEnrollments: "service_enrollments",
     contactMessages: "contact_messages",
     homeBanners: "home_banners",
+    newsUpdates: "news_updates",
     pageMedia: "page_media",
     errorLogs: "error_logs",
     searchAnalytics: "search_analytics"
