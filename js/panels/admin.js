@@ -16,6 +16,29 @@ async function edit(table, id, payload) { return window.GP_SUPABASE.update(table
 function setText(id, value){ const el=$(id); if(el) el.textContent=value; }
 function mustConnect(){ if(!window.GP_SUPABASE?.isConfigured?.()){ toast("Connect Supabase in js/config.js to load data.","warning"); return false; } return true; }
 function bindLogout(){ $("logout-btn")?.addEventListener("click", logout); }
+function openSidebar() {
+  document.querySelector(".sidebar")?.classList.add("open");
+  document.getElementById("sidebar-overlay")?.classList.add("active");
+  document.body.classList.add("sidebar-open");
+}
+
+function closeSidebar() {
+  document.querySelector(".sidebar")?.classList.remove("open");
+  document.getElementById("sidebar-overlay")?.classList.remove("active");
+  document.body.classList.remove("sidebar-open");
+}
+
+function bindSidebar() {
+  $("mobile-menu-btn")?.addEventListener("click", openSidebar);
+  $("close-sidebar-btn")?.addEventListener("click", closeSidebar);
+  $("sidebar-overlay")?.addEventListener("click", closeSidebar);
+
+  document.querySelectorAll(".sidebar-link").forEach(link => {
+    link.addEventListener("click", () => {
+      if (window.innerWidth < 1024) closeSidebar();
+    });
+  });
+}
 async function uploadToCloudinary(file, folder = "guntur-properties/banners") {
   if (!file) throw new Error("Please select an image.");
 
@@ -48,7 +71,18 @@ async function uploadToCloudinary(file, folder = "guntur-properties/banners") {
   return data.secure_url;
 }
 window.GP_ADMIN_PANEL = {
-  async init(){ if(!requireRole(["admin"])) return; bindLogout(); this.bind(); await this.load(); },
+  async init(){
+  if(!requireRole(["admin"])) return;
+
+  bindLogout();
+  bindSidebar();
+
+  setText("auth-phone", phone() ? "+91 " + phone() : "Not logged in");
+
+  this.bind();
+  await this.load();
+},
+  
   bind(){
     $("refresh-btn")?.addEventListener("click",()=>this.load());
     $("banner-form")?.addEventListener("submit", async e => {
@@ -99,7 +133,11 @@ window.GP_ADMIN_PANEL = {
       setText("stat-users", users.length); setText("stat-properties", props.length);
       setText("stat-pending", props.filter(p=>p.approval_status==="pending").length);
       setText("stat-services", services.length);
-      this.properties(props); this.users(users); this.banners(banners); this.errors(errors);
+      this.properties(props);
+this.users(users);
+this.staff(users);
+this.banners(banners);
+this.errors(errors);
     } catch(err){ window.GP_ERROR_LOGGER?.log(err,"admin.js"); toast(err.message,"error"); }
   },
   properties(data){
@@ -149,6 +187,33 @@ window.GP_ADMIN_PANEL = {
       </td>
     </tr>
   `).join("") : `<tr><td colspan="6">No users found.</td></tr>`;
+},
+staff(data){
+  const body = $("staff-body");
+  if (!body) return;
+
+  const staffUsers = data.filter(u => String(u.role || "").toLowerCase() === "staff");
+
+  body.innerHTML = staffUsers.length ? staffUsers.map(u => `
+    <tr>
+      <td>${u.full_name || u.name || "-"}</td>
+      <td>${u.phone || "-"}</td>
+      <td><span class="status approved">Staff</span></td>
+      <td>
+        <span class="status ${u.is_active !== false ? "approved" : "rejected"}">
+          ${u.is_active !== false ? "Active" : "Inactive"}
+        </span>
+      </td>
+      <td>
+        <button
+          class="panel-action"
+          onclick="window.GP_ADMIN_PANEL.toggleUserActive('${u.id || ""}', ${u.is_active === false})"
+        >
+          ${u.is_active === false ? "Activate" : "Deactivate"}
+        </button>
+      </td>
+    </tr>
+  `).join("") : `<tr><td colspan="5">No staff users found.</td></tr>`;
 },
  banners(data){ 
   const body=$("banners-body"); 
@@ -208,3 +273,6 @@ async status(id,status){
   } 
 }
 };
+document.addEventListener("DOMContentLoaded", () => {
+  window.GP_ADMIN_PANEL?.init?.();
+});
