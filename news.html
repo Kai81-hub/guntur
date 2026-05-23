@@ -119,11 +119,13 @@ body{margin:0;font-family:'Manrope',sans-serif;background:#f9f9ff;color:#151c27}
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/config.js"></script>
 
 <script>
-const SUPABASE_URL = "https://mpuwfytcyjrsdkgaqaip.supabase.co";
-const SUPABASE_KEY = "sb_publishable_Cw3RO0xumC7MRdfOt16HBQ_Ae6PpWOK";
-const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const supabaseClient = window.supabase.createClient(
+  window.GP_CONFIG.SUPABASE_URL,
+  window.GP_CONFIG.SUPABASE_ANON_KEY
+);
 
 let allNews = [];
 let activeCategory = "all";
@@ -146,7 +148,7 @@ async function loadNews(){
 
   try{
     const { data, error } = await supabaseClient
-      .from("news_updates")
+      .from(window.GP_CONFIG.TABLES.newsUpdates)
       .select("*")
       .eq("status", "published")
       .order("created_at", { ascending:false });
