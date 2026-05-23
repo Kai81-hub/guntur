@@ -16,17 +16,69 @@ async function edit(table, id, payload) { return window.GP_SUPABASE.update(table
 function setText(id, value){ const el=$(id); if(el) el.textContent=value; }
 function mustConnect(){ if(!window.GP_SUPABASE?.isConfigured?.()){ toast("Connect Supabase in js/config.js to load data.","warning"); return false; } return true; }
 function bindLogout(){ $("logout-btn")?.addEventListener("click", logout); }
+async function uploadToCloudinary(file, folder = "guntur-properties/banners") {
+  if (!file) throw new Error("Please select an image.");
 
+  const cloudName = window.GP_CONFIG?.CLOUDINARY?.CLOUD_NAME;
+  const uploadPreset = window.GP_CONFIG?.CLOUDINARY?.UPLOAD_PRESET;
+
+  if (!cloudName || !uploadPreset) {
+    throw new Error("Cloudinary config missing in js/config.js");
+  }
+
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("upload_preset", uploadPreset);
+  formData.append("folder", folder);
+
+  const res = await fetch(
+    `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+    {
+      method: "POST",
+      body: formData
+    }
+  );
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw new Error(data.error?.message || "Cloudinary upload failed.");
+  }
+
+  return data.secure_url;
+}
 window.GP_ADMIN_PANEL = {
   async init(){ if(!requireRole(["admin"])) return; bindLogout(); this.bind(); await this.load(); },
   bind(){
     $("refresh-btn")?.addEventListener("click",()=>this.load());
     $("banner-form")?.addEventListener("submit", async e => {
-      e.preventDefault();
-      const data = Object.fromEntries(new FormData(e.target).entries());
-      try { await add(tbl().homeBanners,{...data,is_active:true,display_order:Number(data.display_order||1)}); e.target.reset(); toast("Banner added","success"); this.load(); }
-      catch(err){ toast(err.message,"error"); }
+  e.preventDefault();
+
+  const form = e.target;
+  const formData = new FormData(form);
+
+  const title = formData.get("title") || "";
+  const button_link = formData.get("button_link") || "properties.html";
+  const file = formData.get("banner_image");
+
+  try {
+    const image_url = await uploadToCloudinary(file);
+
+    await add(tbl().homeBanners, {
+      title,
+      image_url,
+      button_link,
+      is_active: true,
+      display_order: Number(formData.get("display_order") || 1)
     });
+
+    form.reset();
+    toast("Banner uploaded", "success");
+    this.load();
+  } catch(err) {
+    toast(err.message, "error");
+  }
+});
     $("media-form")?.addEventListener("submit", async e => {
       e.preventDefault();
       const data = Object.fromEntries(new FormData(e.target).entries());
@@ -56,12 +108,103 @@ window.GP_ADMIN_PANEL = {
     body.querySelectorAll("[data-approve]").forEach(b=>b.onclick=()=>this.status(b.dataset.approve,"approved"));
     body.querySelectorAll("[data-reject]").forEach(b=>b.onclick=()=>this.status(b.dataset.reject,"rejected"));
   },
-  users(data){
-    const body=$("users-body"); if(!body) return;
-    body.innerHTML = data.length ? data.map(u=>`<tr><td>${u.full_name||"-"}</td><td>${u.phone||"-"}</td><td>${u.role||"user"}</td><td><span class="status ${u.verification_status||"pending"}">${u.verification_status||"-"}</span></td><td>${u.selfie_url?`<a class="panel-action" target="_blank" href="${u.selfie_url}">View</a>`:"-"}</td><td><button class="panel-action">Verify</button></td></tr>`).join("") : `<tr><td colspan="6">No users found.</td></tr>`;
-  },
-  banners(data){ const body=$("banners-body"); if(body) body.innerHTML = data.length ? data.map(b=>`<tr><td>${b.title||"-"}</td><td>${b.image_url?`<a class="panel-action" target="_blank" href="${b.image_url}">Open</a>`:"-"}</td><td>${b.display_order||1}</td><td>${b.is_active?"Yes":"No"}</td></tr>`).join("") : `<tr><td colspan="4">No banners found.</td></tr>`; },
-  errors(data){ const body=$("errors-body"); if(body) body.innerHTML = data.length ? data.map(e=>`<tr><td>${e.source||"-"}</td><td>${e.message||"-"}</td><td>${e.page_url||"-"}</td><td>${dateIN(e.created_at)}</td></tr>`).join("") : `<tr><td colspan="4">No error logs found.</td></tr>`; },
-  async status(id,status){ try{ await edit(tbl().properties,id,{approval_status:status}); toast("Property updated","success"); this.load(); } catch(err){ toast(err.message,"error"); } }
+ users(data){
+  const body = $("users-body");
+  if (!body) return;
+
+  body.innerHTML = data.length ? data.map(u => `
+    <tr>
+      <td>${u.full_name || u.name || "-"}</td>
+      <td>${u.phone || "-"}</td>
+      <td>
+        <select
+          class="rounded-xl border-[#cbd5e1] font-bold"
+          onchange="window.GP_ADMIN_PANEL.changeUserRole('${u.id || ""}', this.value)"
+        >
+          <option value="user" ${String(u.role || "user").toLowerCase() === "user" ? "selected" : ""}>User</option>
+          <option value="owner" ${String(u.role || "").toLowerCase() === "owner" ? "selected" : ""}>Owner</option>
+          <option value="broker" ${String(u.role || "").toLowerCase() === "broker" ? "selected" : ""}>Broker</option>
+          <option value="developer" ${String(u.role || "").toLowerCase() === "developer" ? "selected" : ""}>Developer</option>
+          <option value="staff" ${String(u.role || "").toLowerCase() === "staff" ? "selected" : ""}>Staff</option>
+          <option value="admin" ${String(u.role || "").toLowerCase() === "admin" ? "selected" : ""}>Admin</option>
+        </select>
+      </td>
+      <td>
+        <span class="status ${u.verification_status || "pending"}">
+          ${u.verification_status || "-"}
+        </span>
+      </td>
+      <td>
+        ${u.selfie_url ? `<a class="panel-action" target="_blank" href="${u.selfie_url}">View</a>` : "-"}
+      </td>
+      <td>
+        <label class="inline-flex items-center gap-2 font-black text-sm">
+          <input
+            type="checkbox"
+            ${u.is_active !== false ? "checked" : ""}
+            onchange="window.GP_ADMIN_PANEL.toggleUserActive('${u.id || ""}', this.checked)"
+          />
+          Active
+        </label>
+      </td>
+    </tr>
+  `).join("") : `<tr><td colspan="6">No users found.</td></tr>`;
+},
+ banners(data){ 
+  const body=$("banners-body"); 
+  if(body) body.innerHTML = data.length ? data.map(b=>`<tr><td>${b.title||"-"}</td><td>${b.image_url?`<a class="panel-action" target="_blank" href="${b.image_url}">Open</a>`:"-"}</td><td>${b.display_order||1}</td><td>${b.is_active?"Yes":"No"}</td></tr>`).join("") : `<tr><td colspan="4">No banners found.</td></tr>`; 
+},
+
+errors(data){ 
+  const body=$("errors-body"); 
+  if(body) body.innerHTML = data.length ? data.map(e=>`<tr><td>${e.source||"-"}</td><td>${e.message||"-"}</td><td>${e.page_url||"-"}</td><td>${dateIN(e.created_at)}</td></tr>`).join("") : `<tr><td colspan="4">No error logs found.</td></tr>`; 
+},
+
+async changeUserRole(id, role){
+  if (!id) {
+    toast("User id missing", "error");
+    return;
+  }
+
+  try {
+    await edit(tbl().profiles, id, {
+      role: role,
+      updated_at: new Date().toISOString()
+    });
+
+    toast("User role updated", "success");
+    this.load();
+  } catch(err) {
+    toast(err.message, "error");
+  }
+},
+
+async toggleUserActive(id, isActive){
+  if (!id) {
+    toast("User id missing", "error");
+    return;
+  }
+
+  try {
+    await edit(tbl().profiles, id, {
+      is_active: isActive,
+      updated_at: new Date().toISOString()
+    });
+
+    toast("User active status updated", "success");
+    this.load();
+  } catch(err) {
+    toast(err.message, "error");
+  }
+},
+
+async status(id,status){
+  try{ 
+    await edit(tbl().properties,id,{approval_status:status}); 
+    toast("Property updated","success"); 
+    this.load(); 
+  } catch(err){ 
+    toast(err.message,"error"); 
+  } 
+}
 };
-document.addEventListener("DOMContentLoaded",()=>window.GP_ADMIN_PANEL.init());
