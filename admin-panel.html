@@ -25,9 +25,37 @@ td{padding:14px;border-bottom:1px solid rgba(203,213,225,.32);font-size:14px;col
 .status.pending{background:#eef6ff;color:#082f5f}.status.approved{background:#dcfce7;color:#166534}.status.rejected{background:#fee2e2;color:#991b1b}.status.new{background:#dbeafe;color:#1d4ed8}
 .mobile-menu{display:none}
 @media(max-width:1023px){.layout{grid-template-columns:1fr!important}.sidebar{position:fixed;inset:0 auto 0 0;width:280px;z-index:60;transform:translateX(-105%);transition:.25s}.sidebar.open{transform:translateX(0)}.mobile-menu{display:inline-flex}.content{padding:18px!important}.desktop-spacer{display:none}}
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, .45);
+  backdrop-filter: blur(3px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: .22s ease;
+  z-index: 55;
+}
+
+.sidebar-overlay.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+body.sidebar-open {
+  overflow: hidden;
+}
+
+@media(max-width:1023px) {
+  .sidebar {
+    z-index: 60;
+  }
+}
 </style>
 </head>
 <body>
+  <div id="sidebar-overlay" class="sidebar-overlay"></div>
 <div class="layout grid grid-cols-[280px_1fr] min-h-screen">
   <aside class="sidebar bg-white border-r border-[#cbd5e1]/40 p-5">
     <div class="flex items-center justify-between gap-3 mb-8">
@@ -42,6 +70,10 @@ td{padding:14px;border-bottom:1px solid rgba(203,213,225,.32);font-size:14px;col
     </div>
     <nav class="space-y-2"><a class="sidebar-link active" href="admin-panel.html"><span class="material-symbols-outlined">dashboard</span>Dashboard</a>
 <a class="sidebar-link " href="admin-panel.html#users"><span class="material-symbols-outlined">groups</span>Users</a>
+<a class="sidebar-link" href="admin-panel.html#staff">
+  <span class="material-symbols-outlined">badge</span>
+  Staff Sheet
+</a>
 <a class="sidebar-link " href="admin-panel.html#properties"><span class="material-symbols-outlined">home_work</span>Properties</a>
 <a class="sidebar-link " href="admin-panel.html#services"><span class="material-symbols-outlined">construction</span>Services</a>
 <a class="sidebar-link " href="admin-panel.html#banners"><span class="material-symbols-outlined">view_carousel</span>Banners</a>
@@ -87,16 +119,72 @@ td{padding:14px;border-bottom:1px solid rgba(203,213,225,.32);font-size:14px;col
   <h2 class="text-2xl font-black mb-5">Users & Role Verification</h2>
   <div class="table-wrap"><table><thead><tr><th>Name</th><th>Phone</th><th>Role</th><th>Verification</th><th>Selfie</th><th>Action</th></tr></thead><tbody id="users-body"><tr><td colspan="6">Connect Supabase to load data.</td></tr></tbody></table></div>
 </section>
+<section id="staff" class="panel-card p-6 mb-8">
+  <h2 class="text-2xl font-black mb-2">Staff Sheet</h2>
+  <p class="text-[#476080] text-sm font-semibold mb-5">
+    Admin can view staff name, phone number, role and active status.
+  </p>
 
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Staff Name</th>
+          <th>Phone Number</th>
+          <th>Role</th>
+          <th>Active</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="staff-body">
+        <tr><td colspan="5">Connect Supabase to load staff.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
 <section id="banners" class="panel-card p-6 mb-8">
   <h2 class="text-2xl font-black mb-5">Home Banners</h2>
+
   <form id="banner-form" class="grid md:grid-cols-4 gap-3 mb-5">
-    <input name="title" class="rounded-xl border-[#cbd5e1]" placeholder="Banner title" required/>
-    <input name="image_url" class="rounded-xl border-[#cbd5e1]" placeholder="Image URL" required/>
-    <input name="button_link" class="rounded-xl border-[#cbd5e1]" placeholder="Button link"/>
+    <input
+      name="title"
+      class="rounded-xl border-[#cbd5e1]"
+      placeholder="Banner title"
+      required
+    />
+
+    <input
+      name="banner_image"
+      type="file"
+      accept="image/*"
+      class="rounded-xl border-[#cbd5e1]"
+      required
+    />
+
+    <input
+      name="button_link"
+      class="rounded-xl border-[#cbd5e1]"
+      placeholder="Image click URL: services.html or properties.html?type=plots"
+    />
+
     <button class="btn-gold rounded-xl font-black">Add Banner</button>
   </form>
-  <div class="table-wrap"><table><thead><tr><th>Title</th><th>Image</th><th>Order</th><th>Active</th></tr></thead><tbody id="banners-body"><tr><td colspan="4">Connect Supabase to load data.</td></tr></tbody></table></div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Image</th>
+          <th>Order</th>
+          <th>Active</th>
+        </tr>
+      </thead>
+      <tbody id="banners-body">
+        <tr><td colspan="4">Connect Supabase to load data.</td></tr>
+      </tbody>
+    </table>
+  </div>
 </section>
 
 <section id="media" class="panel-card p-6 mb-8">
@@ -117,108 +205,13 @@ td{padding:14px;border-bottom:1px solid rgba(203,213,225,.32);font-size:14px;col
 
   </main>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const GP_SUPABASE_URL = "PASTE_YOUR_SUPABASE_PROJECT_URL";
-const GP_SUPABASE_ANON_KEY = "PASTE_YOUR_SUPABASE_ANON_KEY";
+
 let supabaseClient = null;
-if (window.supabase && GP_SUPABASE_URL.startsWith("http") && GP_SUPABASE_ANON_KEY !== "PASTE_YOUR_SUPABASE_ANON_KEY") {
-  supabaseClient = window.supabase.createClient(GP_SUPABASE_URL, GP_SUPABASE_ANON_KEY);
-}
-function getAuthRole(){return localStorage.getItem("gp_auth_role") || "user"}
-function getAuthPhone(){return localStorage.getItem("gp_auth_phone") || ""}
-function checkRole(allowed){
-  const role=getAuthRole();
-  if(!getAuthPhone()){
-    window.location.href="login.html";
-    return false;
-  }
-  if(!allowed.includes(role)){
-    document.body.innerHTML = `<div style="font-family:Manrope,sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;background:#f9f9ff;padding:20px"><div style="max-width:520px;background:white;border:1px solid #cbd5e1;border-radius:28px;padding:34px;text-align:center;box-shadow:0 15px 45px rgba(15,23,42,.08)"><h1 style="margin:0 0 10px;color:#151c27">Access Denied</h1><p style="color:#476080">Your role does not have permission to open this panel.</p><a href="index.html" style="display:inline-flex;margin-top:18px;background:#0f4c81;color:white;text-decoration:none;padding:12px 18px;border-radius:14px;font-weight:800">Go Home</a></div></div>`;
-    return false;
-  }
-  return true;
-}
-function logout(){localStorage.removeItem("gp_auth_phone");localStorage.removeItem("gp_auth_role");window.location.href="login.html"}
-function openSidebar(){document.querySelector(".sidebar")?.classList.add("open")}
-function closeSidebar(){document.querySelector(".sidebar")?.classList.remove("open")}
-function fmtDate(v){return v ? new Date(v).toLocaleDateString("en-IN") : "-"}
-function money(v){ if(!v && v!==0) return "-"; const n=Number(v); if(Number.isNaN(n))return v; if(n>=10000000)return "₹"+(n/10000000).toFixed(2)+" Cr"; if(n>=100000)return "₹"+(n/100000).toFixed(1)+" L"; return "₹"+n.toLocaleString("en-IN")}
-async function fetchRows(table, options={}){
-  if(!supabaseClient) return [];
-  let q=supabaseClient.from(table).select(options.select || "*");
-  if(options.eq){Object.entries(options.eq).forEach(([k,v])=>q=q.eq(k,v))}
-  if(options.order){q=q.order(options.order,{ascending:false})}
-  if(options.limit){q=q.limit(options.limit)}
-  const {data,error}=await q;
-  if(error) throw error;
-  return data || [];
-}
-async function updateRow(table,id,patch){
-  if(!supabaseClient) throw new Error("Connect Supabase first.");
-  const {error}=await supabaseClient.from(table).update(patch).eq("id",id);
-  if(error) throw error;
-}
-async function insertRow(table,payload){
-  if(!supabaseClient) throw new Error("Connect Supabase first.");
-  const {error}=await supabaseClient.from(table).insert(payload);
-  if(error) throw error;
-}
-function bindCommon(){
-  document.getElementById("logout-btn")?.addEventListener("click",logout);
-  document.getElementById("mobile-menu-btn")?.addEventListener("click",openSidebar);
-  document.getElementById("close-sidebar-btn")?.addEventListener("click",closeSidebar);
-  document.getElementById("auth-phone")?.replaceChildren(document.createTextNode(getAuthPhone() ? "+91 " + getAuthPhone() : "Not logged in"));
-}
-document.addEventListener("DOMContentLoaded",bindCommon);
-
-const ALLOWED_ROLES = ['admin'];
-document.addEventListener("DOMContentLoaded",()=>{ if(!checkRole(ALLOWED_ROLES)) return; initPanel(); });
-
-async function initPanel(){
-  document.getElementById("refresh-btn").addEventListener("click",loadAdmin);
-  document.getElementById("banner-form").addEventListener("submit",async e=>{
-    e.preventDefault();
-    const data=Object.fromEntries(new FormData(e.target).entries());
-    data.is_active=true; data.display_order=1;
-    try{await insertRow("home_banners",data); e.target.reset(); loadAdmin();}catch(err){alert(err.message)}
-  });
-  document.getElementById("media-form").addEventListener("submit",async e=>{
-    e.preventDefault();
-    const data=Object.fromEntries(new FormData(e.target).entries());
-    data.is_active=true; data.display_order=1;
-    try{await insertRow("page_media",data); e.target.reset(); alert("Media added");}catch(err){alert(err.message)}
-  });
-  await loadAdmin();
-}
-async function loadAdmin(){
-  if(!supabaseClient)return;
-  try{
-    const [users,props,services,banners,errors]=await Promise.all([
-      fetchRows("profiles",{limit:50,order:"created_at"}),
-      fetchRows("properties",{limit:50,order:"created_at"}),
-      fetchRows("service_leads",{limit:50,order:"created_at"}),
-      fetchRows("home_banners",{limit:8,order:"created_at"}),
-      fetchRows("error_logs",{limit:20,order:"created_at"})
-    ]);
-    document.getElementById("stat-users").textContent=users.length;
-    document.getElementById("stat-properties").textContent=props.length;
-    document.getElementById("stat-pending").textContent=props.filter(p=>p.approval_status==="pending").length;
-    document.getElementById("stat-services").textContent=services.length;
-    document.getElementById("properties-body").innerHTML=props.map(p=>`<tr><td>${p.title||"-"}</td><td>${p.property_type||"-"}</td><td>${money(p.price)}</td><td>${p.contact_name||p.user_id||"-"}</td><td><span class="status ${p.approval_status||'pending'}">${p.approval_status||"pending"}</span></td><td><button onclick="approveProperty('${p.id}')" class="text-green-700 font-black">Approve</button> · <button onclick="rejectProperty('${p.id}')" class="text-red-700 font-black">Reject</button></td></tr>`).join("") || `<tr><td colspan="6">No properties.</td></tr>`;
-    document.getElementById("users-body").innerHTML=users.map(u=>`<tr><td>${u.full_name||"-"}</td><td>${u.phone||"-"}</td><td>${u.role||"user"}</td><td><span class="status ${u.verification_status||'pending'}">${u.verification_status||"-"}</span></td><td>${u.selfie_url?`<a class="text-[#082f5f] font-black" target="_blank" href="${u.selfie_url}">View</a>`:"-"}</td><td><button onclick="verifyUser('${u.id||u.phone}')" class="text-green-700 font-black">Verify</button></td></tr>`).join("") || `<tr><td colspan="6">No users.</td></tr>`;
-    document.getElementById("banners-body").innerHTML=banners.map(b=>`<tr><td>${b.title||"-"}</td><td><a class="text-[#082f5f] font-black" target="_blank" href="${b.image_url}">Open</a></td><td>${b.display_order||1}</td><td>${b.is_active?"Yes":"No"}</td></tr>`).join("") || `<tr><td colspan="4">No banners.</td></tr>`;
-    document.getElementById("errors-body").innerHTML=errors.map(e=>`<tr><td>${e.source||"-"}</td><td>${e.message||"-"}</td><td>${e.page_url||"-"}</td><td>${fmtDate(e.created_at)}</td></tr>`).join("") || `<tr><td colspan="4">No errors.</td></tr>`;
-  }catch(err){alert(err.message)}
-}
-async function approveProperty(id){await updateRow("properties",id,{approval_status:"approved"});loadAdmin()}
-async function rejectProperty(id){await updateRow("properties",id,{approval_status:"rejected"});loadAdmin()}
-async function verifyUser(key){alert("If your profiles table uses id UUID, verify with id. For phone-only profile, update verification_status manually in Supabase.");}
-
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="js/panels/admin.js"></script>
 <script src="js/config.js"></script>
 <script src="js/supabase.js"></script>
+<script src="js/panels/admin.js"></script>
 </body>
 </html>
