@@ -110,6 +110,7 @@ const supabaseClient = window.supabase.createClient(
 
 const CLOUDINARY_CLOUD_NAME = window.GP_CONFIG.CLOUDINARY.CLOUD_NAME;
 const CLOUDINARY_UPLOAD_PRESET = window.GP_CONFIG.CLOUDINARY.UPLOAD_PRESET;
+const NEWS_TABLE = window.GP_CONFIG?.TABLES?.newsUpdates || "news_updates";
 
 let allArticles = [];
 
@@ -202,7 +203,7 @@ async function loadArticles(){
   list.innerHTML = `<p class="text-[#476080] font-bold">Loading articles...</p>`;
 
   const { data, error } = await supabaseClient
-    .from(window.GP_CONFIG.TABLES.newsUpdates)
+    .from(NEWS_TABLE)
     .select("*")
     .order("created_at", { ascending:false });
 
@@ -371,12 +372,12 @@ async function saveNews(event){
 
     if(editingId){
       response = await supabaseClient
-        .from(window.GP_CONFIG.TABLES.newsUpdates)
+        .from(NEWS_TABLE)
         .update(payload)
         .eq("id", editingId);
     } else {
       response = await supabaseClient
-        .from(window.GP_CONFIG.TABLES.newsUpdates)
+        .from(NEWS_TABLE)
         .insert(payload);
     }
 
@@ -386,44 +387,34 @@ async function saveNews(event){
 
     resetForm();
     await loadArticles();
-
   }catch(error){
     console.error(error);
     status.textContent = error.message || "Unable to save news.";
   }
 }
-
 async function deleteArticle(id){
   const article = allArticles.find(item => String(item.id) === String(id));
   const title = article?.title || "this article";
-
   const ok = confirm(`Delete "${title}"?`);
   if(!ok) return;
-
   const { error } = await supabaseClient
-    .from(window.GP_CONFIG.TABLES.newsUpdates)
+    .from(NEWS_TABLE)
     .delete()
     .eq("id", id);
-
   if(error){
     alert(error.message);
     return;
   }
-
   await loadArticles();
 }
-
 document.addEventListener("DOMContentLoaded", () => {
   if(!checkAdmin()) return;
-
   document.getElementById("news-form").addEventListener("submit", saveNews);
   document.getElementById("cancel-edit-btn").addEventListener("click", resetForm);
   document.getElementById("refresh-news-btn").addEventListener("click", loadArticles);
-
   document.getElementById("current-photo-preview").addEventListener("click", () => {
     document.getElementById("news-photo").click();
   });
-
   loadArticles();
 });
 </script>
