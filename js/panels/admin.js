@@ -13,6 +13,8 @@ const logout = () => window.GP_AUTH?.logout ? window.GP_AUTH.logout() : (localSt
 async function rows(table, options={}) { return window.GP_SUPABASE.select(table, options); }
 async function add(table, payload) { return window.GP_SUPABASE.insert(table, payload); }
 async function edit(table, id, payload) { return window.GP_SUPABASE.update(table, id, payload); }
+async function del(table, id) { return window.GP_SUPABASE.remove(table, id); }
+
 function setText(id, value){ const el=$(id); if(el) el.textContent=value; }
 function mustConnect(){ if(!window.GP_SUPABASE?.isConfigured?.()){ toast("Connect Supabase in js/config.js to load data.","warning"); return false; } return true; }
 function bindLogout(){ $("logout-btn")?.addEventListener("click", logout); }
@@ -109,9 +111,11 @@ window.GP_ADMIN_PANEL = {
     form.reset();
     toast("Banner uploaded", "success");
     this.load();
-  } catch(err) {
-    toast(err.message, "error");
-  }
+  }  catch(err) {
+  console.error("Banner upload failed:", err);
+  toast(err.message, "error");
+  alert(err.message);
+}
 });
     $("media-form")?.addEventListener("submit", async e => {
       e.preventDefault();
@@ -216,10 +220,35 @@ staff(data){
   `).join("") : `<tr><td colspan="5">No staff users found.</td></tr>`;
 },
  banners(data){ 
-  const body=$("banners-body"); 
-  if(body) body.innerHTML = data.length ? data.map(b=>`<tr><td>${b.title||"-"}</td><td>${b.image_url?`<a class="panel-action" target="_blank" href="${b.image_url}">Open</a>`:"-"}</td><td>${b.display_order||1}</td><td>${b.is_active?"Yes":"No"}</td></tr>`).join("") : `<tr><td colspan="4">No banners found.</td></tr>`; 
-},
+  const body = $("banners-body"); 
+  if (!body) return;
 
+  body.innerHTML = data.length ? data.map(b => `
+    <tr>
+      <td>${b.title || "-"}</td>
+      <td>
+        ${b.image_url ? `<a class="panel-action" target="_blank" href="${b.image_url}">Open</a>` : "-"}
+      </td>
+      <td>${b.display_order || 1}</td>
+      <td>${b.is_active ? "Yes" : "No"}</td>
+      <td>
+        <button
+          type="button"
+          class="panel-action text-red-700 font-black"
+          data-remove-banner="${b.id}"
+        >
+          Remove
+        </button>
+      </td>
+    </tr>
+  `).join("") : `<tr><td colspan="5">No banners found.</td></tr>`;
+
+  body.querySelectorAll("[data-remove-banner]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      this.removeBanner(btn.dataset.removeBanner);
+    });
+  });
+},
 errors(data){ 
   const body=$("errors-body"); 
   if(body) body.innerHTML = data.length ? data.map(e=>`<tr><td>${e.source||"-"}</td><td>${e.message||"-"}</td><td>${e.page_url||"-"}</td><td>${dateIN(e.created_at)}</td></tr>`).join("") : `<tr><td colspan="4">No error logs found.</td></tr>`; 
@@ -262,7 +291,26 @@ async toggleUserActive(id, isActive){
     toast(err.message, "error");
   }
 },
+async removeBanner(id){
+  if (!id) {
+    toast("Banner id missing", "error");
+    alert("Banner id missing");
+    return;
+  }
 
+  const ok = confirm("Remove this banner?");
+  if (!ok) return;
+
+  try {
+    await del(tbl().homeBanners, id);
+    toast("Banner removed", "success");
+    await this.load();
+  } catch(err) {
+    console.error("Banner remove failed:", err);
+    toast(err.message, "error");
+    alert(err.message);
+  }
+},
 async status(id,status){
   try{ 
     await edit(tbl().properties,id,{approval_status:status}); 
