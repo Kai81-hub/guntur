@@ -27,7 +27,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 
@@ -70,9 +70,9 @@
             "on-primary": "#ffffff"
           },
           fontFamily: {
-            display: ["Manrope", "sans-serif"],
-            body: ["Manrope", "sans-serif"]
-          }
+  display: ["Inter", "Segoe UI", "Arial", "sans-serif"],
+  body: ["Inter", "Segoe UI", "Arial", "sans-serif"]
+}
         }
       }
     }
@@ -93,13 +93,13 @@
     html { scroll-behavior: smooth; }
 
     body {
-      margin: 0;
-      background: var(--surface);
-      color: var(--text);
-      font-family: "Manrope", sans-serif;
-      -webkit-font-smoothing: antialiased;
-      padding-bottom: 0;
-    }
+  margin: 0;
+  background: var(--surface);
+  color: var(--text);
+  font-family: "Inter", "Segoe UI", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  padding-bottom: 0;
+}
 
     .material-symbols-outlined {
       font-variation-settings: 'FILL' 0, 'wght' 420, 'GRAD' 0, 'opsz' 24;
@@ -4826,6 +4826,96 @@ button#support-dropdown-btn.header-icon-btn.support {
 button#support-dropdown-btn.header-icon-btn.support .material-symbols-outlined {
   color: #ffffff !important;
 }
+/* Remove Support Agent only in desktop scrolled header */
+@media (min-width: 1024px) {
+  .desktop-header.header-scrolled .support-dropdown-wrap,
+  .desktop-header.header-scrolled .header-icon-btn.support {
+    display: none !important;
+  }
+}
+/* Highlight New Launch tab like 99acres */
+.search-tab-new-launch {
+  position: relative;
+}
+
+.search-tab-new-launch::after {
+  content: "";
+  position: absolute;
+  top: 14px;
+  right: 8px;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #ff1d25;
+  box-shadow: 0 0 0 2px #ffffff;
+}
+
+/* Desktop exact positioning */
+@media (min-width: 1024px) {
+  .desktop-search-tabs .search-tab.search-tab-new-launch::after {
+    top: 18px;
+    right: 10px;
+  }
+}
+/* Search location district/area panel */
+.district-dropdown-grid,
+.area-dropdown-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 9px;
+  max-height: 220px;
+  overflow: auto;
+  padding-right: 4px;
+}
+
+.district-option,
+.area-option {
+  min-height: 40px;
+  padding: 0 13px;
+  border-radius: 12px;
+  border: 1px solid rgba(203,213,225,.85);
+  background: #ffffff;
+  color: #476080;
+  font-size: 14px;
+  font-weight: 900;
+  text-align: left;
+}
+
+.district-option:hover,
+.area-option:hover,
+.district-option.active,
+.area-option.active {
+  background: rgba(15,76,129,.10);
+  border-color: rgba(15,76,129,.35);
+  color: #0f4c81;
+}
+
+.manual-state-search-box {
+  margin-top: 14px;
+}
+
+.manual-state-search-box label {
+  display: block;
+  font-size: 12px;
+  font-weight: 900;
+  color: #082f5f;
+  margin-bottom: 7px;
+}
+
+.manual-state-search-box input {
+  width: 100%;
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid rgba(203,213,225,.85);
+  padding: 0 12px;
+  outline: none;
+  font-weight: 800;
+}
+
+.manual-state-search-box input:focus {
+  border-color: #0f4c81;
+  box-shadow: 0 0 0 3px rgba(15,76,129,.12);
+}
 </style>
  <script type="application/ld+json">
 {
@@ -5473,7 +5563,7 @@ button#support-dropdown-btn.header-icon-btn.support .material-symbols-outlined {
           <div class="desktop-search-tabs" id="search-tabs">
             <button type="button" data-search-tab="buy" class="search-tab active">Buy</button>
             <button type="button" data-search-tab="rent" class="search-tab">Rent</button>
-            <button type="button" data-search-tab="projects" class="search-tab">New Launch</button>
+            <button class="search-tab search-tab-new-launch">New Launch</button>
             <button type="button" data-search-tab="commercial" class="search-tab">Commercial</button>
             <button type="button" data-search-tab="pg" class="search-tab">PG/Co-living</button>
             <button type="button" data-search-tab="plots" class="search-tab">Plots/Land</button>
@@ -5700,37 +5790,6 @@ button#support-dropdown-btn.header-icon-btn.support .material-symbols-outlined {
       <span class="material-symbols-outlined text-3xl">chat</span>
       <span class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full border-2 border-white"></span>
     </button>
-    <div class="absolute bottom-20 right-0 w-[350px] md:w-[400px] bg-white rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.2)] border border-outline-variant overflow-hidden" id="chat-window">
-      <div class="bg-[#132f4c] p-6 text-white relative">
-        <button class="absolute top-4 right-4 hover:bg-white/10 p-1 rounded-full transition-colors" id="chat-close" aria-label="Close chat">
-          <span class="material-symbols-outlined">close</span>
-        </button>
-        <h3 class="font-bold text-lg mb-1">Hi! How can we help you?</h3>
-        <p class="text-white/70 text-sm">We're online and ready to assist.</p>
-      </div>
-      <div class="p-6 space-y-4">
-        <div class="grid grid-cols-2 gap-3">
-          <a href="properties.html?purpose=buy" class="flex items-center gap-2 p-3 rounded-xl border border-outline-variant hover:border-[#d4af37] hover:bg-[#d4af37]/5 text-xs font-bold">
-            <span class="material-symbols-outlined text-lg text-[#d4af37]">shopping_cart</span> Buy Property
-          </a>
-          <a href="properties.html?purpose=rent" class="flex items-center gap-2 p-3 rounded-xl border border-outline-variant hover:border-[#d4af37] hover:bg-[#d4af37]/5 text-xs font-bold">
-            <span class="material-symbols-outlined text-lg text-[#d4af37]">rent_house</span> Rent Property
-          </a>
-          <a href="properties.html?type=flats" class="flex items-center gap-2 p-3 rounded-xl border border-outline-variant hover:border-[#d4af37] hover:bg-[#d4af37]/5 text-xs font-bold">
-            <span class="material-symbols-outlined text-lg text-[#d4af37]">apartment</span> Flats
-          </a>
-          <a href="services.html" class="flex items-center gap-2 p-3 rounded-xl border border-outline-variant hover:border-[#d4af37] hover:bg-[#d4af37]/5 text-xs font-bold">
-            <span class="material-symbols-outlined text-lg text-[#d4af37]">construction</span> Services
-          </a>
-        </div>
-        <a href="https://wa.me/918500720404" target="_blank" rel="noopener" class="w-full bg-[#25D366] text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:brightness-110 transition-all">
-          <span class="material-symbols-outlined">chat</span> Chat on WhatsApp
-        </a>
-        <a href="tel:+918500720404" class="w-full bg-white border border-outline-variant text-on-surface py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-surface-container-low transition-all">
-          <span class="material-symbols-outlined">headset_mic</span> Talk to Our Agent
-        </a>
-      </div>
-    </div>
   </div>
 <div id="right-menu-overlay" class="right-menu-overlay"></div>
 <aside id="right-menu-drawer" class="right-menu-drawer">
@@ -7068,5 +7127,7 @@ document.addEventListener("DOMContentLoaded", () => {
 <script src="js/auth.js"></script>
 <script src="js/main.js"></script>
 <script src="js/search-location.js"></script>
+<script src="js/search-bridge.js"></script>
+<script src="js/ai-chatbot.js"></script>
 </body>
 </html>
