@@ -6409,11 +6409,17 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       });
     }
-    function initChat() {
-      const chatWindow = document.getElementById("chat-window");
-      document.getElementById("chat-toggle")?.addEventListener("click", () => chatWindow?.classList.toggle("active"));
-      document.getElementById("chat-close")?.addEventListener("click", () => chatWindow?.classList.remove("active"));
-    }
+   function initChat() {
+  const chatWindow = document.getElementById("gp-ai-window");
+
+  document.getElementById("chat-toggle")?.addEventListener("click", () => {
+    chatWindow?.classList.toggle("active");
+  });
+
+  document.getElementById("gp-ai-close")?.addEventListener("click", () => {
+    chatWindow?.classList.remove("active");
+  });
+}
     function bindServiceTracking() {
       document.querySelectorAll('a[href*="services.html?service="]').forEach(link => {
         link.addEventListener("click", () => {
