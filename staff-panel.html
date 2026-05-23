@@ -9,26 +9,26 @@
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
 <style>
-:root{--gold:#d4af37;--primary:#735c00;--dark:#151c27;--secondary:#476080;--outline:#7f7663;--line:#d0c5af;--surface:#f9f9ff;--green:#22c55e;--red:#ef4444;--blue:#3b82f6}
+:root{--gold:#0f4c81;--primary:#082f5f;--dark:#151c27;--secondary:#476080;--outline:#7f7663;--line:#cbd5e1;--surface:#f9f9ff;--green:#22c55e;--red:#ef4444;--blue:#3b82f6}
 *{box-sizing:border-box}
 body{margin:0;font-family:'Manrope',sans-serif;background:#f9f9ff;color:#151c27;-webkit-font-smoothing:antialiased}
 .material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 430,'GRAD' 0,'opsz' 24}
-.btn-gold{background:linear-gradient(180deg,#ffe088,#d4af37);color:#241a00;transition:.2s}.btn-gold:hover{transform:translateY(-1px);box-shadow:0 12px 26px rgba(212,175,55,.24)}
+.btn-gold{background:linear-gradient(180deg,#d9ecff,#0f4c81);color:#241a00;transition:.2s}.btn-gold:hover{transform:translateY(-1px);box-shadow:0 12px 26px rgba(15,76,129,.24)}
 .sidebar-link{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:16px;color:#476080;font-weight:800;transition:.18s}
-.sidebar-link:hover,.sidebar-link.active{background:rgba(212,175,55,.13);color:#735c00}
-.panel-card{background:#fff;border:1px solid rgba(208,197,175,.45);border-radius:26px;box-shadow:0 15px 38px rgba(15,23,42,.06)}
+.sidebar-link:hover,.sidebar-link.active{background:rgba(15,76,129,.13);color:#082f5f}
+.panel-card{background:#fff;border:1px solid rgba(203,213,225,.45);border-radius:26px;box-shadow:0 15px 38px rgba(15,23,42,.06)}
 .table-wrap{overflow:auto}
 table{width:100%;border-collapse:collapse;min-width:820px}
-th{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#7f7663;text-align:left;padding:14px;border-bottom:1px solid rgba(208,197,175,.45)}
-td{padding:14px;border-bottom:1px solid rgba(208,197,175,.32);font-size:14px;color:#151c27}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#7f7663;text-align:left;padding:14px;border-bottom:1px solid rgba(203,213,225,.45)}
+td{padding:14px;border-bottom:1px solid rgba(203,213,225,.32);font-size:14px;color:#151c27}
 .status{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:6px 10px;font-size:12px;font-weight:900}
-.status.pending{background:#fff7d6;color:#8a6500}.status.approved{background:#dcfce7;color:#166534}.status.rejected{background:#fee2e2;color:#991b1b}.status.new{background:#dbeafe;color:#1d4ed8}
+.status.pending{background:#eef6ff;color:#082f5f}.status.approved{background:#dcfce7;color:#166534}.status.rejected{background:#fee2e2;color:#991b1b}.status.new{background:#dbeafe;color:#1d4ed8}
 .mobile-menu{display:none}
 @media(max-width:1023px){.layout{grid-template-columns:1fr!important}.sidebar{position:fixed;inset:0 auto 0 0;width:280px;z-index:60;transform:translateX(-105%);transition:.25s}.sidebar.open{transform:translateX(0)}.mobile-menu{display:inline-flex}.content{padding:18px!important}.desktop-spacer{display:none}}
 .location-edit-input{
   width:100%;
   min-width:150px;
-  border:1px solid rgba(208,197,175,.75);
+  border:1px solid rgba(203,213,225,.75);
   border-radius:12px;
   padding:9px 10px;
   font-weight:800;
@@ -36,12 +36,12 @@ td{padding:14px;border-bottom:1px solid rgba(208,197,175,.32);font-size:14px;col
 }
 
 .location-edit-input:focus{
-  border-color:#d4af37;
-  box-shadow:0 0 0 3px rgba(212,175,55,.14);
+  border-color:#0f4c81;
+  box-shadow:0 0 0 3px rgba(15,76,129,.14);
 }
 
 .panel-action{
-  color:#735c00;
+  color:#082f5f;
   font-weight:900;
   cursor:pointer;
 }
@@ -57,7 +57,7 @@ td{padding:14px;border-bottom:1px solid rgba(208,197,175,.32);font-size:14px;col
 .sheet-search{
   width:100%;
   max-width:360px;
-  border:1px solid rgba(208,197,175,.75);
+  border:1px solid rgba(203,213,225,.75);
   border-radius:14px;
   padding:12px 14px;
   font-weight:800;
@@ -65,18 +65,18 @@ td{padding:14px;border-bottom:1px solid rgba(208,197,175,.32);font-size:14px;col
 }
 
 .sheet-search:focus{
-  border-color:#d4af37;
-  box-shadow:0 0 0 3px rgba(212,175,55,.14);
+  border-color:#0f4c81;
+  box-shadow:0 0 0 3px rgba(15,76,129,.14);
 }
 
 .contact-toggle{
-  border:1px solid rgba(212,175,55,.35);
+  border:1px solid rgba(15,76,129,.35);
   border-radius:999px;
   padding:7px 12px;
   font-size:12px;
   font-weight:900;
-  color:#735c00;
-  background:#fff8dc;
+  color:#082f5f;
+  background:#eef6ff;
 }
 
 .role-sheet-title{
@@ -111,12 +111,12 @@ td{padding:14px;border-bottom:1px solid rgba(208,197,175,.32);font-size:14px;col
 </head>
 <body>
 <div class="layout grid grid-cols-[280px_1fr] min-h-screen">
-  <aside class="sidebar bg-white border-r border-[#d0c5af]/40 p-5">
+  <aside class="sidebar bg-white border-r border-[#cbd5e1]/40 p-5">
     <div class="flex items-center justify-between gap-3 mb-8">
       <a href="index.html" class="flex items-center gap-3">
-        <img src="assets/images/WhatsApp Image 2026-05-12 at 13.33.30.jpeg" onerror="this.src='https://placehold.co/80x80/d4af37/ffffff?text=GP'" class="w-10 h-10 rounded-xl object-cover" alt="Guntur Properties"/>
+        <img src="assets/images/guntur.png" onerror="this.src='https://placehold.co/80x80/d4af37/ffffff?text=GP'" class="w-10 h-10 rounded-xl object-cover" alt="Guntur Properties"/>
         <div>
-          <p class="font-black text-[#d4af37] leading-tight">Guntur<br/>Properties</p>
+          <p class="font-black text-[#0f4c81] leading-tight">Guntur<br/>Properties</p>
           <p class="text-[10px] text-[#7f7663] font-bold">Staff role</p>
         </div>
       </a>
@@ -165,7 +165,7 @@ td{padding:14px;border-bottom:1px solid rgba(208,197,175,.32);font-size:14px;col
           <p class="text-[#476080] text-sm font-semibold">Staff role dashboard for Guntur Properties</p>
         </div>
       </div>
-      <a href="index.html" class="hidden sm:inline-flex px-4 py-3 rounded-2xl border border-[#d0c5af]/60 font-extrabold text-[#735c00]">View Site</a>
+      <a href="index.html" class="hidden sm:inline-flex px-4 py-3 rounded-2xl border border-[#cbd5e1]/60 font-extrabold text-[#082f5f]">View Site</a>
     </header>
     
 <section class="grid sm:grid-cols-2 xl:grid-cols-4 gap-5 mb-8">
@@ -206,7 +206,7 @@ td{padding:14px;border-bottom:1px solid rgba(208,197,175,.32);font-size:14px;col
   <div class="sheet-toolbar">
     <div>
       <h2 class="text-2xl font-black role-sheet-title">
-        <span class="material-symbols-outlined text-[#d4af37]">person</span>
+        <span class="material-symbols-outlined text-[#0f4c81]">person</span>
         User Role Sheet
       </h2>
       <p class="text-[#476080] text-sm font-semibold mt-1">
@@ -240,7 +240,7 @@ td{padding:14px;border-bottom:1px solid rgba(208,197,175,.32);font-size:14px;col
   <div class="sheet-toolbar">
     <div>
       <h2 class="text-2xl font-black role-sheet-title">
-        <span class="material-symbols-outlined text-[#d4af37]">home</span>
+        <span class="material-symbols-outlined text-[#0f4c81]">home</span>
         Owner Role Sheet
       </h2>
       <p class="text-[#476080] text-sm font-semibold mt-1">
@@ -275,7 +275,7 @@ td{padding:14px;border-bottom:1px solid rgba(208,197,175,.32);font-size:14px;col
   <div class="sheet-toolbar">
     <div>
       <h2 class="text-2xl font-black role-sheet-title">
-        <span class="material-symbols-outlined text-[#d4af37]">real_estate_agent</span>
+        <span class="material-symbols-outlined text-[#0f4c81]">real_estate_agent</span>
         Broker Role Sheet
       </h2>
       <p class="text-[#476080] text-sm font-semibold mt-1">
@@ -310,7 +310,7 @@ td{padding:14px;border-bottom:1px solid rgba(208,197,175,.32);font-size:14px;col
   <div class="sheet-toolbar">
     <div>
       <h2 class="text-2xl font-black role-sheet-title">
-        <span class="material-symbols-outlined text-[#d4af37]">apartment</span>
+        <span class="material-symbols-outlined text-[#0f4c81]">apartment</span>
         Developer Role Sheet
       </h2>
       <p class="text-[#476080] text-sm font-semibold mt-1">
