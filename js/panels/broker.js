@@ -44,7 +44,19 @@ function money(value) {
 }
 
 function dateIN(value) {
-  return value ? new Date(value).toLocaleDateString("en-IN") : "-";
+  if (!value) return "-";
+
+  try {
+    return new Date(value)
+      .toLocaleDateString("en-IN", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric"
+      })
+      .replaceAll("/", "-");
+  } catch (e) {
+    return "-";
+  }
 }
 
 function titleCase(value) {
@@ -244,29 +256,72 @@ async function loadBrokerListings(phone) {
     $("stat-status").textContent = brokerListings.length ? "Active" : "New";
   }
 
-  if ($("my-properties-body")) {
-    $("my-properties-body").innerHTML = brokerListings.length
-      ? brokerListings.map((property) => `
+if ($("my-properties-body")) {
+  $("my-properties-body").innerHTML = brokerListings.length
+    ? brokerListings.map((property) => {
+        const mediaCount = [
+          ...(Array.isArray(property.image_urls) ? property.image_urls : []),
+          ...(Array.isArray(property.floor_plan_urls) ? property.floor_plan_urls : []),
+          ...(Array.isArray(property.video_urls) ? property.video_urls : []),
+          ...(property.video_url ? [property.video_url] : [])
+        ].filter(Boolean).length;
+
+        return `
           <tr>
-            <td>${property.title || property.property_title || "-"}</td>
-            <td>${titleCase(property.property_type || "-")}</td>
-            <td>${property.price_label || money(property.price)}</td>
+            <td>
+              <a class="font-black text-[#082f5f] hover:underline" href="property-details.html?id=${encodeURIComponent(property.id)}">
+                ${property.title || property.property_title || "-"}
+              </a>
+            </td>
+
+            <td>${titleCase(property.property_type || property.type || "-")}</td>
+
+            <td class="font-black">
+              ${property.price_label || money(property.price)}
+            </td>
+
+            <td class="font-black text-[#082f5f] text-center">
+              ${property.visited_count || property.visits || property.views || property.view_count || 0}
+            </td>
+
             <td>
               <span class="status ${property.status || property.approval_status || "active"}">
                 ${property.status || property.approval_status || "active"}
               </span>
             </td>
+
             <td>${dateIN(property.created_at)}</td>
+
+            <td class="font-black text-[#476080] text-center">
+              ${mediaCount}
+            </td>
+
             <td>
-              <a class="font-black text-[#735c00]" href="property-details.html?id=${encodeURIComponent(property.id)}">
-                Open
-              </a>
+              <div class="flex flex-col gap-2 items-start">
+                <button
+                  type="button"
+                  class="action-btn edit"
+                  onclick="openBrokerEdit('${property.id}')"
+                >
+                  <span class="material-symbols-outlined text-[17px]">edit</span>
+                  Edit
+                </button>
+
+                <button
+                  type="button"
+                  class="action-btn delete"
+                  onclick="deleteBrokerProperty('${property.id}')"
+                >
+                  <span class="material-symbols-outlined text-[17px]">delete</span>
+                  Delete
+                </button>
+              </div>
             </td>
           </tr>
-        `).join("")
-      : `<tr><td colspan="6">No broker listings yet.</td></tr>`;
-  }
-
+        `;
+      }).join("")
+    : `<tr><td colspan="8">No broker listings yet.</td></tr>`;
+}
   return brokerListings;
 }
 
