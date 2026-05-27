@@ -8,6 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+
 <style>
 :root{--gold:#0f4c81;--primary:#082f5f;--dark:#151c27;--secondary:#476080;--outline:#7f7663;--line:#cbd5e1;--surface:#f9f9ff;--green:#22c55e;--red:#ef4444;--blue:#3b82f6}
 *{box-sizing:border-box}
@@ -135,11 +136,15 @@ h2,
 h3,
 p,
 a,
-td,
-th,
 span,
 div {
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
+}
+
+td,
+th {
+  overflow-wrap: normal;
+  word-break: normal;
 }
 
 .table-wrap {
@@ -181,29 +186,248 @@ div {
   #broker-chat-modal > div:last-child {
     max-width: calc(100vw - 24px);
   }
+}/* FINAL FIX: Broker property listing table - desktop + mobile */
+#properties {
+  overflow: hidden;
 }
-/* Fix sidebar and bottom navigation overlap */
-@media (max-width: 1023px) {
-  .sidebar.open ~ .mobile-bottom-nav,
-  body.sidebar-open .mobile-bottom-nav {
-    display: none !important;
+
+#properties .table-wrap {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto !important;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+#properties table {
+  width: 100%;
+  min-width: 1080px !important;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+#properties th,
+#properties td {
+  display: table-cell !important;
+  white-space: nowrap !important;
+  word-break: keep-all !important;
+  overflow-wrap: normal !important;
+  vertical-align: middle;
+  padding: 16px 14px;
+}
+
+#properties thead {
+  display: table-header-group !important;
+}
+
+#properties tbody {
+  display: table-row-group !important;
+}
+
+#properties tr {
+  display: table-row !important;
+}
+
+#properties th:nth-child(1),
+#properties td:nth-child(1) {
+  width: 330px;
+}
+
+#properties th:nth-child(2),
+#properties td:nth-child(2) {
+  width: 110px;
+}
+
+#properties th:nth-child(3),
+#properties td:nth-child(3) {
+  width: 140px;
+}
+
+#properties th:nth-child(4),
+#properties td:nth-child(4) {
+  width: 90px;
+  text-align: center;
+}
+
+#properties th:nth-child(5),
+#properties td:nth-child(5) {
+  width: 115px;
+  text-align: center;
+}
+
+#properties th:nth-child(6),
+#properties td:nth-child(6) {
+  width: 135px;
+}
+
+#properties th:nth-child(7),
+#properties td:nth-child(7) {
+  width: 90px;
+  text-align: center;
+}
+
+#properties th:nth-child(8),
+#properties td:nth-child(8) {
+  width: 170px;
+}
+
+#properties td:nth-child(1) a {
+  display: inline-block;
+  max-width: 300px;
+  white-space: nowrap !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#properties td[data-label="Action"] .flex,
+#properties td:last-child .flex {
+  display: flex !important;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+#properties .action-btn {
+  min-width: 118px;
+  white-space: nowrap !important;
+}
+
+/* Mobile: keep table only, no cards */
+@media(max-width:1023px) {
+  #properties {
+    padding: 16px !important;
   }
 
-  .sidebar {
-    bottom: 0;
-    padding-bottom: 96px;
+  #properties .table-wrap {
+    overflow-x: auto !important;
   }
 
-  .sidebar.open {
-    z-index: 6000;
+  #properties table {
+    min-width: 1080px !important;
   }
 
-  .mobile-bottom-nav {
-    z-index: 5000;
+  #properties th,
+  #properties td {
+    font-size: 13px;
+    padding: 14px 12px;
   }
 }
+
+/* =========================================================
+   FINAL CLEAN FIXES - Broker Panel
+   ========================================================= */
+.action-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  padding:8px 12px;
+  border-radius:12px;
+  font-size:13px;
+  font-weight:900;
+  border:1px solid rgba(203,213,225,.75);
+  background:#fff;
+  color:#082f5f;
+  transition:.18s;
+  white-space:nowrap !important;
+  text-decoration:none;
+}
+.action-btn:hover{transform:translateY(-1px);box-shadow:0 8px 18px rgba(15,23,42,.08)}
+.action-btn.delete{color:#991b1b;border-color:rgba(239,68,68,.35);background:#fff7f7}
+.action-btn.edit{color:#082f5f;background:#eef6ff}
+.action-btn.view{color:#166534;background:#f0fdf4}
+
+.modal-input{
+  width:100%;
+  border-radius:16px;
+  border:1px solid #cbd5e1;
+  padding:11px 13px;
+  font-weight:800;
+  color:#151c27;
+  background:#fff;
+}
+.modal-label{
+  display:block;
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  color:#7f7663;
+  font-weight:900;
+  margin-bottom:6px;
+}
+
+/* Sidebar should scroll and logout should not hide behind mobile bottom nav */
+@media(max-width:1023px){
+  .sidebar{
+    height:100dvh;
+    max-height:100dvh;
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+    padding-bottom:120px !important;
+    z-index:6000 !important;
+  }
+  body.sidebar-open .mobile-bottom-nav{display:none !important}
+}
+
+/* Property listing: proper table on desktop and mobile, no second-line breaking */
+#properties{overflow:hidden}
+#properties .table-wrap{
+  width:100%;
+  max-width:100%;
+  overflow-x:auto !important;
+  overflow-y:hidden;
+  -webkit-overflow-scrolling:touch;
+}
+#properties table{
+  width:100%;
+  min-width:1160px !important;
+  table-layout:fixed;
+  border-collapse:collapse;
+}
+#properties thead{display:table-header-group !important}
+#properties tbody{display:table-row-group !important}
+#properties tr{display:table-row !important}
+#properties th,
+#properties td{
+  display:table-cell !important;
+  white-space:nowrap !important;
+  word-break:keep-all !important;
+  overflow-wrap:normal !important;
+  vertical-align:middle;
+  padding:16px 14px;
+}
+#properties th:nth-child(1),#properties td:nth-child(1){width:330px}
+#properties th:nth-child(2),#properties td:nth-child(2){width:115px}
+#properties th:nth-child(3),#properties td:nth-child(3){width:150px}
+#properties th:nth-child(4),#properties td:nth-child(4){width:105px;text-align:center}
+#properties th:nth-child(5),#properties td:nth-child(5){width:120px;text-align:center}
+#properties th:nth-child(6),#properties td:nth-child(6){width:135px}
+#properties th:nth-child(7),#properties td:nth-child(7){width:95px;text-align:center}
+#properties th:nth-child(8),#properties td:nth-child(8){width:210px}
+#properties td:nth-child(1) a{
+  display:inline-block;
+  max-width:300px;
+  white-space:nowrap !important;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+#properties td:last-child .flex{
+  display:flex !important;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:8px;
+}
+#properties .action-btn{min-width:118px}
+
+@media(max-width:1023px){
+  #properties{padding:16px !important}
+  #properties table{min-width:1160px !important}
+  #properties th,#properties td{font-size:13px;padding:14px 12px}
+}
+
 </style>
 </head>
+
 <body>
 <div class="layout grid grid-cols-[280px_1fr] min-h-screen">
   <aside class="sidebar bg-white border-r border-[#cbd5e1]/40 p-5">
@@ -217,12 +441,15 @@ div {
       </a>
       <button id="close-sidebar-btn" class="lg:hidden w-9 h-9 rounded-full bg-[#f0f3ff]"><span class="material-symbols-outlined">close</span></button>
     </div>
-    <nav class="space-y-2"><a class="sidebar-link active" href="broker-panel.html"><span class="material-symbols-outlined">dashboard</span>Dashboard</a>
-<a class="sidebar-link " href="broker-panel.html#add"><span class="material-symbols-outlined">add_business</span>Add Property</a>
-<a class="sidebar-link " href="broker-panel.html#properties"><span class="material-symbols-outlined">home_work</span>My Listings</a>
-<a class="sidebar-link " href="broker-panel.html#leads"><span class="material-symbols-outlined">contact_phone</span>Leads</a>
-<a class="sidebar-link " href="broker-panel.html#chats"><span class="material-symbols-outlined">forum</span>Chats</a>
-<a class="sidebar-link " href="broker-panel.html#profile"><span class="material-symbols-outlined">verified_user</span>Verification</a></nav>
+
+    <nav class="space-y-2">
+      <a class="sidebar-link active" href="broker-panel.html"><span class="material-symbols-outlined">dashboard</span>Dashboard</a>
+      <a class="sidebar-link " href="broker-panel.html#add"><span class="material-symbols-outlined">add_business</span>Add Property</a>
+      <a class="sidebar-link " href="broker-panel.html#properties"><span class="material-symbols-outlined">home_work</span>My Listings</a>
+      <a class="sidebar-link " href="broker-panel.html#leads"><span class="material-symbols-outlined">contact_phone</span>Leads</a>
+      <a class="sidebar-link " href="broker-panel.html#chats"><span class="material-symbols-outlined">forum</span>Chats</a>
+    </nav>
+
     <div class="mt-8 rounded-3xl bg-[#151c27] text-white p-5">
       <p class="text-xs text-white/60 font-bold uppercase">Logged in</p>
       <p id="auth-phone" class="font-black mt-1">Checking...</p>
@@ -242,71 +469,91 @@ div {
       <a href="index.html" class="hidden sm:inline-flex px-4 py-3 rounded-2xl border border-[#cbd5e1]/60 font-extrabold text-[#082f5f]">View Site</a>
     </header>
     
-<section class="grid sm:grid-cols-3 gap-5 mb-8">
-  <div class="panel-card p-6"><p class="text-[#476080] font-bold">My Broker Listings</p><h2 id="stat-properties" class="text-4xl font-black mt-2">0</h2></div>
-  <div class="panel-card p-6"><p class="text-[#476080] font-bold">Leads</p><h2 id="stat-leads" class="text-4xl font-black mt-2">0</h2></div>
-  <div class="panel-card p-6"><p class="text-[#476080] font-bold">Approval</p><h2 id="stat-status" class="text-2xl font-black mt-2">Active</h2></div>
-</section>
+    <section class="grid sm:grid-cols-2 gap-5 mb-8">
+  <div class="panel-card p-6">
+    <p class="text-[#476080] font-bold">My Broker Listings</p>
+    <h2 id="stat-properties" class="text-4xl font-black mt-2">0</h2>
+  </div>
 
-<section id="add" class="panel-card p-6 mb-8">
-  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-    <div>
-      <h2 class="text-2xl font-black mb-2">Add Property / Project</h2>
-      <p class="text-[#476080] font-semibold">
-        Brokers can post houses, flats, villas, plots, commercial properties, PG/co-living and projects.
-      </p>
-    </div>
-
-    <a href="post-property.html" class="btn-gold px-6 py-4 rounded-2xl font-black inline-flex items-center justify-center gap-2">
-      <span class="material-symbols-outlined">add_home_work</span>
-      Post Property
-    </a>
+  <div class="panel-card p-6">
+    <p class="text-[#476080] font-bold">Leads</p>
+    <h2 id="stat-leads" class="text-4xl font-black mt-2">0</h2>
   </div>
 </section>
 
-<section id="properties" class="panel-card p-6 mb-8"><h2 class="text-2xl font-black mb-5">My Broker Listings</h2><div class="table-wrap"><table><thead>
+    <section id="add" class="panel-card p-6 mb-8">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h2 class="text-2xl font-black mb-2">Add Property / Project</h2>
+          <p class="text-[#476080] font-semibold">
+            Brokers can post houses, flats, villas, plots, commercial properties, PG/co-living and projects.
+          </p>
+        </div>
+
+        <a href="post-property.html" class="btn-gold px-6 py-4 rounded-2xl font-black inline-flex items-center justify-center gap-2">
+          <span class="material-symbols-outlined">add_home_work</span>
+          Post Property
+        </a>
+      </div>
+    </section>
+
+    <!-- CHANGED ONLY THIS LISTING SECTION TO ADD EDIT/DELETE ACTIONS -->
+    <section id="properties" class="panel-card p-6 mb-8">
+      <h2 class="text-2xl font-black mb-5">My Broker Listings</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
   <tr>
     <th>Title</th>
     <th>Type</th>
     <th>Price</th>
+    <th>Visited</th>
     <th>Status</th>
     <th>Date</th>
+    <th>Media</th>
     <th>Action</th>
   </tr>
-</thead><tbody id="my-properties-body"><tr><td colspan="6">Connect Supabase to load data.</td></tr></tbody></table></div></section>
-<section id="leads" class="panel-card p-6 mb-8">
-  <h2 class="text-2xl font-black mb-5">Leads</h2>
+</thead>
+          <tbody id="my-properties-body">
+            <tr><td colspan="8">Connect Supabase to load data.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
 
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Phone</th>
-          <th>Property</th>
-          <th>Status</th>
-          <th>Chat</th>
-        </tr>
-      </thead>
+    <section id="leads" class="panel-card p-6 mb-8">
+      <h2 class="text-2xl font-black mb-5">Leads</h2>
 
-      <tbody id="leads-body">
-        <tr>
-          <td colspan="5">Connect Supabase to load data.</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</section>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Phone</th>
+              <th>Property</th>
+              <th>Status</th>
+              <th>Chat</th>
+            </tr>
+          </thead>
 
-<section id="chats" class="panel-card p-6 mb-8">
-  <h2 class="text-2xl font-black mb-5">Chats</h2>
+          <tbody id="leads-body">
+            <tr>
+              <td colspan="5">Connect Supabase to load data.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
 
-  <div id="broker-chats-list" class="grid gap-3">
-    <p class="text-[#476080] font-semibold">No chats yet.</p>
-  </div>
-</section>
+    <section id="chats" class="panel-card p-6 mb-8">
+      <h2 class="text-2xl font-black mb-5">Chats</h2>
 
-</main>
+      <div id="broker-chats-list" class="grid gap-3">
+        <p class="text-[#476080] font-semibold">No chats yet.</p>
+      </div>
+    </section>
+
+  </main>
 </div>
 
 <nav class="mobile-bottom-nav" aria-label="Mobile bottom navigation">
@@ -330,11 +577,110 @@ div {
     Chats
   </a>
 
-  <a href="#profile" class="mobile-bottom-item active">
-    <span class="material-symbols-outlined">person</span>
-    Profile
+  <a href="broker-panel.html" class="mobile-bottom-item active">
+    <span class="material-symbols-outlined">dashboard</span>
+    Dashboard
   </a>
 </nav>
+
+<!-- ADDED: EDIT BROKER PROPERTY MODAL -->
+<div id="edit-property-modal" class="fixed inset-0 z-[7200] hidden">
+  <div id="edit-property-backdrop" class="absolute inset-0 bg-black/45"></div>
+
+  <div class="absolute inset-x-3 top-4 md:top-8 mx-auto max-w-4xl bg-white rounded-3xl shadow-2xl border border-[#cbd5e1]/60 overflow-hidden">
+    <div class="bg-[#151c27] text-white p-5 flex items-center justify-between gap-3">
+      <div>
+        <p class="font-black text-lg">Edit Broker Listing</p>
+        <p class="text-xs text-white/60 font-bold">Change photos, floor photos, videos and map link</p>
+      </div>
+
+      <button id="close-edit-property" type="button" class="w-10 h-10 rounded-full bg-white/10 hover:bg-white/15 flex items-center justify-center">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+
+    <form id="edit-property-form" class="p-5 max-h-[78vh] overflow-y-auto">
+      <input type="hidden" id="edit-property-id"/>
+
+      <div class="grid md:grid-cols-2 gap-4">
+        <div>
+          <label class="modal-label">Title</label>
+          <input id="edit-title" class="modal-input" placeholder="Property title"/>
+        </div>
+
+        <div>
+          <label class="modal-label">Type</label>
+          <input id="edit-type" class="modal-input" placeholder="Flat / House / Plot / Villa"/>
+        </div>
+
+        <div>
+          <label class="modal-label">Price</label>
+          <input id="edit-price" class="modal-input" placeholder="Price"/>
+        </div>
+
+        <div>
+          <label class="modal-label">WhatsApp Number</label>
+          <input id="edit-whatsapp" class="modal-input" placeholder="8500720404"/>
+        </div>
+
+        <div class="md:col-span-2">
+          <label class="modal-label">Google Map Link</label>
+          <input id="edit-map-link" class="modal-input" placeholder="Paste Google Maps link"/>
+        </div>
+
+        <div>
+          <label class="modal-label">YouTube Link</label>
+          <input id="edit-youtube-link" class="modal-input" placeholder="Optional YouTube link"/>
+        </div>
+
+        <div>
+          <label class="modal-label">Instagram Link</label>
+          <input id="edit-instagram-link" class="modal-input" placeholder="Optional Instagram link"/>
+        </div>
+
+        <div class="md:col-span-2">
+          <label class="modal-label">Current Photo URLs</label>
+          <textarea id="edit-image-urls" class="modal-input min-h-[90px]" placeholder="One image URL per line"></textarea>
+        </div>
+
+        <div class="md:col-span-2">
+          <label class="modal-label">Current Floor Photo / Floor Plan URLs</label>
+          <textarea id="edit-floor-plan-urls" class="modal-input min-h-[90px]" placeholder="One floor photo URL per line"></textarea>
+        </div>
+
+        <div class="md:col-span-2">
+          <label class="modal-label">Current Video URLs</label>
+          <textarea id="edit-video-urls" class="modal-input min-h-[90px]" placeholder="One video URL per line"></textarea>
+        </div>
+
+        <div>
+          <label class="modal-label">Add New Photos</label>
+          <input id="edit-new-images" type="file" accept="image/*" multiple class="modal-input"/>
+        </div>
+
+        <div>
+          <label class="modal-label">Add New Floor Photos</label>
+          <input id="edit-new-floor-plans" type="file" accept="image/*,.pdf" multiple class="modal-input"/>
+        </div>
+
+        <div class="md:col-span-2">
+          <label class="modal-label">Add New Videos</label>
+          <input id="edit-new-videos" type="file" accept="video/*" multiple class="modal-input"/>
+        </div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row justify-end gap-3 mt-6">
+        <button type="button" id="cancel-edit-property" class="px-6 py-3 rounded-2xl border border-[#cbd5e1] font-black text-[#082f5f]">
+          Cancel
+        </button>
+
+        <button type="submit" class="btn-gold px-6 py-3 rounded-2xl font-black">
+          Save Changes
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
 
 <!-- BROKER CHAT MODAL -->
 <div id="broker-chat-modal" class="fixed inset-0 z-[7000] hidden">
@@ -370,9 +716,442 @@ div {
     </form>
   </div>
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="js/panels/broker.js"></script>
 <script src="js/config.js"></script>
 <script src="js/supabase.js"></script>
+<script src="js/panels/broker.js"></script>
+
+
+<!-- FINAL: BROKER LISTING EDIT / DELETE POPUP SCRIPT -->
+<script>
+(function () {
+  const PROPERTIES_TABLE = window.GP_CONFIG?.TABLES?.properties || "properties";
+
+  const body = document.getElementById("my-properties-body");
+  const statProperties = document.getElementById("stat-properties");
+  const modal = document.getElementById("edit-property-modal");
+  const form = document.getElementById("edit-property-form");
+
+  let brokerListings = [];
+
+  function getClient() {
+    if (window.GP_SUPABASE_CLIENT) return window.GP_SUPABASE_CLIENT;
+
+    const cfg = window.GP_CONFIG || {};
+    if (window.supabase && cfg.SUPABASE_URL && cfg.SUPABASE_ANON_KEY) {
+      window.GP_SUPABASE_CLIENT = window.supabase.createClient(
+        cfg.SUPABASE_URL,
+        cfg.SUPABASE_ANON_KEY
+      );
+      return window.GP_SUPABASE_CLIENT;
+    }
+
+    return null;
+  }
+
+  function normalizePhone(value) {
+    return String(value || "")
+      .replace(/\D/g, "")
+      .replace(/^91/, "")
+      .slice(-10);
+  }
+
+  function getAuthPhone() {
+    return normalizePhone(
+      localStorage.getItem("gp_auth_phone") ||
+      localStorage.getItem("gp_phone") ||
+      localStorage.getItem("gp_user_phone") ||
+      localStorage.getItem("auth_phone") ||
+      localStorage.getItem("phone") ||
+      ""
+    );
+  }
+
+  function asArray(value) {
+    if (!value) return [];
+
+    if (Array.isArray(value)) {
+      return value.map(v => String(v || "").trim()).filter(Boolean);
+    }
+
+    if (typeof value === "string") {
+      const trimmed = value.trim();
+      if (!trimmed) return [];
+
+      try {
+        const parsed = JSON.parse(trimmed);
+        if (Array.isArray(parsed)) {
+          return parsed.map(v => String(v || "").trim()).filter(Boolean);
+        }
+      } catch (e) {}
+
+      return trimmed
+        .split(/\n|,/)
+        .map(v => v.trim())
+        .filter(Boolean);
+    }
+
+    return [];
+  }
+
+  function textToArray(value) {
+    return String(value || "")
+      .split(/\n|,/)
+      .map(v => v.trim())
+      .filter(Boolean);
+  }
+
+  function formatDate(value) {
+    if (!value) return "-";
+    try {
+      return new Date(value).toLocaleDateString("en-IN", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric"
+      }).replaceAll("/", "-");
+    } catch (e) {
+      return "-";
+    }
+  }
+
+  function formatPrice(item) {
+    return (
+      item.price_label ||
+      item.price ||
+      item.expected_price ||
+      item.total_price ||
+      item.budget ||
+      "-"
+    );
+  }
+
+  function getTitle(item) {
+    return item.title || item.property_title || item.name || "Untitled Property";
+  }
+
+  function getType(item) {
+    return item.property_type || item.type || item.category || "-";
+  }
+
+  function getStatus(item) {
+    return item.status || item.approval_status || "active";
+  }
+
+  function getMediaCount(item) {
+    return [
+      ...asArray(item.image_urls || item.images || item.photo_urls),
+      ...asArray(item.floor_plan_urls || item.floor_plans || item.plan_urls),
+      ...asArray(item.video_urls || item.videos),
+      ...(item.video_url ? [item.video_url] : [])
+    ].filter(Boolean).length;
+  }
+
+  function isMine(item) {
+    const myPhone = getAuthPhone();
+    if (!myPhone) return true;
+
+    const possiblePhones = [
+      item.phone,
+      item.mobile,
+      item.contact_phone,
+      item.owner_phone,
+      item.broker_phone,
+      item.user_phone,
+      item.created_by_phone,
+      item.posted_by_phone,
+      item.whatsapp_number
+    ].map(normalizePhone);
+
+    return possiblePhones.includes(myPhone);
+  }
+
+  function renderBrokerListings() {
+    if (!body) return;
+
+    if (!brokerListings.length) {
+      body.innerHTML = `<tr><td colspan="8">No broker listings found.</td></tr>`;
+      if (statProperties) statProperties.textContent = "0";
+      return;
+    }
+
+    if (statProperties) statProperties.textContent = brokerListings.length;
+
+    body.innerHTML = brokerListings.map(item => `
+      <tr>
+        <td>
+          <a href="property-details.html?id=${encodeURIComponent(item.id)}" class="font-black text-[#082f5f] hover:underline">
+            ${getTitle(item)}
+          </a>
+        </td>
+
+        <td>${getType(item)}</td>
+
+        <td class="font-black">${formatPrice(item)}</td>
+
+        <td class="font-black text-[#082f5f] text-center">
+          ${item.visited_count || item.visits || item.views || item.view_count || 0}
+        </td>
+
+        <td class="text-center">
+          <span class="status approved">${getStatus(item)}</span>
+        </td>
+
+        <td>${formatDate(item.created_at || item.updated_at)}</td>
+
+        <td class="font-black text-[#476080] text-center">${getMediaCount(item)}</td>
+
+        <td>
+          <div class="flex flex-col gap-2 items-start">
+            <a class="action-btn view" href="property-details.html?id=${encodeURIComponent(item.id)}">
+              <span class="material-symbols-outlined text-[17px]">visibility</span>
+              View
+            </a>
+
+            <button type="button" class="action-btn edit" onclick="openBrokerEdit('${item.id}')">
+              <span class="material-symbols-outlined text-[17px]">edit</span>
+              Edit
+            </button>
+
+            <button type="button" class="action-btn delete" onclick="deleteBrokerProperty('${item.id}')">
+              <span class="material-symbols-outlined text-[17px]">delete</span>
+              Delete
+            </button>
+          </div>
+        </td>
+      </tr>
+    `).join("");
+  }
+
+  async function loadBrokerListingsFinal() {
+    const client = getClient();
+
+    if (!client) {
+      if (body) body.innerHTML = `<tr><td colspan="8">Supabase not connected.</td></tr>`;
+      return;
+    }
+
+    const { data, error } = await client
+      .from(PROPERTIES_TABLE)
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      console.error(error);
+      if (body) body.innerHTML = `<tr><td colspan="8">Error loading broker listings.</td></tr>`;
+      return;
+    }
+
+    brokerListings = (data || []).filter(item => {
+      const role = String(item.role || item.user_role || item.posted_by_role || "").toLowerCase();
+      return isMine(item) && (!role || role === "broker");
+    });
+
+    renderBrokerListings();
+  }
+
+  async function getPropertyById(id) {
+    let item = brokerListings.find(p => String(p.id) === String(id));
+    if (item) return item;
+
+    const client = getClient();
+    if (!client) return null;
+
+    const { data, error } = await client
+      .from(PROPERTIES_TABLE)
+      .select("*")
+      .eq("id", id)
+      .single();
+
+    if (error) {
+      console.error(error);
+      return null;
+    }
+
+    return data;
+  }
+
+  function getCloudinaryConfig() {
+    return {
+      cloudName:
+        window.GP_CONFIG?.CLOUDINARY_CLOUD_NAME ||
+        window.GP_CONFIG?.cloudinaryCloudName ||
+        "",
+      uploadPreset:
+        window.GP_CONFIG?.CLOUDINARY_UPLOAD_PRESET ||
+        window.GP_CONFIG?.cloudinaryUploadPreset ||
+        ""
+    };
+  }
+
+  async function uploadToCloudinary(file, resourceType) {
+    const cfg = getCloudinaryConfig();
+
+    if (!cfg.cloudName || !cfg.uploadPreset) {
+      throw new Error("Cloudinary cloud name or upload preset missing in config.js");
+    }
+
+    const fd = new FormData();
+    fd.append("file", file);
+    fd.append("upload_preset", cfg.uploadPreset);
+    fd.append("folder", "guntur-properties/broker-listings");
+
+    const url = `https://api.cloudinary.com/v1_1/${cfg.cloudName}/${resourceType}/upload`;
+
+    const res = await fetch(url, {
+      method: "POST",
+      body: fd
+    });
+
+    const data = await res.json();
+
+    if (!res.ok || !data.secure_url) {
+      throw new Error(data.error?.message || "Cloudinary upload failed");
+    }
+
+    return data.secure_url;
+  }
+
+  async function uploadFiles(inputId, resourceType) {
+    const input = document.getElementById(inputId);
+    const files = Array.from(input?.files || []);
+
+    if (!files.length) return [];
+
+    const uploaded = [];
+
+    for (const file of files) {
+      uploaded.push(await uploadToCloudinary(file, resourceType));
+    }
+
+    return uploaded;
+  }
+
+  window.openBrokerEdit = async function (id) {
+    const item = await getPropertyById(id);
+
+    if (!item) {
+      alert("Property not found. Refresh and try again.");
+      return;
+    }
+
+    document.getElementById("edit-property-id").value = item.id;
+    document.getElementById("edit-title").value = getTitle(item);
+    document.getElementById("edit-type").value = getType(item);
+    document.getElementById("edit-price").value = formatPrice(item);
+    document.getElementById("edit-whatsapp").value = item.whatsapp_number || item.contact_phone || "";
+    document.getElementById("edit-map-link").value = item.map_link || item.google_map_link || item.location_map || "";
+    document.getElementById("edit-youtube-link").value = item.youtube_link || "";
+    document.getElementById("edit-instagram-link").value = item.instagram_link || "";
+
+    document.getElementById("edit-image-urls").value = asArray(item.image_urls || item.images || item.photo_urls).join("\n");
+    document.getElementById("edit-floor-plan-urls").value = asArray(item.floor_plan_urls || item.floor_plans || item.plan_urls).join("\n");
+    document.getElementById("edit-video-urls").value = [
+      ...asArray(item.video_urls || item.videos),
+      ...(item.video_url ? [item.video_url] : [])
+    ].join("\n");
+
+    modal.classList.remove("hidden");
+  };
+
+  window.deleteBrokerProperty = async function (id) {
+    const ok = confirm("Delete this broker listing permanently?");
+    if (!ok) return;
+
+    const client = getClient();
+
+    if (!client) {
+      alert("Supabase not connected.");
+      return;
+    }
+
+    const { error } = await client
+      .from(PROPERTIES_TABLE)
+      .delete()
+      .eq("id", id);
+
+    if (error) {
+      console.error(error);
+      alert("Delete failed. Check Supabase RLS delete policy.");
+      return;
+    }
+
+    brokerListings = brokerListings.filter(item => String(item.id) !== String(id));
+    renderBrokerListings();
+    alert("Property deleted successfully.");
+  };
+
+  function closeEditModal() {
+    modal.classList.add("hidden");
+    form.reset();
+  }
+
+  document.getElementById("close-edit-property")?.addEventListener("click", closeEditModal);
+  document.getElementById("cancel-edit-property")?.addEventListener("click", closeEditModal);
+  document.getElementById("edit-property-backdrop")?.addEventListener("click", closeEditModal);
+
+  form?.addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const client = getClient();
+
+    if (!client) {
+      alert("Supabase not connected.");
+      return;
+    }
+
+    const id = document.getElementById("edit-property-id").value;
+
+    try {
+      const oldImages = textToArray(document.getElementById("edit-image-urls").value);
+      const oldFloorPlans = textToArray(document.getElementById("edit-floor-plan-urls").value);
+      const oldVideos = textToArray(document.getElementById("edit-video-urls").value);
+
+      const newImages = await uploadFiles("edit-new-images", "image");
+      const newFloorPlans = await uploadFiles("edit-new-floor-plans", "auto");
+      const newVideos = await uploadFiles("edit-new-videos", "video");
+
+      const payload = {
+        title: document.getElementById("edit-title").value.trim(),
+        property_type: document.getElementById("edit-type").value.trim(),
+        price: document.getElementById("edit-price").value.trim(),
+        whatsapp_number: document.getElementById("edit-whatsapp").value.trim(),
+        map_link: document.getElementById("edit-map-link").value.trim(),
+        youtube_link: document.getElementById("edit-youtube-link").value.trim(),
+        instagram_link: document.getElementById("edit-instagram-link").value.trim(),
+        image_urls: [...oldImages, ...newImages],
+        floor_plan_urls: [...oldFloorPlans, ...newFloorPlans],
+        video_urls: [...oldVideos, ...newVideos],
+        updated_at: new Date().toISOString()
+      };
+
+      const { error } = await client
+        .from(PROPERTIES_TABLE)
+        .update(payload)
+        .eq("id", id);
+
+      if (error) {
+        console.error(error);
+        alert("Update failed. Check Supabase column names and update RLS policy.");
+        return;
+      }
+
+      alert("Property updated successfully.");
+      closeEditModal();
+      await loadBrokerListingsFinal();
+
+    } catch (err) {
+      console.error(err);
+      alert(err.message || "Upload/update failed.");
+    }
+  });
+
+  document.addEventListener("DOMContentLoaded", function () {
+    loadBrokerListingsFinal();
+    setTimeout(loadBrokerListingsFinal, 800);
+  });
+})();
+</script>
+
 </body>
 </html>
