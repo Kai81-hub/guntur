@@ -52,6 +52,30 @@ body.sidebar-open {
     z-index: 60;
   }
 }
+
+.admin-mini-btn{display:inline-flex;align-items:center;justify-content:center;border-radius:12px;padding:8px 10px;font-size:12px;font-weight:900;color:#fff}
+.admin-mini-btn.blue{background:#2563eb}.admin-mini-btn.green{background:#16a34a}.admin-mini-btn.red{background:#dc2626}.admin-mini-btn.dark{background:#151c27}.admin-mini-btn.orange{background:#ea580c}
+.staff-check-wrap{display:inline-flex;align-items:center;gap:8px;font-weight:900;color:#082f5f}
+.staff-check-wrap input{width:18px;height:18px;border-radius:6px}
+
+
+
+/* Property media preview modal */
+.media-modal-overlay{position:fixed;inset:0;background:rgba(15,23,42,.62);backdrop-filter:blur(5px);display:none;align-items:center;justify-content:center;z-index:100;padding:18px}
+.media-modal-overlay.active{display:flex}
+.media-modal-card{width:min(1050px,100%);max-height:90vh;overflow:auto;background:#fff;border-radius:28px;border:1px solid rgba(203,213,225,.65);box-shadow:0 28px 90px rgba(0,0,0,.28)}
+.media-modal-head{position:sticky;top:0;background:#fff;z-index:2;border-bottom:1px solid rgba(203,213,225,.55);padding:18px 22px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+.media-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px}
+.media-thumb{position:relative;border:1px solid rgba(203,213,225,.8);border-radius:18px;overflow:hidden;background:#f8fafc}
+.media-thumb img{width:100%;height:130px;object-fit:cover;display:block}
+.media-thumb video{width:100%;height:190px;object-fit:cover;display:block;background:#000}
+.media-delete{position:absolute;top:8px;right:8px;width:30px;height:30px;border-radius:999px;background:#dc2626;color:#fff;font-weight:900;box-shadow:0 8px 18px rgba(0,0,0,.2)}
+.media-url-small{font-size:10px;line-height:1.25;color:#64748b;word-break:break-all;padding:8px;background:#fff}
+.media-empty{border:1px dashed rgba(127,118,99,.45);border-radius:18px;padding:22px;text-align:center;color:#64748b;font-weight:800;background:#f8fafc}
+.admin-mini-btn{display:inline-flex;align-items:center;justify-content:center;border-radius:12px;padding:9px 12px;font-size:12px;font-weight:900;color:#fff;transition:.18s}
+.admin-mini-btn:hover{transform:translateY(-1px)}
+.admin-mini-btn.blue{background:#1d4ed8}.admin-mini-btn.orange{background:#c2410c}.admin-mini-btn.green{background:#15803d}.admin-mini-btn.red{background:#b91c1c}
+
 </style>
 </head>
 <body>
@@ -75,14 +99,17 @@ body.sidebar-open {
   Staff Sheet
 </a>
 <a class="sidebar-link " href="admin-panel.html#properties"><span class="material-symbols-outlined">home_work</span>Properties</a>
-<a class="sidebar-link " href="admin-panel.html#services"><span class="material-symbols-outlined">construction</span>Services</a>
+<a class="sidebar-link" href="admin-panel.html#location-requests"><span class="material-symbols-outlined">add_location_alt</span>Location Requests</a>
 <a class="sidebar-link " href="admin-panel.html#banners"><span class="material-symbols-outlined">view_carousel</span>Banners</a>
 <a class="sidebar-link " href="admin-panel.html#media"><span class="material-symbols-outlined">perm_media</span>Page Media</a>
-<a class="sidebar-link " href="admin-panel.html#analytics"><span class="material-symbols-outlined">analytics</span>Analytics</a>
 <a class="sidebar-link " href="admin-panel.html#errors"><span class="material-symbols-outlined">bug_report</span>Error Logs</a>
 <a class="sidebar-link" href="admin-news.html">
   <span class="material-symbols-outlined">newspaper</span>
   Post News
+</a>
+<a class="sidebar-link" href="admin-staff-video.html" onclick="openVideoUploadsFromDashboard(event)">
+  <span class="material-symbols-outlined">smart_display</span>
+  Video Uploads
 </a></nav>
     <div class="mt-8 rounded-3xl bg-[#151c27] text-white p-5">
       <p class="text-xs text-white/60 font-bold uppercase">Logged in</p>
@@ -103,16 +130,83 @@ body.sidebar-open {
       <a href="index.html" class="hidden sm:inline-flex px-4 py-3 rounded-2xl border border-[#cbd5e1]/60 font-extrabold text-[#082f5f]">View Site</a>
     </header>
     
-<section class="grid sm:grid-cols-2 xl:grid-cols-4 gap-5 mb-8">
+<section class="grid sm:grid-cols-2 xl:grid-cols-3 gap-5 mb-8">
   <div class="panel-card p-6"><p class="text-[#476080] font-bold">Total Users</p><h2 id="stat-users" class="text-4xl font-black mt-2">0</h2></div>
   <div class="panel-card p-6"><p class="text-[#476080] font-bold">Properties</p><h2 id="stat-properties" class="text-4xl font-black mt-2">0</h2></div>
-  <div class="panel-card p-6"><p class="text-[#476080] font-bold">Pending Approvals</p><h2 id="stat-pending" class="text-4xl font-black mt-2">0</h2></div>
-  <div class="panel-card p-6"><p class="text-[#476080] font-bold">Service Leads</p><h2 id="stat-services" class="text-4xl font-black mt-2">0</h2></div>
+  <div class="panel-card p-6"><p class="text-[#476080] font-bold">Unchecked Properties</p><h2 id="stat-pending" class="text-4xl font-black mt-2">0</h2></div>
+  <a href="admin-staff-video.html" onclick="openVideoUploadsFromDashboard(event)" class="panel-card p-6 block hover:shadow-xl transition">
+    <div class="flex items-center justify-between gap-3">
+      <div>
+        <p class="text-[#476080] font-bold">Gallery</p>
+        <h2 class="text-2xl font-black mt-2 text-[#082f5f]">Video Uploads</h2>
+        <p class="text-sm text-[#476080] font-semibold mt-2">Upload reels and YouTube videos</p>
+      </div>
+      <span class="material-symbols-outlined text-[42px] text-[#0f4c81]">smart_display</span>
+    </div>
+  </a>
 </section>
 
 <section id="properties" class="panel-card p-6 mb-8">
-  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5"><h2 class="text-2xl font-black">Property Approvals</h2><button id="refresh-btn" class="btn-gold px-5 py-3 rounded-2xl font-black">Refresh</button></div>
-  <div class="table-wrap"><table><thead><tr><th>Title</th><th>Type</th><th>Price</th><th>Owner</th><th>Status</th><th>Actions</th></tr></thead><tbody id="properties-body"><tr><td colspan="6">Connect Supabase to load data.</td></tr></tbody></table></div>
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
+    <div>
+      <h2 class="text-2xl font-black">Property Management</h2>
+      <p class="text-[#476080] text-sm font-semibold mt-1">
+        Properties are directly live. Admin/staff can check, edit, map or delete wrong listings.
+      </p>
+    </div>
+    <button id="refresh-btn" class="btn-gold px-5 py-3 rounded-2xl font-black">Refresh</button>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Type</th>
+          <th>Price</th>
+          <th>Role</th>
+          <th>Visitors</th>
+          <th>Staff Check</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="properties-body">
+        <tr><td colspan="7">Connect Supabase to load properties.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="location-requests" class="panel-card p-6 mb-8">
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
+    <div>
+      <h2 class="text-2xl font-black">Location Requests</h2>
+      <p class="text-[#476080] text-sm font-semibold mt-1">
+        Manual state, district, city and area requests from post-property page.
+      </p>
+    </div>
+    <button id="refresh-location-requests-btn" class="btn-gold px-5 py-3 rounded-2xl font-black">Refresh Locations</button>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>State</th>
+          <th>District</th>
+          <th>City</th>
+          <th>Area</th>
+          <th>Pincode</th>
+          <th>Requested By</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="location-requests-body">
+        <tr><td colspan="8">Connect Supabase to load location requests.</td></tr>
+      </tbody>
+    </table>
+  </div>
 </section>
 
 <section id="users" class="panel-card p-6 mb-8">
@@ -191,14 +285,14 @@ body.sidebar-open {
 </section>
 
 <section id="media" class="panel-card p-6 mb-8">
-  <h2 class="text-2xl font-black mb-5">Page Media: About / Contact</h2>
+  <h2 class="text-2xl font-black mb-5">Page Media: About / Contact / Banners</h2>
   <form id="media-form" class="grid md:grid-cols-5 gap-3 mb-5">
     <select name="page_key" class="rounded-xl border-[#cbd5e1]"><option value="about">About</option><option value="contact">Contact</option></select>
     <select name="media_type" class="rounded-xl border-[#cbd5e1]"><option value="image">Image</option><option value="video">Video</option></select>
     <input name="media_url" class="rounded-xl border-[#cbd5e1] md:col-span-2" placeholder="Media URL" required/>
     <button class="btn-gold rounded-xl font-black">Add Media</button>
   </form>
-  <p class="text-[#476080] text-sm">Use display_order 1-3 for photos; add one video URL under media_type video.</p>
+  <p class="text-[#476080] text-sm">Use this for About page, Contact page and page banners/media. Add image/video URL and manage from Supabase.</p>
 </section>
 
 <section id="errors" class="panel-card p-6">
@@ -212,5 +306,923 @@ body.sidebar-open {
 <script src="js/config.js"></script>
 <script src="js/supabase.js"></script>
 <script src="js/panels/admin.js"></script>
+
+<script>
+(function () {
+  const LOCATION_TABLE = window.GP_CONFIG?.TABLES?.searchLocations || "search_locations";
+  const LOCATION_REQUESTS_TABLE = window.GP_CONFIG?.TABLES?.locationRequests || "location_requests";
+  const PROPERTIES_TABLE = window.GP_CONFIG?.TABLES?.properties || "properties";
+  const PROPERTY_VIEWS_TABLE = window.GP_CONFIG?.TABLES?.propertyViews || "property_views";
+
+  function escapeHtml(value) {
+    return String(value ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+  function getAdminPhone() {
+    return String(
+      localStorage.getItem("gp_auth_phone") ||
+      localStorage.getItem("gp_phone") ||
+      ""
+    ).replace(/\D/g, "").slice(-10);
+  }
+
+  function setLocationBody(message) {
+    const tbody = document.getElementById("location-requests-body");
+    if (!tbody) return;
+    tbody.innerHTML = `<tr><td colspan="8">${escapeHtml(message)}</td></tr>`;
+  }
+
+  async function loadLocationRequests() {
+    const tbody = document.getElementById("location-requests-body");
+    if (!tbody) return;
+
+    if (!window.GP_SUPABASE?.isConfigured?.()) {
+      setLocationBody("Supabase is not connected. Check js/config.js and js/supabase.js.");
+      return;
+    }
+
+    setLocationBody("Loading location requests...");
+
+    try {
+      const rows = await window.GP_SUPABASE.select(LOCATION_REQUESTS_TABLE, {
+        select: "*",
+        limit: 500
+      });
+
+      const requests = Array.isArray(rows) ? rows : [];
+
+      requests.sort((a, b) => {
+        if (a.status === "pending" && b.status !== "pending") return -1;
+        if (a.status !== "pending" && b.status === "pending") return 1;
+        return new Date(b.created_at || 0) - new Date(a.created_at || 0);
+      });
+
+      if (!requests.length) {
+        setLocationBody("No location requests found.");
+        return;
+      }
+
+      tbody.innerHTML = requests.map((item) => {
+        const pending = item.status === "pending";
+
+        return `
+          <tr>
+            <td class="font-extrabold">${escapeHtml(item.state)}</td>
+            <td>${escapeHtml(item.district)}</td>
+            <td>${escapeHtml(item.city || item.area || "-")}</td>
+            <td>${escapeHtml(item.area)}</td>
+            <td>${escapeHtml(item.pincode || "-")}</td>
+            <td>
+              <div class="font-bold">${escapeHtml(item.requested_by_phone || "-")}</div>
+              <div class="text-xs text-[#476080] font-bold">${escapeHtml(item.requested_by_role || "")}</div>
+            </td>
+            <td><span class="status ${escapeHtml(item.status || "pending")}">${escapeHtml(item.status || "pending")}</span></td>
+            <td>
+              ${pending ? `
+                <div class="flex flex-wrap gap-2">
+                  <button type="button" data-edit-location="${escapeHtml(item.id)}" class="px-3 py-2 rounded-xl bg-blue-600 text-white font-black text-xs">Edit</button>
+                  <button type="button" data-approve-location="${escapeHtml(item.id)}" class="px-3 py-2 rounded-xl bg-green-600 text-white font-black text-xs">Approve</button>
+                  <button type="button" data-reject-location="${escapeHtml(item.id)}" class="px-3 py-2 rounded-xl bg-red-600 text-white font-black text-xs">Reject</button>
+                </div>
+              ` : `<span class="text-xs font-bold text-[#476080]">Reviewed</span>`}
+            </td>
+          </tr>
+        `;
+      }).join("");
+
+      tbody.querySelectorAll("[data-edit-location]").forEach((btn) => {
+        btn.addEventListener("click", () => editLocationRequest(btn.dataset.editLocation));
+      });
+
+      tbody.querySelectorAll("[data-approve-location]").forEach((btn) => {
+        btn.addEventListener("click", () => approveLocationRequest(btn.dataset.approveLocation));
+      });
+
+      tbody.querySelectorAll("[data-reject-location]").forEach((btn) => {
+        btn.addEventListener("click", () => rejectLocationRequest(btn.dataset.rejectLocation));
+      });
+    } catch (error) {
+      setLocationBody(error.message || "Unable to load location requests.");
+    }
+  }
+
+  async function getLocationRequest(requestId) {
+    const rows = await window.GP_SUPABASE.select(LOCATION_REQUESTS_TABLE, {
+      select: "*",
+      eq: { id: requestId },
+      limit: 1
+    });
+
+    return Array.isArray(rows) ? rows[0] : null;
+  }
+
+  function cleanPincode(value) {
+    return String(value || "").replace(/\D/g, "").slice(0, 6);
+  }
+
+  async function editLocationRequest(requestId) {
+    try {
+      const request = await getLocationRequest(requestId);
+
+      if (!request) {
+        alert("Location request not found.");
+        return;
+      }
+
+      if (request.status !== "pending") {
+        alert("Only pending location requests can be edited.");
+        return;
+      }
+
+      const state = prompt("Edit State", request.state || "")?.trim();
+      if (!state) return;
+
+      const district = prompt("Edit District", request.district || "")?.trim();
+      if (!district) return;
+
+      const city = prompt("Edit City", request.city || "")?.trim();
+      if (!city) return;
+
+      const area = prompt("Edit Area / Locality", request.area || "")?.trim();
+      if (!area) return;
+
+      const pincodeInput = prompt("Edit Pincode (optional)", request.pincode || "") || "";
+      const pincode = cleanPincode(pincodeInput);
+
+      await window.GP_SUPABASE.update(LOCATION_REQUESTS_TABLE, request.id, {
+        state,
+        district,
+        city,
+        area,
+        pincode,
+        updated_at: new Date().toISOString()
+      });
+
+      if (request.property_id) {
+        await window.GP_SUPABASE.update(PROPERTIES_TABLE, request.property_id, {
+          state,
+          district,
+          city,
+          area,
+          location: area,
+          locality: area,
+          pincode,
+          updated_at: new Date().toISOString()
+        });
+      }
+
+      alert("Location request updated. Now you can approve it.");
+      await loadLocationRequests();
+    } catch (error) {
+      alert(error.message || "Unable to edit location request.");
+    }
+  }
+
+  async function approveLocationRequest(requestId) {
+    try {
+      const request = await getLocationRequest(requestId);
+
+      if (!request) {
+        alert("Location request not found.");
+        return;
+      }
+
+      const existing = await window.GP_SUPABASE.select(LOCATION_TABLE, {
+        select: "id",
+        eq: {
+          country: request.country || "India",
+          state: request.state,
+          district: request.district,
+          area: request.area
+        },
+        limit: 1
+      });
+
+      if (!Array.isArray(existing) || !existing.length) {
+        await window.GP_SUPABASE.insert(LOCATION_TABLE, {
+          country: request.country || "India",
+          state: request.state,
+          district: request.district,
+          city: request.city || request.area,
+          area: request.area,
+          pincode: request.pincode || "",
+          is_active: true,
+          display_order: 999,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        });
+      }
+
+      await window.GP_SUPABASE.update(LOCATION_REQUESTS_TABLE, request.id, {
+        status: "approved",
+        reviewed_by_phone: getAdminPhone(),
+        reviewed_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      });
+
+      if (request.property_id) {
+        await window.GP_SUPABASE.update(PROPERTIES_TABLE, request.property_id, {
+          city: request.city || request.area,
+          area: request.area,
+          location: request.area,
+          locality: request.area,
+          pincode: request.pincode || "",
+          is_manual_place: false,
+          place_review_status: "approved",
+          updated_at: new Date().toISOString()
+        });
+      }
+
+      alert("Location approved and added to dropdown.");
+      await loadLocationRequests();
+    } catch (error) {
+      alert(error.message || "Unable to approve location.");
+    }
+  }
+
+  async function rejectLocationRequest(requestId) {
+    try {
+      const request = await getLocationRequest(requestId);
+
+      if (!request) {
+        alert("Location request not found.");
+        return;
+      }
+
+      await window.GP_SUPABASE.update(LOCATION_REQUESTS_TABLE, request.id, {
+        status: "rejected",
+        reviewed_by_phone: getAdminPhone(),
+        reviewed_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      });
+
+      if (request.property_id) {
+        await window.GP_SUPABASE.update(PROPERTIES_TABLE, request.property_id, {
+          place_review_status: "rejected",
+          updated_at: new Date().toISOString()
+        });
+      }
+
+      alert("Location rejected. It will not be added to dropdown.");
+      await loadLocationRequests();
+    } catch (error) {
+      alert(error.message || "Unable to reject location.");
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    loadLocationRequests();
+    document.getElementById("refresh-location-requests-btn")?.addEventListener("click", loadLocationRequests);
+  });
+})();
+</script>
+
+
+<script>
+(function () {
+  const PROPERTIES_TABLE = window.GP_CONFIG?.TABLES?.properties || "properties";
+
+  function escapeHtml(value) {
+    return String(value ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+  function cleanPhone(value) {
+    return String(value || "").replace(/\D/g, "").slice(-10);
+  }
+
+  function getAdminPhone() {
+    return cleanPhone(
+      localStorage.getItem("gp_auth_phone") ||
+      localStorage.getItem("gp_phone") ||
+      ""
+    );
+  }
+
+  function getPropertyId(item) {
+    return item.id || item.property_id || item.uuid || "";
+  }
+
+  function getPropertyUrl(item) {
+    const id = encodeURIComponent(getPropertyId(item));
+    return `property-details.html?id=${id}`;
+  }
+
+  function parseArrayValue(value) {
+    if (Array.isArray(value)) return value;
+    if (!value) return [];
+
+    try {
+      const parsed = JSON.parse(value);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (_) {
+      return String(value)
+        .split(",")
+        .map((item) => item.trim())
+        .filter(Boolean);
+    }
+  }
+
+  function getImageUrls(item) {
+    return parseArrayValue(item.image_urls || item.images || item.photos || []);
+  }
+
+  function getVideoUrl(item) {
+    const videos = parseArrayValue(item.video_urls || item.videos || []);
+    return item.main_video || item.video_url || videos[0] || "";
+  }
+
+  function getRole(item) {
+    return item.posted_by_role || item.owner_role || item.role || item.user_role || "-";
+  }
+
+  function getVisitorCount(item, viewMap = {}) {
+    const id = getPropertyId(item);
+
+    const directValue =
+      item.visitor_count ??
+      item.visitors_count ??
+      item.view_count ??
+      item.views_count ??
+      item.views ??
+      item.total_views ??
+      item.property_views_count;
+
+    if (directValue !== null && directValue !== undefined && directValue !== "") {
+      return Number(directValue) || 0;
+    }
+
+    return Number(viewMap[id] || 0);
+  }
+
+  async function loadPropertyViewCounts() {
+    try {
+      const rows = await window.GP_SUPABASE.select(PROPERTY_VIEWS_TABLE, {
+        select: "property_id",
+        limit: 10000
+      });
+
+      const map = {};
+
+      (Array.isArray(rows) ? rows : []).forEach((row) => {
+        const propertyId = row.property_id || row.property || row.property_uuid;
+        if (!propertyId) return;
+        map[propertyId] = (map[propertyId] || 0) + 1;
+      });
+
+      return map;
+    } catch (error) {
+      console.warn("Property visitor count loading failed:", error);
+      return {};
+    }
+  }
+
+  function getPriceText(item) {
+    if (item.price_label) return item.price_label;
+    if (item.price === null || item.price === undefined || item.price === "") return "-";
+    return `₹${Number(item.price).toLocaleString("en-IN")}`;
+  }
+
+  function isStaffChecked(item) {
+    return Boolean(item.staff_checked || item.is_checked || item.quality_checked);
+  }
+
+  function setPropertiesBody(message) {
+    const tbody = document.getElementById("properties-body");
+    if (!tbody) return;
+    tbody.innerHTML = `<tr><td colspan="7">${escapeHtml(message)}</td></tr>`;
+  }
+
+  async function loadAdminProperties() {
+    const tbody = document.getElementById("properties-body");
+    if (!tbody) return;
+
+    if (!window.GP_SUPABASE?.isConfigured?.()) {
+      setPropertiesBody("Supabase is not connected. Check js/config.js and js/supabase.js.");
+      return;
+    }
+
+    setPropertiesBody("Loading properties...");
+
+    try {
+      const rows = await window.GP_SUPABASE.select(PROPERTIES_TABLE, {
+        select: "*",
+        limit: 1000
+      });
+
+      const properties = Array.isArray(rows) ? rows : [];
+      const propertyViewMap = await loadPropertyViewCounts();
+
+      properties.sort((a, b) => {
+        if (!isStaffChecked(a) && isStaffChecked(b)) return -1;
+        if (isStaffChecked(a) && !isStaffChecked(b)) return 1;
+        return new Date(b.created_at || b.updated_at || 0) - new Date(a.created_at || a.updated_at || 0);
+      });
+
+      document.getElementById("stat-properties") && (document.getElementById("stat-properties").textContent = properties.length);
+      document.getElementById("stat-pending") && (document.getElementById("stat-pending").textContent = properties.filter((item) => !isStaffChecked(item)).length);
+
+      if (!properties.length) {
+        setPropertiesBody("No properties found.");
+        return;
+      }
+
+      tbody.innerHTML = properties.map((item) => {
+        const id = getPropertyId(item);
+        const title = item.title || item.property_title || "Untitled Property";
+        const checked = isStaffChecked(item);
+
+        return `
+          <tr>
+            <td>
+              <a href="${escapeHtml(getPropertyUrl(item))}" target="_blank" class="font-black text-[#0f4c81] hover:underline">
+                ${escapeHtml(title)}
+              </a>
+              <div class="text-xs text-[#476080] font-bold mt-1">${escapeHtml(item.location || item.area || item.city || "")}</div>
+            </td>
+            <td class="font-bold">${escapeHtml(item.property_type || item.type || item.category || "-")}</td>
+            <td class="font-bold">${escapeHtml(getPriceText(item))}</td>
+            <td>
+              <span class="status new">${escapeHtml(getRole(item))}</span>
+              <div class="text-xs text-[#476080] font-bold mt-1">${escapeHtml(item.posted_by_phone || item.owner_phone || "")}</div>
+            </td>
+            <td>
+              <span class="font-black text-[#082f5f]">${escapeHtml(getVisitorCount(item, propertyViewMap))}</span>
+              <div class="text-xs text-[#476080] font-bold mt-1">visits</div>
+            </td>
+            <td>
+              <label class="staff-check-wrap">
+                <input type="checkbox" data-toggle-check="${escapeHtml(id)}" ${checked ? "checked" : ""}>
+                <span>${checked ? "Checked" : "Unchecked"}</span>
+              </label>
+            </td>
+            <td>
+              <div class="flex flex-wrap gap-2">
+                <button type="button" data-edit-property="${escapeHtml(id)}" class="admin-mini-btn blue">Edit</button>
+                <button type="button" data-media-property="${escapeHtml(id)}" class="admin-mini-btn orange">Media</button>
+                <button type="button" data-map-property="${escapeHtml(id)}" class="admin-mini-btn green">Mapping</button>
+                <button type="button" data-delete-property="${escapeHtml(id)}" class="admin-mini-btn red">Delete</button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join("");
+
+      tbody.querySelectorAll("[data-toggle-check]").forEach((input) => {
+        input.addEventListener("change", () => toggleStaffCheck(input.dataset.toggleCheck, input.checked));
+      });
+
+      tbody.querySelectorAll("[data-edit-property]").forEach((btn) => {
+        btn.addEventListener("click", () => editProperty(btn.dataset.editProperty));
+      });
+
+      tbody.querySelectorAll("[data-media-property]").forEach((btn) => {
+        btn.addEventListener("click", () => editPropertyMedia(btn.dataset.mediaProperty));
+      });
+
+      tbody.querySelectorAll("[data-map-property]").forEach((btn) => {
+        btn.addEventListener("click", () => editPropertyMapping(btn.dataset.mapProperty));
+      });
+
+      tbody.querySelectorAll("[data-delete-property]").forEach((btn) => {
+        btn.addEventListener("click", () => deleteProperty(btn.dataset.deleteProperty));
+      });
+
+    } catch (error) {
+      setPropertiesBody(error.message || "Unable to load properties.");
+    }
+  }
+
+  async function getProperty(propertyId) {
+    const rows = await window.GP_SUPABASE.select(PROPERTIES_TABLE, {
+      select: "*",
+      eq: { id: propertyId },
+      limit: 1
+    });
+
+    return Array.isArray(rows) ? rows[0] : null;
+  }
+
+  async function toggleStaffCheck(propertyId, checked) {
+    try {
+      await window.GP_SUPABASE.update(PROPERTIES_TABLE, propertyId, {
+        staff_checked: checked,
+        staff_checked_by_phone: checked ? getAdminPhone() : "",
+        staff_checked_at: checked ? new Date().toISOString() : null,
+        updated_at: new Date().toISOString()
+      });
+
+      await loadAdminProperties();
+    } catch (error) {
+      alert(
+        (error.message || "Unable to update staff check.") +
+        "\n\nIf this error says column not found, run the SQL columns I gave below."
+      );
+      await loadAdminProperties();
+    }
+  }
+
+  async function editProperty(propertyId) {
+    try {
+      const item = await getProperty(propertyId);
+      if (!item) {
+        alert("Property not found.");
+        return;
+      }
+
+      const title = prompt("Edit property title", item.title || item.property_title || "")?.trim();
+      if (!title) return;
+
+      const propertyType = prompt("Edit property type", item.property_type || item.type || item.category || "")?.trim();
+      if (!propertyType) return;
+
+      const priceInput = prompt("Edit price number", item.price ?? "") ?? "";
+      const price = priceInput === "" ? null : Number(String(priceInput).replace(/[^\d.]/g, ""));
+
+      const priceLabel = prompt("Edit price label", item.price_label || "") ?? "";
+      const role = prompt("Edit uploaded role", getRole(item) === "-" ? "" : getRole(item)) ?? "";
+
+      const location = prompt("Edit location / area", item.location || item.area || "") ?? "";
+      const address = prompt("Edit address", item.address || "") ?? "";
+
+      await window.GP_SUPABASE.update(PROPERTIES_TABLE, propertyId, {
+        title,
+        property_title: title,
+        property_type: propertyType,
+        category: propertyType,
+        price,
+        price_label: priceLabel.trim(),
+        posted_by_role: role.trim(),
+        location: location.trim(),
+        area: location.trim(),
+        locality: location.trim(),
+        address: address.trim(),
+        updated_at: new Date().toISOString()
+      });
+
+      alert("Property updated.");
+      await loadAdminProperties();
+    } catch (error) {
+      alert(error.message || "Unable to edit property.");
+    }
+  }
+
+  let mediaEditingPropertyId = "";
+  let mediaEditingImages = [];
+
+  function openMediaModal() {
+    const modal = document.getElementById("property-media-modal");
+    if (!modal) return;
+    modal.classList.add("active");
+    modal.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeMediaModal() {
+    const modal = document.getElementById("property-media-modal");
+    if (!modal) return;
+    modal.classList.remove("active");
+    modal.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+  }
+
+  function renderMediaModal() {
+    const photoGrid = document.getElementById("media-photo-grid");
+    const photoCount = document.getElementById("media-photo-count");
+    const videoBox = document.getElementById("media-video-box");
+    const videoInput = document.getElementById("media-video-url");
+
+    if (photoCount) {
+      photoCount.textContent = `${mediaEditingImages.length} photo(s)`;
+    }
+
+    if (photoGrid) {
+      if (!mediaEditingImages.length) {
+        photoGrid.innerHTML = `<div class="media-empty">No photos found for this property.</div>`;
+      } else {
+        photoGrid.innerHTML = mediaEditingImages.map((url, index) => `
+          <div class="media-thumb">
+            <img src="${escapeHtml(url)}" alt="Property photo ${index + 1}" loading="lazy" />
+            <button type="button" class="media-delete" data-remove-media-image="${index}">×</button>
+            <div class="media-url-small">${escapeHtml(url)}</div>
+          </div>
+        `).join("");
+
+        photoGrid.querySelectorAll("[data-remove-media-image]").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const index = Number(btn.dataset.removeMediaImage);
+            mediaEditingImages.splice(index, 1);
+            renderMediaModal();
+          });
+        });
+      }
+    }
+
+    const videoUrl = videoInput?.value?.trim() || "";
+
+    if (videoBox) {
+      if (!videoUrl) {
+        videoBox.innerHTML = `<div class="media-empty">No video found for this property.</div>`;
+      } else {
+        videoBox.innerHTML = `
+          <div class="media-thumb max-w-xl">
+            <video src="${escapeHtml(videoUrl)}" controls preload="metadata"></video>
+            <button type="button" id="media-remove-video-btn" class="media-delete">×</button>
+            <div class="media-url-small">${escapeHtml(videoUrl)}</div>
+          </div>
+        `;
+
+        document.getElementById("media-remove-video-btn")?.addEventListener("click", () => {
+          if (videoInput) videoInput.value = "";
+          renderMediaModal();
+        });
+      }
+    }
+  }
+
+  async function uploadAdminMediaToCloudinary(file, propertyId) {
+    const cloudName = window.GP_CONFIG?.CLOUDINARY?.CLOUD_NAME;
+    const uploadPreset = window.GP_CONFIG?.CLOUDINARY?.UPLOAD_PRESET;
+
+    if (!cloudName || !uploadPreset) {
+      throw new Error("Cloudinary is not configured in js/config.js.");
+    }
+
+    const resourceType = file.type.startsWith("video/") ? "video" : "image";
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", uploadPreset);
+    formData.append("folder", `guntur-properties/admin-properties/${propertyId}`);
+
+    const response = await fetch(
+      `https://api.cloudinary.com/v1_1/${cloudName}/${resourceType}/upload`,
+      { method: "POST", body: formData }
+    );
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(result.error?.message || "Cloudinary upload failed.");
+    }
+
+    return result.secure_url;
+  }
+
+  async function editPropertyMedia(propertyId) {
+    try {
+      const item = await getProperty(propertyId);
+      if (!item) {
+        alert("Property not found.");
+        return;
+      }
+
+      mediaEditingPropertyId = propertyId;
+      mediaEditingImages = getImageUrls(item);
+
+      const title = item.title || item.property_title || "Property";
+      const subtitle = document.getElementById("media-modal-subtitle");
+      const videoInput = document.getElementById("media-video-url");
+      const addImageInput = document.getElementById("media-add-image-url");
+      const uploadImageInput = document.getElementById("media-upload-image-file");
+      const uploadVideoInput = document.getElementById("media-upload-video-file");
+
+      if (subtitle) subtitle.textContent = title;
+      if (videoInput) videoInput.value = getVideoUrl(item);
+      if (addImageInput) addImageInput.value = "";
+      if (uploadImageInput) uploadImageInput.value = "";
+      if (uploadVideoInput) uploadVideoInput.value = "";
+
+      renderMediaModal();
+      openMediaModal();
+    } catch (error) {
+      alert(error.message || "Unable to open media manager.");
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("close-media-modal")?.addEventListener("click", closeMediaModal);
+    document.getElementById("media-cancel-btn")?.addEventListener("click", closeMediaModal);
+
+    document.getElementById("property-media-modal")?.addEventListener("click", (event) => {
+      if (event.target?.id === "property-media-modal") closeMediaModal();
+    });
+
+    document.getElementById("media-add-image-btn")?.addEventListener("click", () => {
+      const input = document.getElementById("media-add-image-url");
+      const url = input?.value?.trim() || "";
+      if (!url) return;
+      mediaEditingImages.push(url);
+      input.value = "";
+      renderMediaModal();
+    });
+
+    document.getElementById("media-video-url")?.addEventListener("input", renderMediaModal);
+
+    document.getElementById("media-upload-image-file")?.addEventListener("change", async (event) => {
+      const files = Array.from(event.target.files || []);
+      if (!files.length || !mediaEditingPropertyId) return;
+
+      try {
+        for (const file of files) {
+          const url = await uploadAdminMediaToCloudinary(file, mediaEditingPropertyId);
+          mediaEditingImages.push(url);
+        }
+        event.target.value = "";
+        renderMediaModal();
+        alert("Image uploaded to Cloudinary and added to this property.");
+      } catch (error) {
+        alert(error.message || "Unable to upload image.");
+      }
+    });
+
+    document.getElementById("media-upload-video-file")?.addEventListener("change", async (event) => {
+      const file = event.target.files?.[0];
+      if (!file || !mediaEditingPropertyId) return;
+
+      try {
+        const url = await uploadAdminMediaToCloudinary(file, mediaEditingPropertyId);
+        const videoInput = document.getElementById("media-video-url");
+        if (videoInput) videoInput.value = url;
+        event.target.value = "";
+        renderMediaModal();
+        alert("Video uploaded to Cloudinary and added to this property.");
+      } catch (error) {
+        alert(error.message || "Unable to upload video.");
+      }
+    });
+
+    document.getElementById("media-save-btn")?.addEventListener("click", async () => {
+      if (!mediaEditingPropertyId) return;
+
+      const videoUrl = document.getElementById("media-video-url")?.value?.trim() || "";
+
+      try {
+        await window.GP_SUPABASE.update(PROPERTIES_TABLE, mediaEditingPropertyId, {
+          image_urls: mediaEditingImages,
+          images: mediaEditingImages,
+          main_image: mediaEditingImages[0] || "",
+          video_urls: videoUrl ? [videoUrl] : [],
+          video_url: videoUrl,
+          main_video: videoUrl,
+          updated_at: new Date().toISOString()
+        });
+
+        alert("Photos/videos updated. Removed media is hidden from the property, but not deleted from Cloudinary storage.");
+        closeMediaModal();
+        await loadAdminProperties();
+      } catch (error) {
+        alert(error.message || "Unable to save media changes.");
+      }
+    });
+  });
+
+  async function editPropertyMapping(propertyId) {
+    try {
+      const item = await getProperty(propertyId);
+      if (!item) {
+        alert("Property not found.");
+        return;
+      }
+
+      const mappingTitle = prompt("Mapping title", item.mapping_title || "Property Mapping") ?? "";
+      if (mappingTitle === null) return;
+
+      const mappingUrl = prompt(
+        "Mapping link URL. Example: layout-map.html?id=PROPERTY_ID or Google Drive/Figma/map page link",
+        item.mapping_url || ""
+      );
+
+      if (mappingUrl === null) return;
+
+      const mappingNote = prompt("Mapping note / short description", item.mapping_note || "") ?? "";
+
+      await window.GP_SUPABASE.update(PROPERTIES_TABLE, propertyId, {
+        mapping_title: mappingTitle.trim(),
+        mapping_url: mappingUrl.trim(),
+        mapping_note: mappingNote.trim(),
+        updated_at: new Date().toISOString()
+      });
+
+      alert("Mapping link added/updated for this property.");
+      await loadAdminProperties();
+    } catch (error) {
+      alert(
+        (error.message || "Unable to edit mapping.") +
+        "\n\nIf this error says column not found, run the SQL columns I gave below."
+      );
+    }
+  }
+
+  async function deleteProperty(propertyId) {
+    try {
+      const item = await getProperty(propertyId);
+      if (!item) {
+        alert("Property not found.");
+        return;
+      }
+
+      const title = item.title || item.property_title || propertyId;
+
+      const confirmText = prompt(
+        `This will delete the whole property from listing.\n\nType DELETE to remove:\n${title}`
+      );
+
+      if (confirmText !== "DELETE") return;
+
+      await window.GP_SUPABASE.delete(PROPERTIES_TABLE, propertyId);
+
+      alert("Property deleted from listing.");
+      await loadAdminProperties();
+    } catch (error) {
+      alert(error.message || "Unable to delete property.");
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    setTimeout(loadAdminProperties, 300);
+    document.getElementById("refresh-btn")?.addEventListener("click", (event) => {
+      event.preventDefault();
+      loadAdminProperties();
+    });
+  });
+
+  window.loadAdminProperties = loadAdminProperties;
+})();
+</script>
+
+
+
+<div id="property-media-modal" class="media-modal-overlay" aria-hidden="true">
+  <div class="media-modal-card">
+    <div class="media-modal-head">
+      <div>
+        <h2 class="text-2xl font-black">Property Photos & Videos</h2>
+        <p id="media-modal-subtitle" class="text-sm font-bold text-[#476080] mt-1">Cloudinary media preview</p>
+      </div>
+      <button id="close-media-modal" type="button" class="w-10 h-10 rounded-full bg-[#eef6ff] font-black text-[#082f5f]">×</button>
+    </div>
+
+    <div class="p-5 md:p-6 grid gap-6">
+      <div>
+        <div class="flex items-center justify-between gap-3 mb-3">
+          <h3 class="text-lg font-black">Photos</h3>
+          <span id="media-photo-count" class="text-xs font-black text-[#476080]"></span>
+        </div>
+        <div id="media-photo-grid" class="media-grid"></div>
+      </div>
+
+      <div>
+        <h3 class="text-lg font-black mb-3">Video</h3>
+        <div id="media-video-box"></div>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-4 rounded-2xl bg-[#f8fafc] border border-[#cbd5e1]/70 p-4">
+        <div>
+          <label class="text-xs font-black uppercase tracking-widest text-[#082f5f]">Add Photo URL</label>
+          <div class="flex gap-2 mt-2">
+            <input id="media-add-image-url" class="w-full rounded-xl border-[#cbd5e1]" placeholder="Paste Cloudinary image URL" />
+            <button id="media-add-image-btn" type="button" class="admin-mini-btn blue">Add</button>
+          </div>
+          <input id="media-upload-image-file" type="file" accept="image/*" multiple class="mt-3 w-full rounded-xl border-[#cbd5e1]" />
+          <p class="text-xs text-[#64748b] font-bold mt-2">Upload works only if Cloudinary CLOUD_NAME and UPLOAD_PRESET are in js/config.js.</p>
+        </div>
+
+        <div>
+          <label class="text-xs font-black uppercase tracking-widest text-[#082f5f]">Video URL</label>
+          <input id="media-video-url" class="w-full rounded-xl border-[#cbd5e1] mt-2" placeholder="Paste Cloudinary video URL" />
+          <input id="media-upload-video-file" type="file" accept="video/*" class="mt-3 w-full rounded-xl border-[#cbd5e1]" />
+          <p class="text-xs text-[#64748b] font-bold mt-2">Clear video URL and save to remove video from listing.</p>
+        </div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row justify-end gap-3">
+        <button id="media-cancel-btn" type="button" class="px-5 py-3 rounded-2xl border border-[#cbd5e1] font-black">Cancel</button>
+        <button id="media-save-btn" type="button" class="btn-gold px-6 py-3 rounded-2xl font-black">Save Media Changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+function openVideoUploadsFromDashboard(event) {
+  if (event) event.preventDefault();
+
+  sessionStorage.setItem("gp_dashboard_video_access", "allowed");
+  sessionStorage.setItem("gp_dashboard_video_access_time", String(Date.now()));
+
+  window.location.href = "admin-staff-video.html";
+}
+</script>
+
 </body>
 </html>
