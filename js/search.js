@@ -14,35 +14,37 @@
    ========================================================= */
 
 window.GP_SEARCH = {
-  readParams() {
-    const params = new URLSearchParams(location.search);
+ readParams() {
+  const params = new URLSearchParams(location.search);
 
-    return {
-      q: params.get("q") || params.get("search") || "",
-      location: params.get("location") || params.get("area") || params.get("city") || "",
-      purpose: params.get("purpose") || "",
-      type: (() => {
-  const value =
-    params.get("type") ||
-    params.get("property_type") ||
-    "all";
+  return {
+    q: params.get("q") || params.get("search") || "",
+    state: params.get("state") || "",
+    district: params.get("district") || "",
+    location: params.get("location") || params.get("area") || params.get("city") || "",
+    purpose: params.get("purpose") || "",
+    filters: params.get("filters") || "",
+    type: (() => {
+      const value =
+        params.get("type") ||
+        params.get("property_type") ||
+        "all";
 
-  const blocked = [
-    "residential",
-    "property",
-    "properties",
-    "realestate",
-    "real-estate"
-  ];
+      const blocked = [
+        "residential",
+        "property",
+        "properties",
+        "realestate",
+        "real-estate"
+      ];
 
-  return blocked.includes(String(value).toLowerCase())
-    ? "all"
-    : value;
-})(),
-      budget: params.get("budget") || "all"
-    };
-  },
-
+      return blocked.includes(String(value).toLowerCase())
+        ? "all"
+        : value;
+    })(),
+    budget: params.get("budget") || "all"
+  };
+},
   normalize(value) {
     return String(value || "")
       .toLowerCase()
@@ -204,6 +206,9 @@ window.GP_SEARCH = {
     const locationText = this.normalize(state.location || "");
     const typeText = this.normalize(state.type || "all");
     const purposeText = this.normalize(state.purpose || "");
+    const stateText = this.normalize(state.state || "");
+const districtText = this.normalize(state.district || "");
+const filterText = this.normalize(state.filters || "");
 
     const normalize = this.normalize.bind(this);
 
@@ -296,44 +301,95 @@ window.GP_SEARCH = {
     };
 
     const matchesPurpose = (p) => {
-      if (!purposeText) return true;
+  if (!purposeText) return true;
 
-      const text = normalize([
-        p.listing_type,
-        p.purpose,
-        p.property_for,
-        p.category,
-        p.title,
-        p.description
-      ].join(" "));
+  const text = normalize([
+    p.listing_type,
+    p.purpose,
+    p.property_for,
+    p.category,
+    p.title,
+    p.description
+  ].join(" "));
 
-      if (
-  purposeText === "buy" ||
-  purposeText === "sale" ||
-  purposeText === "sell"
-) {
-  return (
-    text.includes("buy") ||
-    text.includes("sale") ||
-    text.includes("sell") ||
-    text.includes("selling") ||
-    text.includes("resale")
-  );
-}
-
-      if (purposeText === "rent") {
-        return text.includes("rent") || text.includes("rental") || text.includes("lease");
-      }
-
-      return text.includes(purposeText);
-    };
-
-    return [...(properties || [])].filter((p) =>
-      matchesLocation(p) &&
-      matchesSearch(p) &&
-      matchesType(p) &&
-      matchesPurpose(p)
+  if (
+    purposeText === "buy" ||
+    purposeText === "sale" ||
+    purposeText === "sell"
+  ) {
+    return (
+      text.includes("buy") ||
+      text.includes("sale") ||
+      text.includes("sell") ||
+      text.includes("selling") ||
+      text.includes("resale")
     );
+  }
+
+  if (purposeText === "rent") {
+    return text.includes("rent") || text.includes("rental") || text.includes("lease");
+  }
+
+  return text.includes(purposeText);
+};
+
+const matchesState = (p) => {
+  if (!stateText) return true;
+
+  const text = normalize([
+    p.state,
+    p.property_state,
+    p.address,
+    p.location,
+    p.district,
+    p.city
+  ].join(" "));
+
+  return text.includes(stateText);
+};
+
+const matchesDistrict = (p) => {
+  if (!districtText) return true;
+
+  const text = normalize([
+    p.district,
+    p.city,
+    p.location,
+    p.area,
+    p.locality,
+    p.address
+  ].join(" "));
+
+  return text.includes(districtText);
+};
+
+const matchesExtraFilters = (p) => {
+  if (!filterText) return true;
+
+  const text = this.searchableText(p);
+
+  const filters = filterText
+    .split(",")
+    .map(item => normalize(item))
+    .filter(Boolean);
+
+  return filters.every(filter => {
+    return filter
+      .split(" ")
+      .filter(Boolean)
+      .some(word => this.matchesSearchWord(text, word));
+  });
+};
+
+return [...(properties || [])].filter((p) =>
+  matchesState(p) &&
+  matchesDistrict(p) &&
+  matchesLocation(p) &&
+  matchesSearch(p) &&
+  matchesType(p) &&
+  matchesPurpose(p) &&
+  matchesExtraFilters(p)
+);
   }
 };
 
