@@ -34,6 +34,68 @@ body{font-family:'Manrope',sans-serif;background:linear-gradient(135deg,#f9f9ff,
 .captured-img{width:100%;aspect-ratio:4/3;background:#f3f4f6;border-radius:18px;object-fit:cover;border:1px solid rgba(203,213,225,.55)}
 .mobile-header{display:none}
 @media(max-width:1023px){.desktop-header{display:none}.mobile-header{display:block;position:sticky;top:0;z-index:1000;background:#fff;border-bottom:1px solid #ececec}.mobile-header-inner{height:66px;padding:0 16px;display:flex;align-items:center;justify-content:space-between}.mobile-brand{display:flex;align-items:center;gap:10px}.mobile-brand img{width:34px;height:34px;border-radius:9px;object-fit:cover}.mobile-brand-title{font-weight:900;color:#082f5f;font-size:18px;line-height:1.05}.auth-wrap{padding-top:28px!important}}
+
+.password-wrap{position:relative}
+.password-wrap .input-field,.password-wrap input{padding-right:48px!important}
+.eye-btn{position:absolute;right:12px;top:50%;transform:translateY(-50%);width:34px;height:34px;border-radius:999px;display:flex;align-items:center;justify-content:center;color:#476080;background:transparent;transition:.18s}
+.eye-btn:hover{background:#eef6ff;color:#0f4c81}
+.forgot-box{display:none;margin-top:18px;border:1px solid rgba(203,213,225,.75);background:#f8fbff;border-radius:18px;padding:16px}
+.forgot-box.active{display:block}
+.forgot-grid{display:grid;gap:12px}
+.status-good{color:#15803d!important}
+.status-bad{color:#dc2626!important}
+/* CALL HOVER DROPDOWN */
+.call-hover-wrap {
+  position: relative;
+}
+
+.call-hover-box {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 12px);
+  width: 280px;
+  background: #fff;
+  border: 1px solid rgba(203,213,225,.7);
+  border-radius: 22px;
+  box-shadow: 0 24px 60px rgba(15,23,42,.18);
+  padding: 16px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px);
+  transition: .2s;
+  z-index: 2000;
+}
+
+.call-hover-wrap:hover .call-hover-box {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.call-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  font-weight: 900;
+  color: #082f5f;
+  transition: .18s;
+}
+
+.call-item:hover {
+  background: #eef6ff;
+}
+
+.whatsapp-item {
+  background: #dcfce7;
+  color: #166534;
+  margin-top: 8px;
+}
+
+.whatsapp-item:hover {
+  background: #bbf7d0;
+}
 </style>
 </head>
 <body>
@@ -47,27 +109,52 @@ body{font-family:'Manrope',sans-serif;background:linear-gradient(135deg,#f9f9ff,
         <span class="text-[10px] text-outline leading-tight font-semibold">Trusted. Transparent. Together.</span>
       </div>
     </a> 
-    <div class="main-nav hidden lg:flex items-center h-full">
-      <div class="group h-full flex items-center">
-        <a class="nav-link">Buy <span class="material-symbols-outlined text-sm">expand_more</span></a>
-        <div class="mega-menu"><div class="mega-menu-content">
-          <div class="mega-card"><h4>Property Type</h4><ul><li><a href="properties.html?purpose=buy&type=flats"><span class="material-symbols-outlined">apartment</span>Flats</a></li><li><a href="properties.html?purpose=buy&type=houses"><span class="material-symbols-outlined">home</span>Houses</a></li><li><a href="properties.html?purpose=buy&type=villas"><span class="material-symbols-outlined">villa</span>Villas</a></li><li><a href="properties.html?purpose=buy&type=plots"><span class="material-symbols-outlined">landscape</span>Plots</a></li><li><a href="properties.html?purpose=buy&type=commercial"><span class="material-symbols-outlined">corporate_fare</span>Commercial</a></li></ul></div>
-          <div class="mega-card"><h4>Popular Areas</h4><ul><li><a href="properties.html?area=brodipet">Brodipet</a></li><li><a href="properties.html?area=arundelpet">Arundelpet</a></li><li><a href="properties.html?area=lakshmipuram">Lakshmipuram</a></li><li><a href="properties.html?area=amaravati-road">Amaravati Road</a></li></ul></div>
-          <div class="mega-card"><h4>Budget</h4><ul><li><a href="properties.html?budget=under-50-lakhs">Under ₹50 Lakhs</a></li><li><a href="properties.html?budget=50-lakhs-1-cr">₹50 Lakhs - ₹1 Cr</a></li><li><a href="properties.html?budget=1-cr-2-cr">₹1 Cr - ₹2 Cr</a></li><li><a href="properties.html?budget=above-2-cr">Above ₹2 Cr</a></li></ul></div>
-          <div class="mega-card mega-promo"><h4>Home Loan</h4><p class="text-sm text-secondary leading-relaxed mb-5">Find properties and plan finance with local support.</p><a href="home-loan.html" class="justify-center bg-[#0f4c81] text-white hover:text-white">Check Eligibility</a></div>
-        </div></div>
-      </div>
-      <div class="group h-full flex items-center"><a class="nav-link">Rent <span class="material-symbols-outlined text-sm">expand_more</span></a><div class="mega-menu"><div class="mega-menu-content"><div class="mega-card"><h4>Residential Rent</h4><ul><li><a href="properties.html?purpose=rent&type=flats">Flats for Rent</a></li><li><a href="properties.html?purpose=rent&type=independent-house">Independent House</a></li><li><a href="properties.html?purpose=rent&type=gated-community">Gated Community</a></li></ul></div><div class="mega-card"><h4>Commercial Rent</h4><ul><li><a href="properties.html?purpose=rent&type=office-space">Office Space</a></li><li><a href="properties.html?purpose=rent&type=shop-showroom">Shop / Showroom</a></li><li><a href="properties.html?purpose=rent&type=warehouse">Warehouse</a></li></ul></div><div class="mega-card"><h4>Rent Range</h4><ul><li><a href="properties.html?purpose=rent&budget=under-10000">Under ₹10,000</a></li><li><a href="properties.html?purpose=rent&budget=10000-20000">₹10k - ₹20k</a></li><li><a href="properties.html?purpose=rent&budget=above-30000">Above ₹30k</a></li></ul></div><div class="mega-card mega-promo"><h4>Rental Support</h4><p class="text-sm text-secondary leading-relaxed mb-5">Shortlist rentals and communicate through the platform.</p><a href="properties.html?purpose=rent" class="justify-center bg-[#0f4c81] text-white hover:text-white">Explore Rentals</a></div></div></div></div>
-      <div class="group h-full flex items-center"><a class="nav-link">Projects <span class="material-symbols-outlined text-sm">expand_more</span></a><div class="mega-menu"><div class="mega-menu-content"><div class="mega-card"><h4>Ongoing Projects</h4><ul><li><a href="projects.html?type=luxury-apartments">Luxury Apartments</a></li><li><a href="projects.html?type=premium-villas">Premium Villas</a></li><li><a href="projects.html?type=gated-townships">Gated Townships</a></li></ul></div><div class="mega-card"><h4>New Launches</h4><ul><li><a href="projects.html?project=amaravati-smart-city">Amaravati Smart City</a></li><li><a href="projects.html?project=gorantla-heights">Gorantla Heights</a></li></ul></div><div class="mega-card"><h4>Project Types</h4><ul><li><a href="projects.html?type=apartments">Apartments</a></li><li><a href="projects.html?type=villas">Villas</a></li><li><a href="projects.html?type=ventures">Ventures</a></li></ul></div><div class="mega-card mega-promo"><h4>Developer Listing</h4><p class="text-sm text-secondary leading-relaxed mb-5">Developers can list projects after approval.</p><a href="register.html?role=developer" class="justify-center bg-[#0f4c81] text-white hover:text-white">Join Developer</a></div></div></div></div>
-      <div class="group h-full flex items-center"><a class="nav-link">Services <span class="material-symbols-outlined text-sm">expand_more</span></a><div class="mega-menu"><div class="mega-menu-content"><div class="mega-card"><h4>Worker Services</h4><ul><li><a href="services-details.html?service=plumbing"><span class="material-symbols-outlined">plumbing</span>Plumbing</a></li><li><a href="services-details.html?service=electrician"><span class="material-symbols-outlined">electrical_services</span>Electrician</a></li><li><a href="services-details.html?service=painting"><span class="material-symbols-outlined">format_paint</span>Painting</a></li><li><a href="services-details.html?service=construction-workers"><span class="material-symbols-outlined">engineering</span>Construction Workers</a></li></ul></div><div class="mega-card"><h4>Professional Services</h4><ul><li><a href="services-details.html?service=property-management"><span class="material-symbols-outlined">real_estate_agent</span>Property Management</a></li><li><a href="services-details.html?service=interior-design"><span class="material-symbols-outlined">chair</span>Interior Design</a></li><li><a href="services-details.html?service=architectural-design"><span class="material-symbols-outlined">architecture</span>Architectural Design</a></li><li><a href="services-details.html?service=vastu"><span class="material-symbols-outlined">explore</span>Vastu</a></li></ul></div><div class="mega-card"><h4>Join as Provider</h4><ul><li><a href="services.html#enroll">Plumber Enrollment</a></li><li><a href="services.html#enroll">Electrician Enrollment</a></li><li><a href="services.html#enroll">Painter Enrollment</a></li><li><a href="services.html#enroll">Construction Worker Enrollment</a></li></ul></div><div class="mega-card mega-promo"><h4>Service Hub</h4><p class="text-sm text-secondary leading-relaxed mb-5">Service providers can apply.</p><a href="services.html" class="justify-center bg-[#0f4c81] text-white hover:text-white">Explore Services</a></div></div></div></div>
-      <div class="group h-full flex items-center"><a class="nav-link">For Sellers <span class="material-symbols-outlined text-sm">expand_more</span></a><div class="mega-menu"><div class="mega-menu-content"><div class="mega-card"><h4>Sell With Us</h4><ul><li><a href="post-property.html">Post Property for Free</a></li><li><a href="seller-packages.html">Seller Packages</a></li><li><a href="photoshoot.html">Request Photoshoot</a></li></ul></div><div class="mega-card"><h4>Join Us</h4><ul><li><a href="register.html?role=owner">Owners</a></li><li><a href="register.html?role=broker">Brokers</a></li><li><a href="register.html?role=developer">Developers</a></li></ul></div><div class="mega-card"><h4>Listing Tools</h4><ul><li><a href="login.html">Login to Panel</a></li><li><a href="register.html">Create Account</a></li><li><a href="contact.html">Talk to Staff</a></li></ul></div><div class="mega-card mega-promo"><h4>Upload Multiple Properties</h4><p class="text-sm text-secondary leading-relaxed mb-5">Manage panel after approval.</p><a href="register.html" class="justify-center bg-[#0f4c81] text-white hover:text-white">Join Now</a></div></div></div></div>
-      <div class="group h-full flex items-center"><a class="nav-link">News & Updates <span class="material-symbols-outlined text-sm">expand_more</span></a><div class="mega-menu"><div class="mega-menu-content"><div class="mega-card"><h4>Latest News</h4><ul><li><a href="news.html?category=market-trends">Market Trends</a></li><li><a href="news.html?category=registration-updates">Registration Updates</a></li><li><a href="news.html?category=guntur-real-estate-news">Guntur Real Estate News</a></li></ul></div><div class="mega-card"><h4>Insights</h4><ul><li><a href="insights.html?topic=buying-guide">Buying Guide</a></li><li><a href="insights.html?topic=rental-guide">Rental Guide</a></li><li><a href="insights.html?topic=legal-checklist">Legal Checklist</a></li></ul></div><div class="mega-card"><h4>Local Updates</h4><ul><li><a href="news.html?area=amaravati-road">Amaravati Road</a></li><li><a href="news.html?area=brodipet">Brodipet</a></li><li><a href="news.html?area=lakshmipuram">Lakshmipuram</a></li></ul></div><div class="mega-card mega-promo"><h4>Stay Updated</h4><p class="text-sm text-secondary leading-relaxed mb-5">Read property trends and updates.</p><a href="news.html" class="justify-center bg-[#0f4c81] text-white hover:text-white">Read News</a></div></div></div></div>
-    </div>
+   <div class="flex items-center gap-3">
+  <div class="call-hover-wrap hidden sm:block">
+    <button
+      type="button"
+      class="flex items-center gap-2 px-4 py-2 rounded-full border border-[#cbd5e1] text-[#082f5f] font-extrabold hover:bg-[#eef6ff] transition-all"
+    >
+      <span class="material-symbols-outlined text-sm">call</span>
+      <span class="text-sm">Call</span>
+    </button>
 
-    <div class="flex items-center gap-3">
-      <a class="hidden sm:flex items-center gap-2 px-4 py-2 rounded-full border border-outline-variant text-on-surface font-semibold hover:bg-surface-container-low transition-all" href="tel:+919959919999"><span class="material-symbols-outlined text-sm">call</span><span class="text-sm">Call</span></a>
-      <a id="profile-link" class="flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#0f4c81] text-white font-bold shadow-lg hover:brightness-110 transition-all active:scale-95 text-sm" href="login.html"><span class="material-symbols-outlined text-sm">person</span><span>Profile</span></a>
+    <div class="call-hover-box">
+      <p class="text-xs font-black uppercase tracking-widest text-[#7f7663] mb-2">
+        Contact Us
+      </p>
+
+      <a class="call-item" href="tel:+918500720404">
+        <span class="material-symbols-outlined">call</span>
+        8500720404
+      </a>
+
+      <a class="call-item" href="tel:+918500728484">
+        <span class="material-symbols-outlined">call</span>
+        8500728484
+      </a>
+
+      <a
+        class="call-item whatsapp-item"
+        href="https://wa.me/918500720404?text=I%20am%20interested%20in%20properties"
+        target="_blank"
+        rel="noopener"
+      >
+        <span class="material-symbols-outlined">chat</span>
+        WhatsApp
+      </a>
     </div>
+  </div>
+
+  <a
+    id="profile-link"
+    class="flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#0f4c81] text-white font-bold shadow-lg hover:brightness-110 transition-all active:scale-95 text-sm"
+    href="login.html"
+  >
+    <span class="material-symbols-outlined text-sm">person</span>
+    <span>Profile</span>
+  </a>
+</div>
   </div>
 </nav>
 
@@ -108,22 +195,84 @@ body{font-family:'Manrope',sans-serif;background:linear-gradient(135deg,#f9f9ff,
     Password
   </label>
 
-  <div class="border border-[#cbd5e1] rounded-xl px-4 py-2 focus-within:ring-2 focus-within:ring-[#0f4c81]/25">
+  <div class="password-wrap border border-[#cbd5e1] rounded-xl px-4 py-2 focus-within:ring-2 focus-within:ring-[#0f4c81]/25">
     <input
       id="login-password"
-      class="border-0 focus:ring-0 w-full py-3"
+      class="border-0 focus:ring-0 w-full py-3 bg-transparent"
       type="password"
       placeholder="Enter password"
     />
+    <button type="button" id="toggle-login-password" class="eye-btn" aria-label="Show password">
+      <span class="material-symbols-outlined text-[21px]">visibility</span>
+    </button>
   </div>
 
   <button id="continue-btn" class="btn-gold w-full mt-8 py-4 rounded-xl font-extrabold text-lg">
     Login
   </button>
 
-  <a href="forgot-password.html" class="block text-center mt-4 text-sm font-extrabold text-[#082f5f] hover:underline">
+  <button type="button" id="forgot-toggle-btn" class="block w-full text-center mt-4 text-sm font-extrabold text-[#082f5f] hover:underline">
     Forgot / Change Password?
-  </a>
+  </button>
+
+  <div id="forgot-box" class="forgot-box">
+    <div class="flex items-start justify-between gap-3 mb-3">
+      <div>
+        <h2 class="text-lg font-extrabold text-[#151c27]">Forgot / Change Password</h2>
+        <p class="text-sm text-[#476080] mt-1">Enter phone number, get OTP, then set new password here only.</p>
+      </div>
+      <button type="button" id="forgot-close-btn" class="w-9 h-9 rounded-full hover:bg-white flex items-center justify-center">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+
+    <div class="forgot-grid">
+      <div>
+        <label class="text-xs font-black text-[#082f5f] uppercase tracking-widest block mb-2">Phone Number</label>
+        <div class="flex items-center gap-2 border border-[#cbd5e1] rounded-xl px-4 py-2 bg-white focus-within:ring-2 focus-within:ring-[#0f4c81]/25">
+          <span class="font-extrabold text-[#476080]">+91</span>
+          <input id="forgot-phone" class="border-0 focus:ring-0 flex-1 py-2 bg-transparent" placeholder="Enter mobile number" inputmode="numeric" maxlength="10"/>
+        </div>
+      </div>
+
+      <button id="send-reset-otp-btn" type="button" class="w-full py-3 rounded-xl font-extrabold bg-[#0f4c81] text-white hover:brightness-110">
+        Send OTP
+      </button>
+
+      <div id="reset-password-area" class="hidden forgot-grid">
+        <div>
+          <label class="text-xs font-black text-[#082f5f] uppercase tracking-widest block mb-2">OTP</label>
+          <input id="forgot-otp" class="input-field bg-white" inputmode="numeric" maxlength="6" placeholder="Enter 6-digit OTP"/>
+        </div>
+
+        <div>
+          <label class="text-xs font-black text-[#082f5f] uppercase tracking-widest block mb-2">New Password</label>
+          <div class="password-wrap">
+            <input id="new-password" class="input-field bg-white" type="password" placeholder="Create new password"/>
+            <button type="button" id="toggle-new-password" class="eye-btn" aria-label="Show new password">
+              <span class="material-symbols-outlined text-[21px]">visibility</span>
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <label class="text-xs font-black text-[#082f5f] uppercase tracking-widest block mb-2">Re-enter Password</label>
+          <div class="password-wrap">
+            <input id="confirm-new-password" class="input-field bg-white" type="password" placeholder="Re-enter new password"/>
+            <button type="button" id="toggle-confirm-new-password" class="eye-btn" aria-label="Show confirm password">
+              <span class="material-symbols-outlined text-[21px]">visibility</span>
+            </button>
+          </div>
+        </div>
+
+        <button id="change-password-btn" type="button" class="btn-gold w-full py-3 rounded-xl font-extrabold">
+          Change Password
+        </button>
+      </div>
+
+      <p id="forgot-status" class="text-sm text-[#476080]"></p>
+    </div>
+  </div>
 
   <div class="flex items-center gap-4 my-6">
     <div class="h-px bg-[#cbd5e1]/60 flex-1"></div>
@@ -136,7 +285,6 @@ body{font-family:'Manrope',sans-serif;background:linear-gradient(135deg,#f9f9ff,
     Continue to Register Page
   </a>
 </div>
-    </div>
 
     <p id="login-status" class="text-sm text-[#476080] mt-4"></p>
     <p class="text-xs text-[#7f7663] mt-5">By continuing, you agree to Guntur Properties Terms and Conditions.</p>
@@ -190,6 +338,10 @@ function checkAlreadyLoggedIn(){
 
 document.addEventListener("DOMContentLoaded", () => {
   bindMegaMenus();
+  bindPasswordEye("toggle-login-password", "login-password");
+  bindPasswordEye("toggle-new-password", "new-password");
+  bindPasswordEye("toggle-confirm-new-password", "confirm-new-password");
+  bindForgotPasswordBox();
   checkAlreadyLoggedIn();
 });
 
@@ -261,6 +413,207 @@ async function loginWithPassword(){
     status.textContent = error.message || "Login failed.";
   }
 }
+
+
+function setStatusText(el, message, good){
+  if(!el) return;
+  el.textContent = message || "";
+  el.classList.remove("status-good", "status-bad");
+  if(message){
+    el.classList.add(good ? "status-good" : "status-bad");
+  }
+}
+
+function isStrongPassword(password){
+  return /^(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/.test(password || "");
+}
+
+function bindPasswordEye(buttonId, inputId){
+  const btn = document.getElementById(buttonId);
+  const input = document.getElementById(inputId);
+  if(!btn || !input) return;
+
+  btn.addEventListener("click", () => {
+    const isHidden = input.type === "password";
+    input.type = isHidden ? "text" : "password";
+    btn.innerHTML = `<span class="material-symbols-outlined text-[21px]">${isHidden ? "visibility_off" : "visibility"}</span>`;
+    btn.setAttribute("aria-label", isHidden ? "Hide password" : "Show password");
+  });
+}
+
+function generateOtp(){
+  return String(Math.floor(100000 + Math.random() * 900000));
+}
+
+async function sendResetOtp(){
+  const phoneInput = document.getElementById("forgot-phone");
+  const area = document.getElementById("reset-password-area");
+  const status = document.getElementById("forgot-status");
+  const phone = cleanPhone(phoneInput?.value);
+
+  if(!phone){
+    setStatusText(status, "Enter a valid 10-digit Indian mobile number.", false);
+    return;
+  }
+
+  if(!supabaseClient){
+    setStatusText(status, "Supabase connection not found.", false);
+    return;
+  }
+
+  try{
+    setStatusText(status, "Checking account...", true);
+
+    const { data, error } = await supabaseClient
+      .from("profiles")
+      .select("phone")
+      .eq("phone", phone)
+      .maybeSingle();
+
+    if(error) throw error;
+
+    if(!data){
+      setStatusText(status, "Account not found. Please register first.", false);
+      area?.classList.add("hidden");
+      return;
+    }
+
+    const otp = generateOtp();
+    sessionStorage.setItem("gp_reset_phone", phone);
+    sessionStorage.setItem("gp_reset_otp", otp);
+    sessionStorage.setItem("gp_reset_otp_time", String(Date.now()));
+
+    /*
+      For real SMS, create a Supabase Edge Function named send-password-reset-otp
+      and send OTP through Fast2SMS/Twilio from backend only.
+      This local OTP is for testing without SMS API.
+    */
+    try{
+      await supabaseClient.functions.invoke("send-password-reset-otp", {
+        body: { phone, otp }
+      });
+      setStatusText(status, "OTP sent to your mobile number. Enter OTP and new password.", true);
+    }catch(edgeError){
+      console.warn("OTP edge function not available. Showing test OTP only.", edgeError);
+      setStatusText(status, "Testing OTP: " + otp + " — enter this OTP and set new password.", true);
+    }
+
+    area?.classList.remove("hidden");
+  }catch(error){
+    console.error(error);
+    setStatusText(status, error.message || "Unable to send OTP.", false);
+  }
+}
+
+async function changeForgotPassword(){
+  const status = document.getElementById("forgot-status");
+  const phone = cleanPhone(document.getElementById("forgot-phone")?.value);
+  const otp = String(document.getElementById("forgot-otp")?.value || "").trim();
+  const newPassword = String(document.getElementById("new-password")?.value || "").trim();
+  const confirmPassword = String(document.getElementById("confirm-new-password")?.value || "").trim();
+
+  const savedPhone = sessionStorage.getItem("gp_reset_phone");
+  const savedOtp = sessionStorage.getItem("gp_reset_otp");
+  const savedTime = Number(sessionStorage.getItem("gp_reset_otp_time") || 0);
+
+  if(!phone){
+    setStatusText(status, "Enter phone number.", false);
+    return;
+  }
+
+  if(phone !== savedPhone){
+    setStatusText(status, "Phone number changed. Please send OTP again.", false);
+    return;
+  }
+
+  if(!otp || otp !== savedOtp){
+    setStatusText(status, "Invalid OTP.", false);
+    return;
+  }
+
+  if(!savedTime || Date.now() - savedTime > 10 * 60 * 1000){
+    setStatusText(status, "OTP expired. Please send OTP again.", false);
+    return;
+  }
+
+  if(!isStrongPassword(newPassword)){
+    setStatusText(status, "Password must be minimum 8 characters with one number and one symbol.", false);
+    return;
+  }
+
+  if(newPassword !== confirmPassword){
+    setStatusText(status, "New password and re-enter password do not match.", false);
+    return;
+  }
+
+  if(!supabaseClient){
+    setStatusText(status, "Supabase connection not found.", false);
+    return;
+  }
+
+  try{
+    setStatusText(status, "Changing password...", true);
+
+    const passwordHash = await hashPassword(newPassword);
+
+    const { error } = await supabaseClient
+      .from("profiles")
+      .update({
+        password_hash: passwordHash,
+        password_set: true
+      })
+      .eq("phone", phone);
+
+    if(error) throw error;
+
+    sessionStorage.removeItem("gp_reset_phone");
+    sessionStorage.removeItem("gp_reset_otp");
+    sessionStorage.removeItem("gp_reset_otp_time");
+
+    document.getElementById("login-phone").value = phone;
+    document.getElementById("login-password").value = "";
+    document.getElementById("forgot-otp").value = "";
+    document.getElementById("new-password").value = "";
+    document.getElementById("confirm-new-password").value = "";
+
+    setStatusText(status, "Password changed successfully. Now login with your new password.", true);
+    setStatusText(document.getElementById("login-status"), "Password changed. Enter new password and login.", true);
+  }catch(error){
+    console.error(error);
+    setStatusText(status, error.message || "Password change failed.", false);
+  }
+}
+
+function bindForgotPasswordBox(){
+  const box = document.getElementById("forgot-box");
+  const forgotBtn = document.getElementById("forgot-toggle-btn");
+  const closeBtn = document.getElementById("forgot-close-btn");
+
+  forgotBtn?.addEventListener("click", () => {
+    box?.classList.toggle("active");
+    const loginPhone = cleanPhone(document.getElementById("login-phone")?.value);
+    const forgotPhone = document.getElementById("forgot-phone");
+    if(loginPhone && forgotPhone && !forgotPhone.value) forgotPhone.value = loginPhone;
+  });
+
+  closeBtn?.addEventListener("click", () => {
+    box?.classList.remove("active");
+  });
+
+  document.getElementById("send-reset-otp-btn")?.addEventListener("click", sendResetOtp);
+  document.getElementById("change-password-btn")?.addEventListener("click", changeForgotPassword);
+
+  ["forgot-phone","forgot-otp","new-password","confirm-new-password"].forEach(id => {
+    document.getElementById(id)?.addEventListener("keydown", e => {
+      if(e.key === "Enter"){
+        e.preventDefault();
+        if(id === "forgot-phone") sendResetOtp();
+        else changeForgotPassword();
+      }
+    });
+  });
+}
+
 
 document.getElementById("continue-btn").addEventListener("click", loginWithPassword);
 
