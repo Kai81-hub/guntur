@@ -157,12 +157,20 @@
       margin-top: 12px;
     }
 
-    .image-preview img {
+    .image-preview img,
+    .plan-preview img {
       width: 100%;
       height: 86px;
       object-fit: cover;
       border-radius: 14px;
       border: 1px solid rgba(203,213,225,.55);
+    }
+
+    .plan-preview {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));
+      gap: 10px;
+      margin-top: 12px;
     }
 
     @media (max-width: 768px) {
@@ -743,12 +751,64 @@
 </div>
 
 <div class="md:col-span-2">
-  <label class="label">Property Video</label>
-  <input id="property_video" class="input-field" type="file" accept="video/*" />
+  <label class="label">Floor Plan / Blueprint Photos Optional</label>
+  <input id="plan_images" class="input-field" type="file" accept="image/*" multiple />
   <div class="media-rule-box mt-2">
-    Optional. Upload maximum 1 video up to 80MB. Video will upload to Cloudinary automatically.
+    Optional. Upload up to 3 photos like floor plan, layout plan, blueprint or project plan.
   </div>
-  <div id="video-preview" class="video-preview"></div>
+  <div id="plan-preview" class="plan-preview"></div>
+</div>
+
+<div class="md:col-span-2">
+  <label class="label">Property Videos Optional</label>
+
+  <div class="grid md:grid-cols-2 gap-5">
+    <div>
+      <label class="label">Reel / Vertical Video 9:16</label>
+      <input id="property_reel_video" class="input-field" type="file" accept="video/*" />
+      <div class="media-rule-box mt-2">
+        Optional. Upload reel/short video up to 80MB and 2 minutes.
+      </div>
+      <div id="reel-video-preview" class="video-preview"></div>
+    </div>
+
+    <div>
+      <label class="label">YouTube / Normal Video 16:9</label>
+      <input id="property_youtube_video" class="input-field" type="file" accept="video/*" />
+      <div class="media-rule-box mt-2">
+        Optional. Upload normal video up to 80MB and 2 minutes.
+      </div>
+      <div id="youtube-video-preview" class="video-preview"></div>
+    </div>
+  </div>
+</div>
+
+<div>
+  <label class="label">Instagram Link</label>
+  <input
+    id="instagram_link"
+    class="input-field"
+    placeholder="Paste Instagram reel/post link"
+  />
+</div>
+
+<div>
+  <label class="label">YouTube Link</label>
+  <input
+    id="youtube_link"
+    class="input-field"
+    placeholder="Paste YouTube video/shorts link"
+  />
+</div>
+
+<div>
+  <label class="label">WhatsApp Number</label>
+  <input
+    id="whatsapp_number"
+    class="input-field"
+    placeholder="Example: 9876543210"
+    maxlength="10"
+  />
 </div>
 
 </div>
@@ -762,9 +822,6 @@
     </section>
   </main>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="js/config.js"></script>
-  <script src="js/supabase.js"></script>
 
   <script>
     const form = document.getElementById("post-property-form");
@@ -772,9 +829,16 @@
     const submitBtn = document.getElementById("submit-btn");
     const imageInput = document.getElementById("property_images");
     const imagePreview = document.getElementById("image-preview");
-    const videoInput = document.getElementById("property_video");
-const videoPreview = document.getElementById("video-preview");
+    const planInput = document.getElementById("plan_images");
+    const planPreview = document.getElementById("plan-preview");
+    const reelVideoInput = document.getElementById("property_reel_video");
+    const youtubeVideoInput = document.getElementById("property_youtube_video");
+    const reelVideoPreview = document.getElementById("reel-video-preview");
+    const youtubeVideoPreview = document.getElementById("youtube-video-preview");
 let selectedImageFiles = [];
+let selectedPlanFiles = [];
+let isSubmittingProperty = false;
+const MAX_VIDEO_SECONDS = 120;
 const accessCard = document.getElementById("access-card");
 const accessStatus = document.getElementById("access-status");
 const upgradeRoleBtn = document.getElementById("upgrade-role-btn");
@@ -1056,24 +1120,133 @@ imageInput?.addEventListener("change", () => {
   }
 });
 
-videoInput?.addEventListener("change", () => {
-  videoPreview.innerHTML = "";
+function renderPlanPreview() {
+  planPreview.innerHTML = "";
 
-  const file = videoInput.files?.[0];
+  selectedPlanFiles.forEach((file, index) => {
+    const wrap = document.createElement("div");
+    wrap.className = "relative";
+
+    const url = URL.createObjectURL(file);
+
+    wrap.innerHTML = `
+      <img src="${url}" alt="${file.name}" />
+      <button
+        type="button"
+        data-remove-plan="${index}"
+        class="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-red-600 text-white font-black text-xs"
+      >
+        ×
+      </button>
+    `;
+
+    planPreview.appendChild(wrap);
+  });
+
+  planPreview.querySelectorAll("[data-remove-plan]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const index = Number(btn.dataset.removePlan);
+      selectedPlanFiles.splice(index, 1);
+      renderPlanPreview();
+      showStatus(`${selectedPlanFiles.length} plan photo(s) selected.`, "success");
+    });
+  });
+}
+
+planInput?.addEventListener("change", () => {
+  const newFiles = Array.from(planInput.files || []);
+
+  newFiles.forEach((file) => {
+    const alreadyExists = selectedPlanFiles.some((oldFile) =>
+      oldFile.name === file.name &&
+      oldFile.size === file.size &&
+      oldFile.lastModified === file.lastModified
+    );
+
+    if (!alreadyExists && selectedPlanFiles.length < 3) {
+      selectedPlanFiles.push(file);
+    }
+  });
+
+  planInput.value = "";
+  renderPlanPreview();
+
+  if (selectedPlanFiles.length > 3) {
+    showStatus("You can upload maximum 3 plan/blueprint photos.", "error");
+  } else if (selectedPlanFiles.length) {
+    showStatus(`${selectedPlanFiles.length} plan/blueprint photo(s) selected.`, "success");
+  }
+});
+
+function getVideoDuration(file) {
+  return new Promise((resolve, reject) => {
+    const video = document.createElement("video");
+    const url = URL.createObjectURL(file);
+
+    video.preload = "metadata";
+
+    video.onloadedmetadata = () => {
+      URL.revokeObjectURL(url);
+      resolve(video.duration || 0);
+    };
+
+    video.onerror = () => {
+      URL.revokeObjectURL(url);
+      reject(new Error("Unable to read video duration."));
+    };
+
+    video.src = url;
+  });
+}
+
+async function handleVideoPreview(input, previewBox, label) {
+  previewBox.innerHTML = "";
+
+  const file = input.files?.[0];
   if (!file) return;
 
   const sizeMB = file.size / 1024 / 1024;
+
   if (sizeMB > 80) {
-    showStatus("Video is too large. Please upload below 80MB.", "error");
-    videoInput.value = "";
+    showStatus(`${label} is too large. Please upload below 80MB.`, "error");
+    input.value = "";
     return;
   }
 
-  const url = URL.createObjectURL(file);
-  const video = document.createElement("video");
-  video.src = url;
-  video.controls = true;
-  videoPreview.appendChild(video);
+  try {
+    const duration = await getVideoDuration(file);
+
+    if (!duration || duration <= 0) {
+      showStatus(`Invalid ${label}. Please upload a proper video.`, "error");
+      input.value = "";
+      return;
+    }
+
+    if (duration > MAX_VIDEO_SECONDS) {
+      showStatus(`${label} must be maximum 2 minutes only.`, "error");
+      input.value = "";
+      return;
+    }
+
+    const url = URL.createObjectURL(file);
+    const video = document.createElement("video");
+    video.src = url;
+    video.controls = true;
+    previewBox.appendChild(video);
+
+    showStatus(`${label} selected successfully.`, "success");
+  } catch (error) {
+    showStatus(error.message || `Unable to check ${label}.`, "error");
+    input.value = "";
+  }
+}
+
+reelVideoInput?.addEventListener("change", () => {
+  handleVideoPreview(reelVideoInput, reelVideoPreview, "Reel video");
+});
+
+youtubeVideoInput?.addEventListener("change", () => {
+  handleVideoPreview(youtubeVideoInput, youtubeVideoPreview, "YouTube/normal video");
 });
 
     async function uploadToCloudinary(file, folder = "properties") {
@@ -1133,21 +1306,64 @@ async function uploadImages(propertyId) {
   return uploadedUrls;
 }
 
-async function uploadVideo(propertyId) {
-  const file = videoInput?.files?.[0];
+async function uploadPlanImages(propertyId) {
+  const files = selectedPlanFiles;
 
+  if (!files || !files.length) return [];
+
+  if (files.length > 3) {
+    throw new Error("You can upload maximum 3 floor plan / blueprint photos.");
+  }
+
+  const uploadedUrls = [];
+
+  for (const file of files) {
+    showStatus(`Uploading plan photo ${uploadedUrls.length + 1} of ${files.length}...`, "success");
+
+    const url = await uploadToCloudinary(file, `properties/${propertyId}/plans`);
+    uploadedUrls.push(url);
+  }
+
+  return uploadedUrls;
+}
+
+async function uploadSingleVideo(file, propertyId, folderName) {
   if (!file) return "";
 
   const sizeMB = file.size / 1024 / 1024;
 
   if (sizeMB > 80) {
-    throw new Error("Video is too large. Please upload a video below 80MB.");
+    throw new Error(`${folderName} video is too large. Please upload below 80MB.`);
   }
 
-  return await uploadToCloudinary(file, `properties/${propertyId}/videos`);
+  const duration = await getVideoDuration(file);
+
+  if (!duration || duration <= 0) {
+    throw new Error(`Invalid ${folderName} video. Please upload a proper video.`);
+  }
+
+  if (duration > MAX_VIDEO_SECONDS) {
+    throw new Error(`${folderName} video must be maximum 2 minutes only.`);
+  }
+
+  return await uploadToCloudinary(file, `properties/${propertyId}/videos/${folderName}`);
 }
 
-    async function updatePropertyMedia(propertyId, imageUrls, videoUrl) {
+async function uploadPropertyVideos(propertyId) {
+  const reelFile = reelVideoInput?.files?.[0];
+  const youtubeFile = youtubeVideoInput?.files?.[0];
+
+  const reelVideoUrl = await uploadSingleVideo(reelFile, propertyId, "reel");
+  const youtubeVideoUrl = await uploadSingleVideo(youtubeFile, propertyId, "youtube");
+
+  return {
+    reelVideoUrl,
+    youtubeVideoUrl,
+    videoUrls: [reelVideoUrl, youtubeVideoUrl].filter(Boolean)
+  };
+}
+
+    async function updatePropertyMedia(propertyId, imageUrls, uploadedVideos = {}, planUrls = []) {
   try {
     await window.GP_SUPABASE.update(
       window.GP_CONFIG.TABLES.properties,
@@ -1156,8 +1372,18 @@ async function uploadVideo(propertyId) {
         image_urls: imageUrls,
         images: imageUrls,
         main_image: imageUrls[0] || "",
-        video_urls: videoUrl ? [videoUrl] : [],
-        main_video: videoUrl || "",
+        floor_plan_url: planUrls[0] || "",
+        floor_plan_urls: planUrls,
+        plan_image_urls: planUrls,
+        blueprint_urls: planUrls,
+        video_urls: uploadedVideos.videoUrls || [],
+        main_video: uploadedVideos.videoUrls?.[0] || "",
+        reel_video_url: uploadedVideos.reelVideoUrl || "",
+        youtube_video_url: uploadedVideos.youtubeVideoUrl || "",
+        video_types: {
+          reel: uploadedVideos.reelVideoUrl || "",
+          youtube: uploadedVideos.youtubeVideoUrl || ""
+        },
         updated_at: new Date().toISOString()
       }
     );
@@ -1178,38 +1404,72 @@ const ROLE_CONFIG = {
   owner: {
     badge: "Owner Listing",
     title: "Post Your Own Property",
-    subtitle: "Owners can post up to 2 own properties. Best for house, flat, villa or plot listings.",
+    subtitle: "Owners can post up to 2 own properties or projects. Best for house, flat, villa, plot or project listings.",
     types: [
       { value: "house", label: "House", icon: "home" },
       { value: "flat", label: "Flat / Apartment", icon: "apartment" },
       { value: "villa", label: "Villa", icon: "villa" },
-      { value: "plot", label: "Plot / Land", icon: "map" }
+      { value: "plot", label: "Plot / Land", icon: "map" },
+      { value: "project", label: "Project / New Launch", icon: "domain_add" }
     ]
   },
+
   broker: {
     badge: "Broker Listing",
     title: "Post Broker Property",
-    subtitle: "Brokers can post up to 8 verified properties across residential, commercial and PG listings.",
+    subtitle: "Brokers can post up to 8 verified properties across residential, commercial, PG and project listings.",
     types: [
-  { value: "house", label: "House", icon: "home" },
-  { value: "flat", label: "Flat / Apartment", icon: "apartment" },
-  { value: "villa", label: "Villa", icon: "villa" },
-  { value: "plot", label: "Plot / Land", icon: "map" },
-  { value: "commercial", label: "Commercial", icon: "storefront" },
-  { value: "pg", label: "PG / Co-living", icon: "bed" },
-  { value: "project", label: "Project / New Launch", icon: "domain_add" }
-]
+      { value: "house", label: "House", icon: "home" },
+      { value: "flat", label: "Flat / Apartment", icon: "apartment" },
+      { value: "villa", label: "Villa", icon: "villa" },
+      { value: "plot", label: "Plot / Land", icon: "map" },
+      { value: "commercial", label: "Commercial", icon: "storefront" },
+      { value: "pg", label: "PG / Co-living", icon: "bed" },
+      { value: "project", label: "Project / New Launch", icon: "domain_add" }
+    ]
   },
+
   developer: {
     badge: "Developer Listing",
     title: "Post Developer Project / Unit",
     subtitle: "Developers can post up to 15 projects or units. Use project/new launch for new developments.",
     types: [
       { value: "project", label: "Project / New Launch", icon: "domain_add" },
+      { value: "house", label: "House", icon: "home" },
       { value: "flat", label: "Flat / Apartment", icon: "apartment" },
       { value: "villa", label: "Villa", icon: "villa" },
       { value: "plot", label: "Plot / Land", icon: "map" },
       { value: "commercial", label: "Commercial", icon: "storefront" }
+    ]
+  },
+
+  admin: {
+    badge: "Admin Listing",
+    title: "Post Any Property / Project",
+    subtitle: "Admins can post houses, flats, villas, plots, commercial properties, PG listings and projects.",
+    types: [
+      { value: "house", label: "House", icon: "home" },
+      { value: "flat", label: "Flat / Apartment", icon: "apartment" },
+      { value: "villa", label: "Villa", icon: "villa" },
+      { value: "plot", label: "Plot / Land", icon: "map" },
+      { value: "commercial", label: "Commercial", icon: "storefront" },
+      { value: "pg", label: "PG / Co-living", icon: "bed" },
+      { value: "project", label: "Project / New Launch", icon: "domain_add" }
+    ]
+  },
+
+  staff: {
+    badge: "Staff Listing",
+    title: "Post Property / Project",
+    subtitle: "Staff can post houses, flats, villas, plots, commercial properties, PG listings and projects.",
+    types: [
+      { value: "house", label: "House", icon: "home" },
+      { value: "flat", label: "Flat / Apartment", icon: "apartment" },
+      { value: "villa", label: "Villa", icon: "villa" },
+      { value: "plot", label: "Plot / Land", icon: "map" },
+      { value: "commercial", label: "Commercial", icon: "storefront" },
+      { value: "pg", label: "PG / Co-living", icon: "bed" },
+      { value: "project", label: "Project / New Launch", icon: "domain_add" }
     ]
   }
 };
@@ -1314,153 +1574,18 @@ async function checkPropertyPostingLimit(phone, role) {
     throw new Error(`Your ${role} account can post maximum ${limit} properties.`);
   }
 }
-const STATE_DISTRICTS = {
-  "Andhra Pradesh": [
-    "Alluri Sitharama Raju",
-    "Anakapalli",
-    "Ananthapuramu",
-    "Annamayya",
-    "Bapatla",
-    "Chittoor",
-    "Dr. B.R. Ambedkar Konaseema",
-    "East Godavari",
-    "Eluru",
-    "Guntur",
-    "Kakinada",
-    "Krishna",
-    "Kurnool",
-    "Nandyal",
-    "NTR",
-    "Palnadu",
-    "Parvathipuram Manyam",
-    "Prakasam",
-    "Sri Potti Sriramulu Nellore",
-    "Sri Sathya Sai",
-    "Srikakulam",
-    "Tirupati",
-    "Visakhapatnam",
-    "Vizianagaram",
-    "West Godavari",
-    "YSR Kadapa"
-  ],
+let APPROVED_LOCATIONS = [];
 
-  "Telangana": [
-    "Hyderabad",
-    "Rangareddy",
-    "Medchal Malkajgiri",
-    "Warangal",
-    "Karimnagar",
-    "Khammam",
-    "Nalgonda"
-  ],
+const LOCATION_TABLE =
+  window.GP_CONFIG?.TABLES?.searchLocations || "search_locations";
 
-  "Tamil Nadu": [
-    "Chennai",
-    "Coimbatore",
-    "Madurai",
-    "Salem",
-    "Tiruchirappalli"
-  ],
+const LOCATION_REQUESTS_TABLE =
+  window.GP_CONFIG?.TABLES?.locationRequests || "location_requests";
 
-  "Karnataka": [
-    "Bengaluru Urban",
-    "Bengaluru Rural",
-    "Mysuru",
-    "Mangaluru",
-    "Hubballi"
-  ],
-
-  "Kerala": [
-    "Kollam",
-    "Thiruvananthapuram",
-    "Ernakulam",
-    "Kozhikode",
-    "Thrissur"
-  ]
-};
-
-const DISTRICT_AREAS = {
-  "Guntur": [
-    "Guntur",
-    "Brodipet",
-    "Lakshmipuram",
-    "Pattabhipuram",
-    "Arundelpet",
-    "Kothapet",
-    "Gorantla",
-    "Nallapadu",
-    "Amaravati Road",
-    "Chandramouli Nagar",
-    "Brindavan Gardens",
-    "Vidya Nagar",
-    "AT Agraharam",
-    "Syamala Nagar",
-    "SVN Colony",
-    "Inner Ring Road",
-    "Old Guntur",
-    "New Guntur",
-    "Pedapalakaluru",
-    "Palakaluru Road",
-    "Etukuru Road",
-    "Ankireddy Palem",
-    "Nagarampalem",
-    "Stambalagaruvu"
-  ],
-
-  "Palnadu": [
-    "Narasaraopet",
-    "Sattenapalli",
-    "Piduguralla",
-    "Macherla",
-    "Gurazala",
-    "Vinukonda",
-    "Chilakaluripet"
-  ],
-
-  "NTR": [
-    "Vijayawada",
-    "Benz Circle",
-    "Patamata",
-    "Governorpet",
-    "Moghalrajpuram",
-    "Auto Nagar",
-    "Ajit Singh Nagar",
-    "Ibrahimpatnam",
-    "Nandigama",
-    "Mylavaram"
-  ],
-
-  "Krishna": [
-    "Machilipatnam",
-    "Gudivada",
-    "Vuyyuru",
-    "Pedana",
-    "Pamarru",
-    "Avanigadda"
-  ],
-
-  "Bapatla": [
-    "Bapatla",
-    "Chirala",
-    "Repalle",
-    "Parchur",
-    "Addanki"
-  ],
-
-  "Prakasam": [
-    "Ongole",
-    "Markapur",
-    "Kandukur",
-    "Giddalur"
-  ],
-
-  "Kollam": [
-    "Kollam City",
-    "Karunagappally",
-    "Kottarakkara",
-    "Punalur"
-  ]
-};
+function uniqueSorted(items) {
+  return [...new Set(items.filter(Boolean))]
+    .sort((a, b) => String(a).localeCompare(String(b)));
+}
 
 function fillSelect(selectId, items, firstText) {
   const select = document.getElementById(selectId);
@@ -1483,20 +1608,100 @@ function fillSelect(selectId, items, firstText) {
 
 function toggleBox(boxId, show) {
   const box = document.getElementById(boxId);
-  if (box) {
-    box.classList.toggle("hidden", !show);
+  if (box) box.classList.toggle("hidden", !show);
+}
+
+async function loadApprovedLocations() {
+  try {
+    if (!window.GP_SUPABASE?.isConfigured?.()) {
+      throw new Error("Supabase not connected.");
+    }
+
+    const rows = await window.GP_SUPABASE.select(LOCATION_TABLE, {
+      select: "*",
+      eq: { is_active: true },
+      limit: 1000
+    });
+
+    APPROVED_LOCATIONS = Array.isArray(rows) ? rows : [];
+  } catch (error) {
+    console.warn("Approved locations loading failed:", error);
+
+    APPROVED_LOCATIONS = [
+      {
+        country: "India",
+        state: "Andhra Pradesh",
+        district: "Guntur",
+        area: "Guntur",
+        city: "Guntur",
+        pincode: "522001"
+      },
+      {
+        country: "India",
+        state: "Andhra Pradesh",
+        district: "Guntur",
+        area: "Brodipet",
+        city: "Guntur",
+        pincode: "522002"
+      },
+      {
+        country: "India",
+        state: "Andhra Pradesh",
+        district: "Guntur",
+        area: "Lakshmipuram",
+        city: "Guntur",
+        pincode: "522007"
+      }
+    ];
   }
 }
 
-function initLocationSystem() {
+function fillStates() {
+  const states = uniqueSorted(APPROVED_LOCATIONS.map((item) => item.state));
+  fillSelect("state", states, "Select State");
+
+  const stateSelect = document.getElementById("state");
+
+  if (stateSelect && states.includes("Andhra Pradesh")) {
+    stateSelect.value = "Andhra Pradesh";
+  }
+}
+
+function fillDistrictsByState(state) {
+  const districts = uniqueSorted(
+    APPROVED_LOCATIONS
+      .filter((item) => item.state === state)
+      .map((item) => item.district)
+  );
+
+  fillSelect("district", districts, "Select District");
+  fillSelect("location", [], "Select City / Local Area");
+}
+
+function fillAreasByDistrict(state, district) {
+  const areas = uniqueSorted(
+    APPROVED_LOCATIONS
+      .filter((item) => item.state === state && item.district === district)
+      .map((item) => item.area)
+  );
+
+  fillSelect("location", areas, "Select City / Local Area");
+}
+
+async function initLocationSystem() {
   const stateSelect = document.getElementById("state");
   const districtSelect = document.getElementById("district");
   const locationSelect = document.getElementById("location");
 
   if (!stateSelect || !districtSelect || !locationSelect) return;
 
-  fillSelect("district", STATE_DISTRICTS["Andhra Pradesh"], "Select District");
-  fillSelect("location", [], "Select City / Local Area");
+  await loadApprovedLocations();
+
+  fillStates();
+
+  if (stateSelect.value) {
+    fillDistrictsByState(stateSelect.value);
+  }
 
   stateSelect.addEventListener("change", () => {
     const state = stateSelect.value;
@@ -1514,11 +1719,11 @@ function initLocationSystem() {
     toggleBox("manual-district-box", false);
     toggleBox("manual-location-box", false);
 
-    fillSelect("district", STATE_DISTRICTS[state] || [], "Select District");
-    fillSelect("location", [], "Select City / Local Area");
+    fillDistrictsByState(state);
   });
 
   districtSelect.addEventListener("change", () => {
+    const state = stateSelect.value;
     const district = districtSelect.value;
 
     toggleBox("manual-district-box", district === "manual");
@@ -1530,7 +1735,7 @@ function initLocationSystem() {
     }
 
     toggleBox("manual-location-box", false);
-    fillSelect("location", DISTRICT_AREAS[district] || [], "Select City / Local Area");
+    fillAreasByDistrict(state, district);
   });
 
   locationSelect.addEventListener("change", () => {
@@ -1544,36 +1749,63 @@ function getFinalLocationData() {
   const selectedLocation = getValue("location");
 
   const finalState =
-    selectedState === "manual"
-      ? getValue("manual_state")
-      : selectedState;
+    selectedState === "manual" ? getValue("manual_state") : selectedState;
 
   const finalDistrict =
-    selectedDistrict === "manual"
-      ? getValue("manual_district")
-      : selectedDistrict;
+    selectedDistrict === "manual" ? getValue("manual_district") : selectedDistrict;
 
   const finalLocation =
-    selectedLocation === "manual"
-      ? getValue("manual_location")
-      : selectedLocation;
+    selectedLocation === "manual" ? getValue("manual_location") : selectedLocation;
+
+  const matchedLocation = APPROVED_LOCATIONS.find((item) =>
+    String(item.state).toLowerCase() === String(finalState).toLowerCase() &&
+    String(item.district).toLowerCase() === String(finalDistrict).toLowerCase() &&
+    String(item.area).toLowerCase() === String(finalLocation).toLowerCase()
+  );
 
   const isManualPlace =
     selectedState === "manual" ||
     selectedDistrict === "manual" ||
-    selectedLocation === "manual";
+    selectedLocation === "manual" ||
+    !matchedLocation;
 
   return {
     country: "India",
     state: finalState,
     district: finalDistrict,
+    city: matchedLocation?.city || finalDistrict,
     location: finalLocation,
+    area: finalLocation,
+    locality: finalLocation,
+    pincode: getValue("pincode") || matchedLocation?.pincode || "",
     is_manual_place: isManualPlace,
     place_review_status: isManualPlace ? "pending" : "approved"
   };
 }
 
+async function createLocationRequestIfNeeded(propertyId, locationData) {
+  if (!locationData?.is_manual_place) return;
+
+  await window.GP_SUPABASE.insert(LOCATION_REQUESTS_TABLE, {
+    property_id: propertyId,
+    requested_by_phone: getStoredUserPhone(),
+    requested_by_role: getCurrentRole(),
+
+    country: locationData.country || "India",
+    state: locationData.state,
+    district: locationData.district,
+    city: locationData.city || locationData.district,
+    area: locationData.location || locationData.area,
+    pincode: getValue("pincode") || locationData.pincode || "",
+
+    status: "pending",
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
+  });
+}
+
 document.addEventListener("DOMContentLoaded", initLocationSystem);
+
 const PROPERTY_EXTRA_FIELDS = {
   flat: [
     ["apartment_name", "Apartment Name", "text", "Example: Sri Sai Residency"],
@@ -1648,13 +1880,24 @@ const PROPERTY_EXTRA_FIELDS = {
   ]
 };
 const PROJECT_SUB_TYPES = [
-  { value: "project_flat", label: "Flat / Apartment", icon: "apartment" },
+  { value: "project_house", label: "House", icon: "home" },
+  { value: "project_flat", label: "Apartment / Flat", icon: "apartment" },
   { value: "project_villa", label: "Villa", icon: "villa" },
   { value: "project_plot", label: "Plot / Land", icon: "map" },
   { value: "project_commercial", label: "Commercial", icon: "storefront" }
 ];
 
 const PROJECT_SUBTYPE_FIELDS = {
+  project_house: [
+    ["house_structure", "House Structure", "text", "Example: Gated Houses / Independent Houses / Duplex"],
+    ["plot_area", "Plot Area", "number", "Example: 200"],
+    ["builtup_area", "Built-up Area", "number", "Example: 1800"],
+    ["area_unit", "Area Unit", "text", "Example: Sq Ft / Sq Yards"],
+    ["total_floors", "Total Floors", "number", "Example: 2"],
+    ["terrace_available", "Terrace Available", "text", "Example: Yes / No"],
+    ["parking", "Parking", "text", "Example: Car Parking"]
+  ],
+
   project_flat: [
     ["unit_bhk_options", "BHK Options", "text", "Example: 2 BHK, 3 BHK"],
     ["unit_size_range", "Unit Size Range", "text", "Example: 1100 - 1800 Sq Ft"],
@@ -1826,9 +2069,15 @@ function updateCommonFieldVisibility(propertyType, projectSubType = "") {
       showFurnishing = false;
     }
 
-    if (projectSubType === "project_flat" || projectSubType === "project_villa") {
+    if (projectSubType === "project_house" || projectSubType === "project_villa") {
       showBhk = true;
-      showFloor = projectSubType === "project_flat";
+      showFloor = false;
+      showFurnishing = true;
+    }
+
+    if (projectSubType === "project_flat") {
+      showBhk = true;
+      showFloor = true;
       showFurnishing = true;
     }
   }
@@ -1884,145 +2133,207 @@ document.getElementById("use-current-location-btn")?.addEventListener("click", (
     }
   );
 });
-    form.addEventListener("submit", async (event) => {
-      event.preventDefault();
 
-      submitBtn.disabled = true;
-      submitBtn.textContent = "Submitting...";
-
-      try {
-        if (!window.GP_SUPABASE?.isConfigured?.()) {
-          throw new Error("Supabase is not connected. Check js/config.js.");
-        }
-
-        const title = getValue("title");
-        const description = getValue("description");
-        const propertyType = getValue("property_type");
-        const listingType = getValue("listing_type");
-        const locationData = getFinalLocationData();
-const location = locationData.location;
-const district = locationData.district;
-const stateName = locationData.state;
-const countryName = locationData.country;
-const city = locationData.location;
-
-if (!title || !description || !propertyType || !listingType || !location || !district || !stateName) {
-  throw new Error("Please fill all required fields.");
-}
-        if (selectedImageFiles.length < 5) {
-  throw new Error("Please upload at least 5 property photos.");
-}
-
-if (selectedImageFiles.length > 10) {
-  throw new Error("You can upload maximum 10 property photos.");
-}
-        const loggedPhone = getStoredUserPhone();
-const loggedRole = getCurrentRole();
-
-if (!loggedPhone) {
-  window.location.href = "login.html?next=post-property.html";
-  return;
-}
-
-await checkPropertyPostingLimit(loggedPhone, loggedRole);
-const extraFields = collectExtraFields();
-        const payload = {
-          title,
-          property_title: title,
-          description,
-          property_type: propertyType,
-          listing_type: listingType,
-          purpose: listingType,
-          category: propertyType,
-          ...extraFields,
-
-          bhk: getValue("bhk"),
-          bedrooms: getValue("bhk") ? Number(getValue("bhk").replace(/\D/g, "")) || null : null,
-          floor: getValue("floor"),
-          floor_number: getNumber("floor_number"),
-project_unit_type: getValue("project_unit_type"),
-
-          price: getNumber("price"),
-          price_label: getValue("price_label"),
-
-          country: countryName,
-state: stateName,
-district,
-city,
-location,
-area: location,
-locality: location,
-is_manual_place: locationData.is_manual_place,
-place_review_status: locationData.place_review_status,
-          landmark: getValue("landmark"),
-          address: getValue("address"),
-          street_name: getValue("street_name"),
-pincode: getValue("pincode"),
-location_link: getValue("location_link"),
-latitude: getValue("latitude") ? Number(getValue("latitude")) : null,
-longitude: getValue("longitude") ? Number(getValue("longitude")) : null,
-          facing: getValue("facing"),
-          furnishing: getValue("furnishing"),
-          amenities: getValue("amenities"),
-
-          owner_name: getValue("owner_name"),
-          owner_phone: cleanPhone(getValue("owner_phone")),
-          posted_by_phone: loggedPhone,
-posted_by_role: loggedRole,
-
-          status: "active",
-created_at: new Date().toISOString(),
-updated_at: new Date().toISOString()
-        };
-
-        const inserted = await window.GP_SUPABASE.insert(
-          window.GP_CONFIG.TABLES.properties,
-          payload
-        );
-
-        const property = Array.isArray(inserted) ? inserted[0] : null;
-
-        if (!property?.id) {
-          showStatus("Property saved, but ID was not returned. Check Supabase table.", "success");
-          form.reset();
-selectedImageFiles = [];
-imagePreview.innerHTML = "";
-return;
-        }
-
-        let imageUrls = [];
-
-        try {
-  showStatus("Property saved. Uploading photos/video to Cloudinary...", "success");
-
-  const imageUrls = await uploadImages(property.id);
-  const videoUrl = await uploadVideo(property.id);
-
-  await updatePropertyMedia(property.id, imageUrls, videoUrl);
-} catch (mediaError) {
-  console.warn(mediaError);
-  showStatus(mediaError.message || "Property saved, but media upload failed.", "error");
-  return;
-}
-showStatus("Property uploaded successfully. It is now live.", "success");
-form.reset();
-selectedImageFiles = [];
-imagePreview.innerHTML = "";
-videoPreview.innerHTML = "";
-await applyRoleBasedForm();
-
-      } catch (error) {
-        showStatus(error.message || "Unable to upload property.", "error");
-      } finally {
-  await applyRoleBasedForm();
-
-  if (!submitBtn.textContent.includes("Limit")) {
-    submitBtn.disabled = false;
-    submitBtn.textContent = "Submit Property";
+function makeUploadId() {
+  if (window.crypto && typeof window.crypto.randomUUID === "function") {
+    return window.crypto.randomUUID();
   }
+
+  return `gp-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
 }
-    });
+
+function isProjectListing() {
+  return getValue("property_type") === "project";
+}
+   form.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  if (isSubmittingProperty) {
+    return;
+  }
+
+  isSubmittingProperty = true;
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Submitting...";
+
+  try {
+    if (!window.GP_SUPABASE?.isConfigured?.()) {
+      throw new Error("Supabase is not connected. Check js/config.js.");
+    }
+
+    const title = getValue("title");
+    const description = getValue("description");
+    const propertyType = getValue("property_type");
+    const listingType = getValue("listing_type");
+
+    const locationData = getFinalLocationData();
+    const location = locationData.location;
+    const district = locationData.district;
+    const stateName = locationData.state;
+    const countryName = locationData.country;
+    const city = locationData.city || locationData.district;
+
+    if (!title || !description || !propertyType || !listingType || !location || !district || !stateName) {
+      throw new Error("Please fill all required fields.");
+    }
+
+    if (propertyType === "project" && !getValue("project_unit_type")) {
+      throw new Error("Please select the project property type.");
+    }
+
+    if (selectedImageFiles.length < 5) {
+      throw new Error("Please upload at least 5 property photos.");
+    }
+
+    if (selectedImageFiles.length > 10) {
+      throw new Error("You can upload maximum 10 property photos.");
+    }
+
+    const loggedPhone = getStoredUserPhone();
+    const loggedRole = getCurrentRole();
+
+    if (!loggedPhone) {
+      window.location.href = "login.html?next=post-property.html";
+      return;
+    }
+
+    await checkPropertyPostingLimit(loggedPhone, loggedRole);
+
+    const tempUploadId = makeUploadId();
+
+    showStatus("Uploading photos/videos to Cloudinary...", "success");
+
+    const imageUrls = await uploadImages(tempUploadId);
+    const planUrls = await uploadPlanImages(tempUploadId);
+    const uploadedVideos = await uploadPropertyVideos(tempUploadId);
+
+    const extraFields = collectExtraFields();
+
+    const payload = {
+      title,
+      property_title: title,
+      description,
+      property_type: propertyType,
+      listing_type: listingType,
+      purpose: listingType,
+      category: propertyType,
+      project_unit_type: getValue("project_unit_type"),
+
+      ...extraFields,
+
+      bhk: getValue("bhk"),
+      bedrooms: getValue("bhk") ? Number(getValue("bhk").replace(/\D/g, "")) || null : null,
+      floor: getValue("floor"),
+      floor_number: getNumber("floor_number"),
+
+      price: getNumber("price"),
+      price_label: getValue("price_label"),
+
+      country: countryName,
+      state: stateName,
+      district,
+      city,
+      location,
+      area: location,
+      locality: location,
+
+      is_manual_place: locationData.is_manual_place,
+      place_review_status: locationData.place_review_status,
+
+      landmark: getValue("landmark"),
+      address: getValue("address"),
+      street_name: getValue("street_name"),
+      pincode: locationData.pincode || getValue("pincode"),
+
+      location_link: getValue("location_link"),
+      latitude: getValue("latitude") ? Number(getValue("latitude")) : null,
+      longitude: getValue("longitude") ? Number(getValue("longitude")) : null,
+
+      facing: getValue("facing"),
+      furnishing: getValue("furnishing"),
+      amenities: getValue("amenities") ? getValue("amenities").split(",").map((item) => item.trim()).filter(Boolean) : [],
+
+      owner_name: getValue("owner_name"),
+      owner_phone: cleanPhone(getValue("owner_phone")),
+      whatsapp_number: cleanPhone(getValue("whatsapp_number")) || cleanPhone(getValue("owner_phone")),
+      instagram_link: getValue("instagram_link"),
+      youtube_link: getValue("youtube_link"),
+
+      posted_by_phone: loggedPhone,
+      posted_by_role: loggedRole,
+
+      image_urls: imageUrls,
+      images: imageUrls,
+      main_image: imageUrls[0] || "",
+      floor_plan_url: planUrls[0] || "",
+      floor_plan_urls: planUrls,
+      plan_image_urls: planUrls,
+      blueprint_urls: planUrls,
+      video_urls: uploadedVideos.videoUrls,
+      main_video: uploadedVideos.videoUrls[0] || "",
+      video_url: uploadedVideos.videoUrls[0] || "",
+      reel_video_url: uploadedVideos.reelVideoUrl,
+      youtube_video_url: uploadedVideos.youtubeVideoUrl,
+      video_types: {
+        reel: uploadedVideos.reelVideoUrl,
+        youtube: uploadedVideos.youtubeVideoUrl
+      },
+
+      status: "active",
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    };
+
+    showStatus("Saving property to Supabase...", "success");
+
+    const inserted = await window.GP_SUPABASE.insert(
+      window.GP_CONFIG.TABLES.properties,
+      payload
+    );
+
+    const property = Array.isArray(inserted) ? inserted[0] : null;
+
+    if (!property?.id) {
+      throw new Error("Property media uploaded, but Supabase did not return property ID. Check insert/select policy.");
+    }
+
+    await createLocationRequestIfNeeded(property.id, locationData);
+
+    showStatus(
+      locationData.is_manual_place
+        ? "Property uploaded successfully. Manual location sent for admin approval."
+        : "Property uploaded successfully. It is now live.",
+      "success"
+    );
+
+    form.reset();
+    selectedImageFiles = [];
+    selectedPlanFiles = [];
+    imagePreview.innerHTML = "";
+    planPreview.innerHTML = "";
+    reelVideoPreview.innerHTML = "";
+    youtubeVideoPreview.innerHTML = "";
+
+    await applyRoleBasedForm();
+
+  } catch (error) {
+    showStatus(error.message || "Unable to upload property.", "error");
+  } finally {
+    isSubmittingProperty = false;
+
+    await applyRoleBasedForm();
+
+    if (!submitBtn.textContent.includes("Limit")) {
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Submit Property";
+    }
+  }
+});
     document.addEventListener("DOMContentLoaded", loadCurrentProfile);
   </script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/supabase.js"></script>
 </body>
 </html>
