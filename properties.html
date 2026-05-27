@@ -184,7 +184,389 @@
       footer {
         padding-bottom: 80px;
       }
+    }/* =====================================================
+   PROPERTIES PAGE HEADER - SAME AS INDEX SCROLLED HEADER
+   Desktop only. Does not change property cards/search logic.
+===================================================== */
+
+@media (min-width:1024px) {
+  .desktop-header.header-scrolled {
+    height: 76px !important;
+    background: #14213d !important;
+    border-bottom: 1px solid rgba(212,175,55,.35) !important;
+    box-shadow: 0 10px 30px rgba(15,23,42,.22) !important;
+    overflow: visible !important;
+    z-index: 99999 !important;
+  }
+
+  .desktop-header.header-scrolled .max-w-7xl {
+    max-width: none !important;
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+    padding-left: 14px !important;
+    padding-right: 24px !important;
+  }
+
+  .desktop-header.header-scrolled a[href="index.html"] img {
+    width: 42px !important;
+    height: 42px !important;
+    border-radius: 11px !important;
+  }
+
+  .desktop-header.header-scrolled a[href="index.html"] span.text-xl {
+    color: #ffffff !important;
+    font-size: 24px !important;
+    line-height: .95 !important;
+    letter-spacing: -0.04em !important;
+    text-shadow: 0 2px 14px rgba(0,0,0,.38) !important;
+  }
+
+  .properties-header-location-btn {
+    height: 42px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #ffffff;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    font-size: 14px;
+    font-weight: 900;
+    padding: 0 4px;
+    white-space: nowrap;
+  }
+
+  .properties-header-location-btn:hover {
+    color: #d4af37;
+  }
+
+  .desktop-header-search {
+    display: flex !important;
+    flex: 1 1 auto !important;
+    max-width: 700px !important;
+    min-width: 360px !important;
+    height: 50px !important;
+    align-items: center !important;
+    background: #ffffff !important;
+    border: 1px solid rgba(212,175,55,.35) !important;
+    border-radius: 14px !important;
+    overflow: hidden !important;
+    box-shadow: 0 8px 22px rgba(15,23,42,.16) !important;
+  }
+
+  .header-search-input {
+    width: 100%;
+    height: 100%;
+    border: 0 !important;
+    outline: 0 !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    color: #151c27 !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    padding: 0 12px 0 0 !important;
+  }
+
+  .header-search-input:focus {
+    border: 0 !important;
+    outline: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .header-search-input::placeholder {
+    color: rgba(71,96,128,.65);
+  }
+
+  .header-search-btn {
+    height: 50px;
+    min-width: 112px;
+    padding: 0 22px;
+    background: #d4af37;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 900;
+    border: 0;
+    border-left: 1px solid rgba(212,175,55,.35);
+  }
+
+  .header-search-btn:hover {
+    filter: brightness(1.06);
+  }
+
+  .desktop-post-property-btn {
+    height: 42px;
+    padding: 0 18px;
+    border-radius: 10px;
+    background: #ffffff;
+    color: #17213a;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+    font-weight: 900;
+    box-shadow: 0 8px 22px rgba(15,23,42,.14);
+    white-space: nowrap;
+  }
+
+  .desktop-post-property-btn small {
+    background: #16a34a;
+    color: #ffffff;
+    font-size: 11px;
+    line-height: 1;
+    font-weight: 900;
+    padding: 4px 6px;
+    border-radius: 4px;
+  }
+
+  .header-icon-btn {
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    color: #ffffff !important;
+    position: relative;
+  }
+
+  .header-icon-btn .material-symbols-outlined {
+    font-size: 30px !important;
+  }
+
+  .header-icon-btn.whatsapp {
+    color: #ffffff !important;
+  }
+
+  .header-icon-btn.profile {
+    color: #ffffff !important;
+  }
+}
+
+@media (max-width:1023px) {
+  .desktop-header.header-scrolled {
+    background: #ffffff !important;
+    border-bottom: 1px solid #e5e7eb !important;
+  }
+
+  .desktop-header.header-scrolled > .max-w-7xl {
+    display: none !important;
+  }
+}
+
+    /* Final header compact spacing overrides */
+    @media (min-width:1024px) {
+      .desktop-header.header-scrolled {
+        height: 76px !important;
+        background: #071f3d !important;
+      }
+
+      .desktop-header-search {
+        max-width: 690px !important;
+        min-width: 420px !important;
+        height: 50px !important;
+        border-radius: 16px !important;
+      }
+
+      .header-type-btn {
+        height: 50px;
+        min-width: 126px;
+        padding: 0 18px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        border: 0;
+        border-right: 1px solid rgba(203,213,225,.75);
+        background: #ffffff;
+        color: #151c27;
+        font-size: 15px;
+        font-weight: 900;
+      }
+
+      .header-round-btn {
+        width: 46px;
+        height: 46px;
+        margin-right: 4px;
+        border-radius: 999px;
+        background: #eef6ff;
+        color: #0f4c81;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 0;
+      }
+
+      .header-search-btn {
+        height: 50px !important;
+        min-width: 64px !important;
+        padding: 0 16px !important;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: #0f4c81 !important;
+        color: #ffffff !important;
+        border: 0 !important;
+        border-radius: 0 14px 14px 0 !important;
+      }
+
+      .header-profile-pill {
+        width: 46px;
+        height: 46px;
+        border-radius: 999px;
+        background: #bbf7d0;
+        color: #064e3b;
+        font-size: 14px;
+        font-weight: 900;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .header-menu-btn {
+        width: 46px;
+        height: 46px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #ffffff;
+        border: 0;
+        background: transparent;
+      }
+
+      .header-menu-btn .material-symbols-outlined {
+        font-size: 36px;
+      }
+
+      #breadcrumb-bar .py-3 {
+        padding-top: 8px !important;
+        padding-bottom: 8px !important;
+      }
+
+      #results-heading {
+        margin-top: 0 !important;
+      }
     }
+
+    @media (max-width:1023px) {
+      .desktop-header.header-scrolled {
+        min-height: 76px !important;
+      }
+    }
+
+
+    /* Location is selected inside search bar only */
+    .header-location-chip {
+      height: 34px;
+      margin-left: 8px;
+      padding: 0 8px 0 12px;
+      border-radius: 999px;
+      background: #eef6ff;
+      color: #0f4c81;
+      border: 1px solid rgba(15,76,129,.24);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 900;
+      white-space: nowrap;
+      flex: 0 0 auto;
+    }
+
+    .header-location-chip.hidden {
+      display: none !important;
+    }
+
+    #header-clear-location {
+      width: 20px;
+      height: 20px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #0f4c81;
+      color: #ffffff;
+      font-size: 14px;
+      line-height: 1;
+      font-weight: 900;
+    }
+
+    .header-location-option.active {
+      background: #eef6ff;
+      color: #0f4c81;
+    }
+
+  
+
+    /* Working search type dropdown + location chip */
+    @media (min-width:1024px) {
+      .header-type-wrap { position: relative; height: 50px; flex: 0 0 auto; }
+      .header-type-menu {
+        position: absolute;
+        top: calc(100% + 12px);
+        left: 0;
+        width: 250px;
+        background: #ffffff;
+        border: 1px solid rgba(208,197,175,.75);
+        border-radius: 18px;
+        box-shadow: 0 24px 65px rgba(15,23,42,.22);
+        padding: 10px;
+        z-index: 9999999;
+      }
+      .header-type-menu.hidden { display: none !important; }
+      .header-type-option {
+        width: 100%;
+        display: block;
+        text-align: left;
+        padding: 13px 14px;
+        border-radius: 13px;
+        color: #151c27;
+        font-weight: 900;
+        background: transparent;
+      }
+      .header-type-option:hover,
+      .header-type-option.active {
+        background: #eef6ff;
+        color: #082f5f;
+      }
+      .header-location-chip {
+        max-width: 165px;
+        height: 34px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 0 10px;
+        margin-left: 8px;
+        border-radius: 999px;
+        background: #eef6ff;
+        color: #082f5f;
+        font-size: 13px;
+        font-weight: 900;
+        border: 1px solid rgba(15,76,129,.22);
+        white-space: nowrap;
+      }
+      .header-location-chip.hidden { display: none !important; }
+      #header-location-chip-text {
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      #header-clear-location {
+        color: #ef4444;
+        font-size: 18px;
+        font-weight: 900;
+        line-height: 1;
+      }
+      #header-location-menu.hidden { display: none !important; }
+      .header-location-option.active {
+        background: #eef6ff;
+        color: #082f5f;
+      }
+    }
+
   </style>
 
   <script type="application/ld+json">
@@ -201,77 +583,121 @@
 <body>
 
 <!-- Header -->
-<header class="bg-surface/80 backdrop-blur-md shadow-sm fixed top-0 left-0 right-0 z-50 border-b border-line/30">
-  <div class="flex items-center px-5 lg:px-10 py-4 w-full max-w-[1440px] mx-auto gap-5">
+<!-- Properties header matched with index.html scrolled header -->
+<header class="desktop-header header-scrolled fixed top-0 left-0 right-0 z-50">
+  <div class="max-w-7xl mx-auto h-full flex items-center gap-4 px-4 lg:px-6">
 
+    <!-- Logo -->
     <a href="index.html" class="flex items-center shrink-0 gap-3">
-      <img src="assets/images/guntur.png" alt="Guntur Properties Logo" class="w-10 h-10 rounded-lg object-cover" onerror="this.src='https://placehold.co/80x80/d4af37/ffffff?text=GP'"/>
+      <img
+        src="assets/images/guntur.png"
+        alt="Guntur Properties Logo"
+        class="w-11 h-11 rounded-xl object-cover"
+        onerror="this.src='https://placehold.co/80x80/d4af37/ffffff?text=GP'"
+      />
+
       <div>
-        <h1 id="brand-title" class="text-2xl font-extrabold text-primary whitespace-nowrap">Guntur Properties</h1>
-        <p class="text-[10px] text-outline font-bold uppercase tracking-tight">Trusted. Transparent. Together.</p>
+        <span id="brand-title" class="text-xl font-extrabold text-white whitespace-nowrap block">
+          Guntur Properties
+        </span>
       </div>
     </a>
 
-    <div class="desktop-search-area hidden md:flex flex-grow items-center gap-3 ml-6">
-      <div class="flex items-center bg-white rounded-lg px-4 py-2 shadow-sm border border-line/30 min-w-[180px]">
-        <span class="material-symbols-outlined text-primary mr-2">location_on</span>
-        <div class="relative min-w-[220px]">
-
-  <button
-    id="properties-location-button"
-    type="button"
-    class="flex items-center justify-between w-full bg-white rounded-lg px-4 py-2 shadow-sm border border-line/30 h-[50px]"
-  >
-    <div class="flex items-center gap-2">
-      <span class="material-symbols-outlined text-primary">
-        location_on
-      </span>
-
-      <span
-        id="properties-selected-location"
-        class="font-semibold text-dark"
+    <!-- Buy in India / Explore More -->
+    <div class="relative shrink-0 header-buy-wrap">
+      <button
+        id="header-buy-india-btn"
+        type="button"
+        class="properties-header-location-btn"
       >
-        Select Location
-      </span>
+        <span>Buy in India</span>
+        <span class="material-symbols-outlined text-[18px]">expand_more</span>
+      </button>
+
+      <div
+        id="header-buy-india-menu"
+        class="hidden absolute top-full left-0 mt-3 w-[250px] bg-white border border-[#d0c5af]/60 rounded-2xl shadow-2xl z-[999999] p-2"
+      >
+        <button type="button" data-type-menu="all" class="header-buy-option w-full text-left px-4 py-3 rounded-xl hover:bg-gold/10 font-bold">All Properties</button>
+        <button type="button" data-type-menu="house" class="header-buy-option w-full text-left px-4 py-3 rounded-xl hover:bg-gold/10 font-bold">Buy Houses</button>
+        <button type="button" data-type-menu="apartment" class="header-buy-option w-full text-left px-4 py-3 rounded-xl hover:bg-gold/10 font-bold">Buy Flats / Apartments</button>
+        <button type="button" data-type-menu="villa" class="header-buy-option w-full text-left px-4 py-3 rounded-xl hover:bg-gold/10 font-bold">Buy Villas</button>
+        <button type="button" data-type-menu="plot" class="header-buy-option w-full text-left px-4 py-3 rounded-xl hover:bg-gold/10 font-bold">Plots / Land</button>
+        <button type="button" data-type-menu="project" class="header-buy-option w-full text-left px-4 py-3 rounded-xl hover:bg-gold/10 font-bold">New Projects</button>
+        <button type="button" data-type-menu="commercial" class="header-buy-option w-full text-left px-4 py-3 rounded-xl hover:bg-gold/10 font-bold">Commercial</button>
+      </div>
     </div>
 
-    <span class="material-symbols-outlined text-outline">
-      expand_more
-    </span>
-  </button>
+    <!-- Search -->
+    <div class="desktop-header-search">
+      <div class="header-type-wrap">
+        <button type="button" id="header-type-btn" class="header-type-btn">
+          <span id="header-selected-type">Buy</span>
+          <span class="material-symbols-outlined text-[18px]">expand_more</span>
+        </button>
 
-  <div
-    id="properties-location-menu"
-    class="hidden absolute top-full left-0 mt-2 w-full bg-white border border-line/30 rounded-2xl shadow-2xl z-50 p-2 max-h-[320px] overflow-auto"
-  >
-  </div>
-</div>
+        <div id="header-type-menu" class="header-type-menu hidden">
+          <button type="button" class="header-type-option active" data-header-purpose="buy" data-header-type="all">Buy</button>
+          <button type="button" class="header-type-option" data-header-purpose="rent" data-header-type="all">Rent</button>
+          <button type="button" class="header-type-option" data-header-purpose="buy" data-header-type="villa">Villas</button>
+          <button type="button" class="header-type-option" data-header-purpose="buy" data-header-type="commercial">Commercial</button>
+          <button type="button" class="header-type-option" data-header-purpose="buy" data-header-type="project">Projects</button>
+          <button type="button" class="header-type-option" data-header-purpose="rent" data-header-type="pg">PG/Co-living</button>
+          <button type="button" class="header-type-option" data-header-purpose="buy" data-header-type="plot">Plots/land</button>
+        </div>
       </div>
 
-      <div class="flex-grow bg-white rounded-lg px-4 py-2 shadow-sm border border-line/30 flex items-center">
-        <span class="material-symbols-outlined text-outline mr-2">search</span>
-        <input id="header-search" class="border-none focus:ring-0 w-full text-base p-0" placeholder="Search by project, locality or property type" type="text"/>
+      <div id="header-selected-location-chip" class="header-location-chip hidden">
+        <span id="header-location-chip-text"></span>
+        <button type="button" id="header-clear-location" aria-label="Clear selected location">×</button>
       </div>
 
-      <button id="header-search-btn" class="btn-gold px-8 py-2.5 rounded-lg font-bold flex items-center gap-2 shrink-0">
-        <span class="material-symbols-outlined">search</span>
-        Search
+      <input
+        id="header-search"
+        class="header-search-input"
+        placeholder="Search areas, property type, budget..."
+        type="text"
+      />
+
+      <div class="relative">
+        <button type="button" id="header-location-icon-button" class="header-round-btn" aria-label="Select district/location">
+          <span class="material-symbols-outlined">location_on</span>
+        </button>
+
+        <div
+          id="header-location-menu"
+          class="hidden absolute top-full right-0 mt-3 w-[280px] bg-white border border-[#d0c5af]/60 rounded-2xl shadow-2xl z-[999999] p-2 max-h-[320px] overflow-auto"
+        ></div>
+      </div>
+
+      <button type="button" id="header-mic-button" class="header-round-btn" aria-label="Voice search">
+        <span class="material-symbols-outlined">mic</span>
+      </button>
+
+      <button id="header-search-btn" class="header-search-btn" aria-label="Search">
+        <span class="material-symbols-outlined text-[30px]">search</span>
       </button>
     </div>
 
-    <div class="flex items-center gap-2 ml-auto">
-      <button id="mobile-filter-btn" aria-label="Filters" class="lg:hidden flex items-center justify-center w-10 h-10 rounded-full border border-line/40 hover:bg-gold/10 transition-colors text-primary">
-        <span class="material-symbols-outlined text-[24px]">filter_list</span>
-      </button>
-
-      <a href="login.html" aria-label="User Profile" class="flex items-center justify-center w-10 h-10 rounded-full border border-line/40 hover:bg-gold/10 transition-colors text-primary">
-        <span class="material-symbols-outlined text-[28px]">account_circle</span>
+    <!-- Actions -->
+    <div class="desktop-header-actions flex items-center gap-3 ml-auto">
+      <a href="post-property.html" class="desktop-post-property-btn">
+        Post property
+        <small>FREE</small>
       </a>
+
+      <a href="login.html" class="header-profile-pill" aria-label="Profile">
+        AU
+      </a>
+
+      <button type="button" class="header-menu-btn" aria-label="Menu">
+        <span class="material-symbols-outlined">menu</span>
+      </button>
     </div>
   </div>
 
-  <!-- Mobile search row -->
-  <div class="md:hidden px-5 pb-4">
+  <!-- Mobile search row kept simple -->
+  <div class="md:hidden px-5 pb-3 bg-white">
     <div class="bg-white rounded-xl border border-line/40 flex items-center px-3 h-12">
       <span class="material-symbols-outlined text-outline mr-2">search</span>
       <input id="mobile-header-search" class="border-none focus:ring-0 w-full p-0 text-sm" placeholder="Search flats, houses, plots..." />
@@ -280,10 +706,10 @@
   </div>
 </header>
 
-<div class="h-[128px] md:h-[82px]"></div>
+<div class="h-[76px]"></div>
 
 <!-- Breadcrumb -->
-<section id="breadcrumb-bar" class="sticky top-[128px] md:top-[82px] z-40 bg-background/95 backdrop-blur-xl border-b border-line/30">
+<section id="breadcrumb-bar" class="sticky top-[76px] z-40 bg-background/95 backdrop-blur-xl border-b border-line/30">
   <div class="max-w-[1440px] mx-auto px-5 lg:px-10 py-3 flex flex-col lg:flex-row lg:items-center justify-between gap-3">
     <nav id="breadcrumb" class="flex items-center gap-2 text-sm overflow-x-auto no-scrollbar whitespace-nowrap"></nav>
 
@@ -294,10 +720,10 @@
   </div>
 </section>
 
-<main class="max-w-[1440px] mx-auto px-5 lg:px-10 py-8 flex gap-6">
+<main class="max-w-[1440px] mx-auto px-5 lg:px-10 py-4 flex gap-6">
 
   <!-- Sidebar Filters -->
-  <aside id="sidebar-filter" class="hidden lg:block w-80 shrink-0 h-fit sticky top-[144px] bg-white/80 backdrop-blur-sm rounded-3xl border border-line/40 p-6 shadow-xl z-30">
+  <aside id="sidebar-filter" class="hidden lg:block w-80 shrink-0 h-fit sticky top-[118px] bg-white/80 backdrop-blur-sm rounded-3xl border border-line/40 p-6 shadow-xl z-30">
 
     <div class="flex justify-between items-center mb-5">
       <h2 class="text-2xl font-extrabold">Filters</h2>
@@ -327,6 +753,7 @@
           <button data-type="plot" class="type-btn filter-chip px-4 py-2 rounded-xl text-sm">Plot</button>
           <button data-type="house" class="type-btn filter-chip px-4 py-2 rounded-xl text-sm">House</button>
           <button data-type="commercial" class="type-btn filter-chip px-4 py-2 rounded-xl text-sm">Commercial</button>
+          <button data-type="project" class="type-btn filter-chip px-4 py-2 rounded-xl text-sm">Project / New Launch</button>
         </div>
       </div>
 
@@ -566,14 +993,20 @@ const SEARCH_LOCATIONS = [
   "Visakhapatnam",
   "Tirupati"
 ];
+const urlParams = new URLSearchParams(window.location.search);
+
 const state = {
-  district: localStorage.getItem("gp_district") || "",
+  stateName: urlParams.get("state") || "",
+  district: urlParams.get("district") || "",
+  location: urlParams.get("location") || urlParams.get("area") || urlParams.get("city") || "",
+  purpose: urlParams.get("purpose") || "",
+  filters: urlParams.get("filters") || "",
   type: "all",
-  budget: "all",
+  budget: urlParams.get("budget") || "all",
   bhk: "",
   facing: "",
   amenities: [],
-  keyword: "",
+  keyword: urlParams.get("q") || urlParams.get("search") || "",
   sort: "recommended",
   view: "grid",
   status: "",
@@ -626,16 +1059,25 @@ function normalizeType(type) {
   if (value.includes("plot")) return "plot";
   if (value.includes("house")) return "house";
   if (value.includes("commercial")) return "commercial";
+  if (value.includes("pg") || value.includes("co-living") || value.includes("coliving")) return "pg";
+  if (value.includes("project") || value.includes("new launch")) return "project";
   return value || "property";
 }
 
 function normalizeProperty(row) {
   const images = row.property_images || [];
+  const imageUrls = Array.isArray(row.image_urls)
+    ? row.image_urls
+    : Array.isArray(row.images)
+      ? row.images
+      : [];
   const mainImage =
+    row.main_image ||
+    row.main_image_url ||
     images.find(img => img.is_main)?.image_url ||
     images[0]?.image_url ||
+    imageUrls[0] ||
     row.image_url ||
-    row.main_image_url ||
     "";
 
   const amenitiesArray = Array.isArray(row.amenities)
@@ -660,6 +1102,7 @@ function normalizeProperty(row) {
     row.property_for,
     row.category,
     row.sub_category,
+    row.project_unit_type,
 
     row.bhk,
     row.bedrooms,
@@ -732,6 +1175,9 @@ function normalizeProperty(row) {
 
     name: row.title || row.property_title || row.name || "Untitled Property",
     type: normalizeType(row.property_type || row.type || row.category),
+    projectUnitType: row.project_unit_type || "",
+    listingType: String(row.listing_type || row.purpose || row.property_for || "").toLowerCase(),
+    location: row.location || row.area || row.locality || row.city || "",
     area: row.location || row.area || row.locality || row.city || "",
     locality: row.locality || row.area || row.location || "",
     city: row.city || "",
@@ -783,63 +1229,22 @@ function readUrlParams() {
   const params = new URLSearchParams(window.location.search);
 
   const q = params.get("q") || params.get("search") || "";
-  const location = params.get("location") || params.get("area") || "";
+  const location = params.get("location") || params.get("area") || params.get("city") || "";
+  const district = params.get("district") || "";
   const rawType = params.get("type") || params.get("property_type") || "all";
   const purpose = params.get("purpose") || params.get("listing_type") || "";
 
-  if (q) {
-    state.keyword = q;
-  }
+  state.keyword = q;
+  state.location = location;
+  state.district = district;
+  state.purpose = purpose;
 
-  if (location) {
-  const apDistricts = [
-    "Alluri Sitharama Raju",
-    "Anakapalli",
-    "Ananthapuramu",
-    "Annamayya",
-    "Bapatla",
-    "Chittoor",
-    "Dr. B.R. Ambedkar Konaseema",
-    "East Godavari",
-    "Eluru",
-    "Guntur",
-    "Kakinada",
-    "Krishna",
-    "Kurnool",
-    "Nandyal",
-    "NTR",
-    "Palnadu",
-    "Parvathipuram Manyam",
-    "Prakasam",
-    "Sri Potti Sriramulu Nellore",
-    "Sri Sathya Sai",
-    "Srikakulam",
-    "Tirupati",
-    "Visakhapatnam",
-    "Vizianagaram",
-    "West Godavari",
-    "YSR Kadapa"
-  ];
+  const blockedTypes = ["buy", "rent", "sale", "sell", "residential", "property", "properties"];
 
-  const matchedDistrict = apDistricts.find(
-    district => district.toLowerCase() === location.toLowerCase()
-  );
-
-  if (matchedDistrict) {
-    state.district = matchedDistrict;
-  } else {
-    state.keyword = [q, location].filter(Boolean).join(" ");
-  }
-}
-
-  if (rawType && !["buy", "rent", "sale"].includes(rawType.toLowerCase())) {
+  if (rawType && !blockedTypes.includes(rawType.toLowerCase())) {
     state.type = normalizeType(rawType) || "all";
   } else {
     state.type = "all";
-  }
-
-  if (purpose && purpose !== "all") {
-    state.status = "";
   }
 
   if (els.search) els.search.value = state.keyword;
@@ -847,44 +1252,26 @@ function readUrlParams() {
 }
 function updateBrand() {
 
-  const d = DEFAULT_AREAS[state.district] || {
+  const d = DEFAULT_AREAS[state.district] || DEFAULT_AREAS[state.location] || {
     address: "",
     areas: []
   };
 
-  // header brand
   if (els.brand) {
-    els.brand.textContent = state.district
-      ? state.district + " Properties"
-      : "Properties";
+    els.brand.textContent = "Guntur Properties";
   }
 
-  // footer brand
   if (els.footerBrand) {
-    els.footerBrand.textContent = state.district
-      ? state.district + " Properties"
-      : "Properties";
+    els.footerBrand.textContent = "Guntur Properties";
   }
 
-  // footer address
   if (els.footerAddress) {
-    els.footerAddress.textContent = d.address || "";
+    els.footerAddress.textContent = d.address || "Krishna Nagar 1st Line opp. Pattabhipuram Main Road Masjid, Guntur, Andhra Pradesh - 522006";
   }
 
-  // sync dropdown selected location
-  const selectedLocationText =
-    document.getElementById("properties-selected-location");
-
-  if (selectedLocationText) {
-    selectedLocationText.textContent =
-      state.district || "Select Location";
-  }
-
-  // save selected district
-  localStorage.setItem(
-    "gp_district",
-    state.district || ""
-  );
+  localStorage.removeItem("gp_district");
+  localStorage.removeItem("gp_selected_district");
+  localStorage.removeItem("gp_selected_location");
 }
 function updateCrumb() {
 
@@ -998,6 +1385,14 @@ function filteredData() {
       return text.includes("commercial") || text.includes("shop") || text.includes("office") || text.includes("showroom") || text.includes("warehouse");
     }
 
+    if (word === "project" || word === "projects") {
+      return text.includes("project") || text.includes("new launch") || text.includes("rera") || text.includes("developer");
+    }
+
+    if (word === "pg" || word === "coliving" || word === "co living") {
+      return text.includes("pg") || text.includes("co living") || text.includes("co-living") || text.includes("hostel");
+    }
+
     if (word === "2bhk") {
       return text.includes("2 bhk") || text.includes("2bhk") || text.includes("2 bedroom") || text.includes("2 bedrooms");
     }
@@ -1017,6 +1412,7 @@ function filteredData() {
     return text.includes(word);
   }
 
+ if (state.district) {
   items = items.filter(i => {
     const districtText = normalize([
       i.district,
@@ -1026,8 +1422,33 @@ function filteredData() {
       i.address
     ].join(" "));
 
-    return districtText.includes(normalize(state.district)) || !i.district;
+    return districtText.includes(normalize(state.district));
   });
+}
+
+if (state.location) {
+  items = items.filter(i => {
+    const locationText = normalize([
+      i.location,
+      i.area,
+      i.locality,
+      i.city,
+      i.district,
+      i.address
+    ].join(" "));
+
+    return locationText.includes(normalize(state.location));
+  });
+}
+
+  if (state.purpose) {
+    items = items.filter(i => {
+      const text = normalize([i.listingType, i.searchableText].join(" "));
+      if (state.purpose === "buy") return text.includes("buy") || text.includes("sale") || text.includes("sell");
+      if (state.purpose === "rent") return text.includes("rent") || text.includes("pg") || text.includes("co living") || text.includes("co-living");
+      return true;
+    });
+  }
 
   if (state.type !== "all") {
     items = items.filter(i => {
@@ -1047,6 +1468,14 @@ function filteredData() {
 
       if (state.type === "commercial") {
         return text.includes("commercial") || text.includes("shop") || text.includes("office") || text.includes("showroom") || text.includes("warehouse");
+      }
+
+      if (state.type === "project") {
+        return i.type === "project" || text.includes("project") || text.includes("new launch") || text.includes("rera") || text.includes("developer");
+      }
+
+      if (state.type === "pg") {
+        return i.type === "pg" || text.includes("pg") || text.includes("co living") || text.includes("co-living") || text.includes("hostel");
       }
 
       return i.type === state.type || text.includes(normalize(state.type));
@@ -1110,13 +1539,28 @@ function getDetailsLink(item) {
 
 function renderCards() {
   if (!state.isConnected) {
-    els.heading.textContent = "0 Properties";
-    els.sub.textContent = "No property listings are available right now.";
+    els.heading.textContent = "No properties in that location";
+    els.sub.textContent = "Connect Supabase to show property suggestions.";
     showState("not-connected");
     return;
   }
 
-  let items = filteredData();
+  const filteredItems = filteredData();
+  const showingSuggestions = filteredItems.length === 0 && state.properties.length > 0;
+  let items = filteredItems;
+
+  if (showingSuggestions) {
+    items = [...state.properties]
+      .sort(() => Math.random() - 0.5)
+      .slice(0, 8);
+  }
+
+  if (!items.length) {
+    els.heading.textContent = "No properties in that location";
+    els.sub.textContent = "No matching listings are available right now.";
+    showState("empty");
+    return;
+  }
 
   els.grid.className =
     state.view === "grid"
@@ -1133,8 +1577,10 @@ function renderCards() {
           <img src="${i.img}" class="w-full h-full object-cover" alt="${i.name}" loading="lazy">
 
           <span class="absolute top-3 left-3 bg-white/95 px-3 py-1 rounded-full text-[10px] font-extrabold text-primary uppercase">
-            ${title(i.type)}
+            ${i.type === "project" ? "Project" : title(i.type)}
           </span>
+
+          ${showingSuggestions ? `<span class="absolute bottom-3 left-3 bg-[#0f4c81]/95 text-white px-3 py-1 rounded-full text-[10px] font-extrabold uppercase">Nearby suggestion</span>` : ""}
 
           <button class="fav absolute top-3 right-3 w-9 h-9 rounded-full bg-white/95 text-outline hover:text-red-600" aria-label="Shortlist property">
             <span class="material-symbols-outlined">favorite</span>
@@ -1148,7 +1594,7 @@ function renderCards() {
 
               <p class="text-sm text-outline flex items-center gap-1 mt-1">
                 <span class="material-symbols-outlined text-[16px]">location_on</span>
-                ${i.area}, ${i.district}
+                ${[i.area, i.district].filter(Boolean).join(", ") || "Location not added"}
               </p>
             </div>
 
@@ -1160,8 +1606,8 @@ function renderCards() {
 
           <div class="grid grid-cols-3 gap-2 py-4 my-4 border-y border-line/30 text-center">
             <div>
-              <p class="text-[10px] text-outline font-bold">${i.type === 'plot' ? 'UNIT' : 'BHK'}</p>
-              <p class="font-extrabold text-sm">${i.type === 'plot' ? i.size : i.bhk + ' BHK'}</p>
+              <p class="text-[10px] text-outline font-bold">${i.type === 'plot' || i.type === 'project' ? 'UNIT' : 'BHK'}</p>
+              <p class="font-extrabold text-sm">${i.type === 'plot' || i.type === 'project' ? (i.projectUnitType ? title(i.projectUnitType.replace('project_', '')) : i.size) : i.bhk + ' BHK'}</p>
             </div>
 
             <div>
@@ -1189,28 +1635,19 @@ function renderCards() {
     `;
   }).join("");
 
-
-  if (!items.length) {
-    showState("empty");
-  } else {
-    showState("grid");
-  }
-
-   document.querySelectorAll(".property-card").forEach(function (card) {
+  document.querySelectorAll(".property-card").forEach(function (card) {
     card.addEventListener("click", function (event) {
       if (
         event.target.closest("a") ||
         event.target.closest("button") ||
-        event.target.closest(".fav")
+        event.target.closest(".fav") ||
+        event.target.closest(".whatsapp-link")
       ) {
         return;
       }
 
       const link = card.dataset.link;
-
-      if (link) {
-        window.location.href = link;
-      }
+      if (link) window.location.href = link;
     });
   });
 
@@ -1218,13 +1655,8 @@ function renderCards() {
     btn.addEventListener("click", function (event) {
       event.preventDefault();
       event.stopPropagation();
-
-      const card = btn.closest(".property-card");
-      const link = card?.dataset.link;
-
-      if (link) {
-        window.location.href = link;
-      }
+      const link = btn.closest(".property-card")?.dataset.link;
+      if (link) window.location.href = link;
     });
   });
 
@@ -1232,7 +1664,6 @@ function renderCards() {
     btn.addEventListener("click", function (event) {
       event.preventDefault();
       event.stopPropagation();
-
       btn.classList.toggle("text-red-600");
     });
   });
@@ -1243,10 +1674,17 @@ function renderCards() {
     });
   });
 
-  els.heading.textContent = `${items.length} ${title(state.type)} Properties`;
- els.sub.textContent = state.keyword
-  ? `Approved Supabase listings for ${state.keyword}`
-  : "Approved Supabase listings";
+  if (showingSuggestions) {
+    els.heading.textContent = "No properties in that location";
+    els.sub.textContent = "Showing nearby property suggestions.";
+  } else {
+    els.heading.textContent = `${items.length} ${title(state.type)} Properties`;
+    els.sub.textContent = state.keyword || state.location
+      ? `Approved listings for ${[state.keyword, state.location].filter(Boolean).join(" in ")}`
+      : "Approved Supabase listings";
+  }
+
+  showState("grid");
 }
 
 function updateButtons() {
@@ -1286,7 +1724,9 @@ function extra() {
     villa: ["Villa Features", ["Private Garden", "Gated Community", "Clubhouse", "Corner Villa"]],
     plot: ["Plot Type", ["East Facing", "Corner Plot", "DTCP", "Near Road"]],
     house: ["House Features", ["Independent", "Duplex", "Parking", "Garden"]],
-    commercial: ["Commercial Type", ["Shop", "Office", "Showroom", "Warehouse"]]
+    commercial: ["Commercial Type", ["Shop", "Office", "Showroom", "Warehouse"]],
+    project: ["Project Type", ["House", "Apartment", "Villa", "Plot", "Commercial"]],
+    pg: ["PG Type", ["Boys PG", "Girls PG", "Co-living", "Single Room"]]
   };
 
   let c = cfg[state.type];
@@ -1329,8 +1769,8 @@ function resetFilters(clearSearch = true) {
 
 async function loadPropertiesFromSupabase() {
   if (!state.isConnected) {
-    els.heading.textContent = "0 Properties";
-    els.sub.textContent = "No property listings are available right now.";
+    els.heading.textContent = "No properties in that location";
+    els.sub.textContent = "Connect Supabase to show property suggestions.";
     showState("not-connected");
     renderAll();
     return;
@@ -1351,6 +1791,7 @@ async function loadPropertiesFromSupabase() {
     if (error) throw error;
 
     state.properties = (data || []).map(normalizeProperty);
+    renderHeaderLocationMenu();
     renderAll();
   } catch (error) {
     console.error("Supabase property fetch failed:", error);
@@ -1361,14 +1802,12 @@ async function loadPropertiesFromSupabase() {
 
 function bindEvents() {
   $("header-search-btn")?.addEventListener("click", () => {
-    state.keyword = els.search.value.trim();
-    renderAll();
+    applyHeaderSearch();
   });
 
   els.search?.addEventListener("keydown", e => {
     if (e.key === "Enter") {
-      state.keyword = els.search.value.trim();
-      renderAll();
+      applyHeaderSearch();
     }
   });
 
@@ -1424,6 +1863,7 @@ function bindEvents() {
     renderAll();
   };
 
+
   $("hide-filter-btn").onclick = () => {
     document.body.classList.add("sidebar-collapsed");
     $("show-filter-btn").classList.remove("hidden");
@@ -1451,9 +1891,9 @@ function bindEvents() {
     renderAll();
   };
 
-  $("mobile-filter-btn").onclick = () => {
+  $("mobile-filter-btn")?.addEventListener("click", () => {
     $("mobile-filter-panel").classList.add("active");
-  };
+  });
 
   $("close-mobile-filter").onclick = () => {
     $("mobile-filter-panel").classList.remove("active");
@@ -1527,90 +1967,224 @@ document.addEventListener("DOMContentLoaded", () => {
   updateButtons();
   loadPropertiesFromSupabase();
 });
-function renderLocationMenu() {
 
-  const menu = document.getElementById("properties-location-menu");
+let pendingHeaderLocation = state.location || state.district || "";
 
+function getAvailableHeaderLocations() {
+  const fromRows = (state.properties || [])
+    .flatMap((item) => [item.district, item.city, item.location, item.area, item.locality])
+    .filter(Boolean)
+    .map((item) => String(item).trim())
+    .filter(Boolean);
+
+  const combined = [...fromRows, ...SEARCH_LOCATIONS];
+  return [...new Set(combined)].sort((a, b) => a.localeCompare(b));
+}
+
+function syncHeaderLocationChip(value) {
+  pendingHeaderLocation = value || "";
+
+  const chip = document.getElementById("header-selected-location-chip");
+  const text = document.getElementById("header-location-chip-text");
+
+  if (!chip || !text) return;
+
+  if (pendingHeaderLocation) {
+    text.textContent = pendingHeaderLocation;
+    chip.classList.remove("hidden");
+  } else {
+    text.textContent = "";
+    chip.classList.add("hidden");
+  }
+}
+
+function renderHeaderLocationMenu() {
+  const menu = document.getElementById("header-location-menu");
   if (!menu) return;
 
-  menu.innerHTML = SEARCH_LOCATIONS.map(location => `
+  const locations = getAvailableHeaderLocations();
+
+  menu.innerHTML = locations.map((location) => `
     <button
       type="button"
-      class="properties-location-option w-full text-left px-4 py-3 rounded-xl hover:bg-gold/10 font-bold"
-      data-location="${location}"
+      class="header-location-option w-full text-left px-4 py-3 rounded-xl hover:bg-gold/10 font-bold ${location === pendingHeaderLocation ? "active" : ""}"
+      data-location="${location.replace(/"/g, "&quot;")}"
     >
       ${location}
     </button>
   `).join("");
 
-  menu.querySelectorAll(".properties-location-option")
-    .forEach(button => {
+  menu.querySelectorAll(".header-location-option").forEach((button) => {
+    button.addEventListener("click", () => {
+      const selectedLocation = button.dataset.location || "";
+      syncHeaderLocationChip(selectedLocation);
+      menu.classList.add("hidden");
+    });
+  });
+}
 
-      button.addEventListener("click", () => {
+function applyHeaderSearch() {
+  const keyword = els.search?.value?.trim() || "";
 
-  const selectedLocation = button.dataset.location || "";
-
-  // set district
-  state.district = selectedLocation;
-
-  // clear old keyword search
-  state.keyword = "";
-
-  // update UI
-  document.getElementById(
-    "properties-selected-location"
-  ).textContent = selectedLocation || "Select Location";
-
-  // clear search inputs
-  if (els.search) {
-    els.search.value = "";
-  }
+  state.keyword = keyword;
+  state.location = pendingHeaderLocation || "";
+  state.district = "";
 
   if (els.mobileSearch) {
-    els.mobileSearch.value = "";
+    els.mobileSearch.value = keyword;
   }
 
-  // close dropdown
-  menu.classList.add("hidden");
-
-  // update URL
   const url = new URL(window.location);
 
-  if (selectedLocation) {
-    url.searchParams.set("location", selectedLocation);
-  } else {
-    url.searchParams.delete("location");
-  }
+  if (keyword) url.searchParams.set("q", keyword);
+  else url.searchParams.delete("q");
+
+  url.searchParams.delete("district");
+
+  if (state.location) url.searchParams.set("location", state.location);
+  else url.searchParams.delete("location");
 
   window.history.replaceState({}, "", url);
-
-  // render filtered properties
   renderAll();
-
-      });
-    });
 }
-renderLocationMenu();
 
-const locationButton =
-  document.getElementById("properties-location-button");
+function initHeaderMenus() {
+  const buyButton = document.getElementById("header-buy-india-btn");
+  const buyMenu = document.getElementById("header-buy-india-menu");
+  const typeButton = document.getElementById("header-type-btn");
+  const typeMenu = document.getElementById("header-type-menu");
+  const typeLabel = document.getElementById("header-selected-type");
+  const searchButton = document.getElementById("header-search-btn");
+  const locationIconButton = document.getElementById("header-location-icon-button");
+  const locationMenu = document.getElementById("header-location-menu");
+  const clearLocationBtn = document.getElementById("header-clear-location");
+  const micButton = document.getElementById("header-mic-button");
 
-const locationMenu =
-  document.getElementById("properties-location-menu");
+  syncHeaderLocationChip(pendingHeaderLocation);
+  renderHeaderLocationMenu();
 
-locationButton?.addEventListener("click", () => {
-  locationMenu.classList.toggle("hidden");
-});
+  buyButton?.addEventListener("click", (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    buyMenu?.classList.toggle("hidden");
+    typeMenu?.classList.add("hidden");
+    locationMenu?.classList.add("hidden");
+  });
 
-document.addEventListener("click", (event) => {
+  buyMenu?.querySelectorAll(".header-buy-option").forEach((button) => {
+    button.addEventListener("click", () => {
+      state.type = button.dataset.typeMenu || "all";
+      buyMenu.classList.add("hidden");
+      renderAll();
+    });
+  });
 
-  if (
-    !locationButton.contains(event.target) &&
-    !locationMenu.contains(event.target)
-  ) {
-    locationMenu.classList.add("hidden");
-  }
-});
+  typeButton?.addEventListener("click", (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    typeMenu?.classList.toggle("hidden");
+    buyMenu?.classList.add("hidden");
+    locationMenu?.classList.add("hidden");
+  });
+
+  typeMenu?.querySelectorAll(".header-type-option").forEach((button) => {
+    button.addEventListener("click", () => {
+      typeMenu.querySelectorAll(".header-type-option").forEach((item) => item.classList.remove("active"));
+      button.classList.add("active");
+      if (typeLabel) typeLabel.textContent = button.textContent.trim();
+
+      state.purpose = button.dataset.headerPurpose || "";
+      state.type = button.dataset.headerType || "all";
+      typeMenu.classList.add("hidden");
+      renderAll();
+    });
+  });
+
+  locationIconButton?.addEventListener("click", (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    renderHeaderLocationMenu();
+    locationMenu?.classList.toggle("hidden");
+    buyMenu?.classList.add("hidden");
+    typeMenu?.classList.add("hidden");
+  });
+
+  clearLocationBtn?.addEventListener("click", (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    syncHeaderLocationChip("");
+    state.location = "";
+    state.district = "";
+
+    const url = new URL(window.location);
+    url.searchParams.delete("location");
+    url.searchParams.delete("district");
+    window.history.replaceState({}, "", url);
+
+    renderAll();
+  });
+
+  searchButton?.addEventListener("click", (event) => {
+    event.preventDefault();
+    applyHeaderSearch();
+  });
+
+  els.search?.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      applyHeaderSearch();
+    }
+  });
+
+  micButton?.addEventListener("click", () => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (!SpeechRecognition) {
+      alert("Voice search is not supported in this browser.");
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.lang = "en-IN";
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    recognition.onstart = () => {
+      micButton.classList.add("filter-active");
+    };
+
+    recognition.onresult = (event) => {
+      const transcript = event.results?.[0]?.[0]?.transcript || "";
+      if (els.search) els.search.value = transcript;
+    };
+
+    recognition.onerror = () => {
+      alert("Microphone permission denied or voice search failed.");
+    };
+
+    recognition.onend = () => {
+      micButton.classList.remove("filter-active");
+    };
+
+    recognition.start();
+  });
+
+  document.addEventListener("click", (event) => {
+    if (buyButton && buyMenu && !buyButton.contains(event.target) && !buyMenu.contains(event.target)) {
+      buyMenu.classList.add("hidden");
+    }
+
+    if (typeButton && typeMenu && !typeButton.contains(event.target) && !typeMenu.contains(event.target)) {
+      typeMenu.classList.add("hidden");
+    }
+
+    if (locationIconButton && locationMenu && !locationIconButton.contains(event.target) && !locationMenu.contains(event.target)) {
+      locationMenu.classList.add("hidden");
+    }
+  });
+}
+
+document.addEventListener("DOMContentLoaded", initHeaderMenus);
 </script>
 
  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -1624,7 +2198,7 @@ document.addEventListener("click", (event) => {
 <script src="js/api.js"></script>
 <script src="js/auth.js"></script>
 <script src="js/main.js"></script>
-<script src="js/search.js"></script>
-<script src="js/properties.js"></script>
+<!-- <script src="js/search.js"></script> -->
+<!-- <script src="js/properties.js"></script> -->
 </body>
 </html>
