@@ -39,11 +39,11 @@
             "outline-variant": "#cbd5e1",
             surface: "#f9f9ff",
             background: "#f9f9ff",
-            "surface-container-low": "#f0f3ff",
-            "surface-container": "#e7eefe",
+            "surface-container-low": "#eef6ff",
+            "surface-container": "#eef6ff",
             "on-surface": "#151c27",
             "on-background": "#151c27",
-            "on-primary-container": "#061a33"
+            "on-primary-container": "#ffffff"
           },
           fontFamily: {
             body: ["Manrope", "sans-serif"]
@@ -69,7 +69,7 @@
     #chat-window.active { opacity:1; transform:translateY(0) scale(1); pointer-events:auto; }
     #property-chat-panel { transition:all .35s ease; opacity:0; transform:translateY(16px) scale(.96); pointer-events:none; }
     #property-chat-panel.active { opacity:1; transform:translateY(0) scale(1); pointer-events:auto; }
-    .gallery-tile { background:#eef2f7; }
+    .gallery-tile { background:#eef6ff; }
     .spec-card { background:white; border:1px solid rgba(203,213,225,.38); border-radius:22px; }
     .seo-hidden { position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
     @media(max-width:768px){
@@ -186,6 +186,98 @@ iframe {
     scroll-padding-top: 90px !important;
   }
 }
+
+    /* Post-property color alignment */
+    :root {
+      --gold: #0f4c81;
+      --gold-dark: #082f5f;
+      --text: #151c27;
+      --muted: #64748b;
+      --bg: #f9f9ff;
+      --line: rgba(15,76,129,.22);
+    }
+
+    body {
+      background:
+        radial-gradient(circle at top right, rgba(15,76,129,.16), transparent 32%),
+        linear-gradient(180deg, #ffffff, #f9f9ff) !important;
+      color: var(--text);
+    }
+
+    .page-card {
+      background: rgba(255,255,255,.96);
+      border: 1px solid rgba(15,76,129,.18);
+      box-shadow: 0 24px 70px rgba(15,23,42,.10);
+      border-radius: 28px;
+    }
+
+    .blue-action-btn {
+      background: linear-gradient(180deg, #d9ecff, #0f4c81);
+      color: #ffffff;
+      font-weight: 900;
+      border-radius: 16px;
+      box-shadow: 0 14px 30px rgba(15,76,129,.28);
+      transition: .2s ease;
+    }
+
+    .blue-action-btn:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.04);
+    }
+
+    .property-video-card {
+      background: #f8fafc;
+      border: 1px solid rgba(203,213,225,.75);
+      border-radius: 22px;
+      padding: 14px;
+      overflow: hidden;
+    }
+
+    .property-video-card video {
+      width: 100%;
+      background: #151c27;
+      border-radius: 18px;
+      border: 1px solid rgba(203,213,225,.75);
+      object-fit: contain;
+    }
+
+    .property-video-card.reel video {
+      max-height: 620px;
+      aspect-ratio: 9 / 16;
+    }
+
+    .property-video-card.youtube video {
+      max-height: 420px;
+      aspect-ratio: 16 / 9;
+    }
+
+    .property-link-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 46px;
+      padding: 0 16px;
+      border-radius: 14px;
+      background: #eef6ff;
+      color: #082f5f;
+      border: 1px solid rgba(15,76,129,.28);
+      font-weight: 900;
+      text-decoration: none;
+    }
+
+    .property-link-btn:hover {
+      background: #0f4c81;
+      color: #ffffff;
+    }
+
+    @media (max-width: 640px) {
+      .property-video-card.reel video,
+      .property-video-card.youtube video {
+        max-height: 360px;
+      }
+    }
+
   </style>
 
   <script id="property-jsonld" type="application/ld+json">
@@ -216,16 +308,41 @@ iframe {
         <div class="w-full bg-white border border-outline-variant/30 rounded-2xl py-2.5 pl-3 md:pl-4 pr-2 md:pr-3 focus-within:ring-2 focus-within:ring-[#0f4c81] focus-within:border-transparent transition-all outline-none shadow-sm flex items-center gap-2 md:gap-3">
           <span class="material-symbols-outlined text-outline shrink-0">search</span>
 
-          <button type="button" id="header-location-chip" class="hidden sm:inline-flex shrink-0 items-center gap-2 bg-[#0f4c81]/10 border border-[#0f4c81]/30 text-[#082f5f] px-3 md:px-4 py-2 rounded-xl font-bold hover:bg-[#0f4c81]/18 transition-all">
-            <span id="header-selected-location">Guntur</span>
-            <span class="material-symbols-outlined text-[18px]">expand_more</span>
-          </button>
+         
 
           <input id="header-property-search" class="flex-1 min-w-0 bg-transparent border-0 focus:ring-0 text-on-surface placeholder:text-outline/60 outline-none px-1 py-2 text-sm md:text-base" placeholder="Search areas, property type, budget..." type="text"/>
 
-          <button type="button" id="header-location-icon-button" aria-label="Select location" class="shrink-0 w-10 h-10 md:w-11 md:h-11 rounded-xl bg-[#0f4c81]/10 border border-[#0f4c81]/30 text-[#0f4c81] hover:bg-[#0f4c81]/18 flex items-center justify-center transition-all">
-            <span class="material-symbols-outlined text-[22px]">location_on</span>
-          </button>
+         <div class="relative shrink-0" id="header-buy-wrap">
+  <button
+    type="button"
+    id="header-buy-btn"
+    class="inline-flex items-center gap-1 pr-3 md:pr-4 border-r border-[#cbd5e1] text-[#151c27] font-extrabold text-sm md:text-base"
+  >
+    <span id="header-selected-purpose">Buy in India</span>
+    <span class="material-symbols-outlined text-[18px]">expand_more</span>
+  </button>
+
+  <div
+    id="header-buy-menu"
+    class="hidden absolute left-0 top-[calc(100%+18px)] w-48 bg-white rounded-2xl border border-[#0f4c81]/20 shadow-2xl p-2 z-[9999]"
+  >
+    <button data-purpose="buy" data-label="Buy in India" class="header-buy-option w-full text-left px-4 py-3 rounded-xl font-bold hover:bg-[#eef6ff]">
+      Buy in India
+    </button>
+
+    <button data-purpose="rent" data-label="Rent in India" class="header-buy-option w-full text-left px-4 py-3 rounded-xl font-bold hover:bg-[#eef6ff]">
+      Rent in India
+    </button>
+
+    <button data-purpose="commercial" data-label="Commercial in India" class="header-buy-option w-full text-left px-4 py-3 rounded-xl font-bold hover:bg-[#eef6ff]">
+      Commercial in India
+    </button>
+
+    <button data-purpose="projects" data-label="Projects in India" class="header-buy-option w-full text-left px-4 py-3 rounded-xl font-bold hover:bg-[#eef6ff]">
+      Projects in India
+    </button>
+  </div>
+</div>
 
           <button type="button" id="header-search-button" class="shrink-0 bg-[#0f4c81] text-white px-3 md:px-5 py-3 rounded-xl font-extrabold hover:brightness-110 active:scale-95 transition-all shadow-md flex items-center gap-2">
             <span class="material-symbols-outlined text-[20px]">search</span>
@@ -266,7 +383,7 @@ iframe {
           <span class="material-symbols-outlined text-sm">call</span>
           Call
         </a>
-        <a id="top-whatsapp" href="https://wa.me/919959919999" target="_blank" rel="noopener" class="hidden sm:flex items-center gap-2 px-5 py-2 rounded-full bg-[#25D366] text-white font-extrabold shadow-lg hover:brightness-110">
+        <a id="top-whatsapp" href="https://wa.me/919959919999" target="_blank" rel="noopener" class="hidden sm:flex items-center gap-2 px-5 py-2 rounded-full blue-action-btn font-extrabold shadow-lg hover:brightness-110">
           <span class="material-symbols-outlined text-sm">chat</span>
           WhatsApp
         </a>
@@ -386,18 +503,23 @@ iframe {
 
       <div id="thumb-row" class="mt-4 flex gap-3 overflow-x-auto scrollbar-hide"></div>
     </section>
- <!-- PROPERTY VIDEO FROM CLOUDINARY -->
-    <section id="property-video-box" class="hidden max-w-screen-2xl mx-auto px-4 md:px-6 mb-8">
-      <h2 class="text-3xl font-extrabold mb-5 border-l-4 border-primary-container pl-4">
-        Property Video
-      </h2>
+ <!-- PROPERTY VIDEOS / LINKS FROM POST PROPERTY -->
+    <section id="property-media-box" class="hidden max-w-screen-2xl mx-auto px-4 md:px-6 mb-8">
+      <div class="bg-white border border-[#0f4c81]/20 rounded-[28px] p-5 md:p-7 shadow-[0_24px_70px_rgba(15,23,42,.10)]">
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-5">
+          <div>
+            <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#eef6ff] text-[#082f5f] font-black text-xs uppercase tracking-widest">
+              <span class="material-symbols-outlined text-[18px]">smart_display</span>
+              Property Media
+            </span>
+            <h2 class="text-2xl md:text-3xl font-black mt-4 text-[#151c27]">Property Videos & Links</h2>
+            <p class="text-[#64748b] font-semibold mt-1">Videos are optional. This section appears only when owner, broker, developer, admin or staff added media.</p>
+          </div>
+        </div>
 
-      <video
-        id="property-video-player"
-        controls
-        playsinline
-        class="w-full max-h-[520px] rounded-3xl shadow-lg border border-slate-100 bg-black object-contain"
-      ></video>
+        <div id="property-video-grid" class="grid md:grid-cols-2 gap-5"></div>
+        <div id="property-social-links" class="hidden flex flex-wrap gap-3 mt-5"></div>
+      </div>
     </section>
     <!-- MAIN CONTENT -->
     <section class="max-w-screen-2xl mx-auto px-4 md:px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 relative">
@@ -409,8 +531,8 @@ iframe {
         <section class="border-b border-slate-100 pb-12" id="details">
           <div class="flex flex-wrap gap-3 mb-6">
             <span id="badge-property-type" class="bg-primary-container/10 text-primary px-4 py-1 rounded-full text-xs font-extrabold uppercase tracking-widest">Property</span>
-            <span id="badge-listing-type" class="bg-blue-100 text-secondary px-4 py-1 rounded-full text-xs font-extrabold uppercase tracking-widest">For Sale</span>
-            <span id="badge-status" class="bg-green-100 text-green-700 px-4 py-1 rounded-full text-xs font-extrabold uppercase tracking-widest">Available</span>
+            <span id="badge-listing-type" class="bg-[#eef6ff] text-[#082f5f] px-4 py-1 rounded-full text-xs font-extrabold uppercase tracking-widest">For Sale</span>
+            <span id="badge-status" class="bg-[#eef6ff] text-[#082f5f] px-4 py-1 rounded-full text-xs font-extrabold uppercase tracking-widest">Available</span>
           </div>
 
           <div class="flex flex-col md:flex-row justify-between items-start gap-6">
@@ -554,7 +676,7 @@ iframe {
 
             <p id="chat-status" class="text-sm text-secondary mb-3"></p>
 
-            <a id="whatsapp-btn" href="#" target="_blank" rel="noopener" class="flex items-center justify-center gap-3 bg-[#25D366] text-white h-14 w-full rounded-xl font-extrabold text-lg shadow-lg hover:brightness-110 transition-all">
+            <a id="whatsapp-btn" href="#" target="_blank" rel="noopener" class="flex items-center justify-center gap-3 blue-action-btn h-14 w-full rounded-xl font-extrabold text-lg shadow-lg hover:brightness-110 transition-all">
               <span class="material-symbols-outlined">chat</span>
               WhatsApp Now
             </a>
@@ -566,14 +688,14 @@ iframe {
           </div>
 
           <!-- AGENT CARD -->
-          <div class="bg-slate-900 text-white p-6 rounded-3xl flex items-center gap-4">
+          <div class="bg-[#082f5f] text-white p-6 rounded-3xl flex items-center gap-4">
             <div class="w-16 h-16 rounded-2xl bg-primary-container/20 flex items-center justify-center">
               <span class="material-symbols-outlined text-primary-container text-4xl">support_agent</span>
             </div>
 
             <div>
               <p id="agent-name" class="font-extrabold text-lg">Guntur Properties Agent</p>
-              <p id="agent-role" class="text-slate-400 text-sm">Property Consultant</p>
+              <p id="agent-role" class="text-[#cbd5e1] text-sm">Property Consultant</p>
             </div>
 
             <div class="ml-auto">
@@ -598,7 +720,7 @@ iframe {
 
               <div class="flex justify-between gap-3">
                 <span class="text-secondary">Status</span>
-                <span id="summary-status" class="font-bold text-green-600 text-right">-</span>
+                <span id="summary-status" class="font-bold text-[#0f4c81] text-right">-</span>
               </div>
 
               <div class="flex justify-between gap-3">
@@ -634,7 +756,7 @@ iframe {
       </div>
 
       <div class="p-6 space-y-3">
-        <a id="chat-whatsapp" href="#" target="_blank" rel="noopener" class="w-full bg-[#25D366] text-white py-3 rounded-xl font-extrabold flex items-center justify-center gap-2">
+        <a id="chat-whatsapp" href="#" target="_blank" rel="noopener" class="w-full blue-action-btn py-3 rounded-xl font-extrabold flex items-center justify-center gap-2">
           <span class="material-symbols-outlined">chat</span>
           WhatsApp Agent
         </a>
@@ -649,7 +771,7 @@ iframe {
 
   <!-- MOBILE BOTTOM NAV -->
   <footer class="md:hidden fixed bottom-0 w-full z-50 bg-white/90 backdrop-blur-xl border-t border-slate-200/50 shadow-[0_-10px_40px_rgba(0,0,0,0.05)] rounded-t-2xl py-3 px-4 flex justify-around items-center">
-    <a href="properties.html" class="flex flex-col items-center justify-center text-slate-400">
+    <a href="properties.html" class="flex flex-col items-center justify-center text-[#cbd5e1]">
       <span class="material-symbols-outlined">search</span>
       <span class="text-[10px] font-bold uppercase tracking-wider">Discover</span>
     </a>
@@ -659,12 +781,12 @@ iframe {
       <span class="text-[10px] font-bold uppercase tracking-wider">Saved</span>
     </a>
 
-    <a id="mobile-whatsapp" href="#" target="_blank" rel="noopener" class="flex flex-col items-center justify-center text-slate-400">
+    <a id="mobile-whatsapp" href="#" target="_blank" rel="noopener" class="flex flex-col items-center justify-center text-[#cbd5e1]">
       <span class="material-symbols-outlined">mail</span>
       <span class="text-[10px] font-bold uppercase tracking-wider">Inquiries</span>
     </a>
 
-    <a href="login.html" class="flex flex-col items-center justify-center text-slate-400">
+    <a href="login.html" class="flex flex-col items-center justify-center text-[#cbd5e1]">
       <span class="material-symbols-outlined">person_outline</span>
       <span class="text-[10px] font-bold uppercase tracking-wider">Profile</span>
     </a>
@@ -1047,6 +1169,98 @@ async function initSaveProperty(property) {
     }
   };
 }
+
+    function safeUrl(value) {
+      const text = String(value || "").trim();
+      if (!text) return "";
+      try {
+        const url = new URL(text, window.location.origin);
+        if (!["http:", "https:", "tel:", "mailto:"].includes(url.protocol)) return "";
+        return url.href;
+      } catch (_) {
+        return "";
+      }
+    }
+
+    function getPropertyVideos(property) {
+      const videos = [];
+      const seen = new Set();
+
+      function addVideo(label, url, type) {
+        const clean = safeUrl(url);
+        if (!clean || seen.has(clean)) return;
+        seen.add(clean);
+        videos.push({ label, url: clean, type });
+      }
+
+      addVideo("Reel / Vertical Video", property.reel_video_url || property.video_types?.reel, "reel");
+      addVideo("YouTube / Normal Video", property.youtube_video_url || property.video_types?.youtube, "youtube");
+
+      if (Array.isArray(property.video_urls)) {
+        property.video_urls.forEach((url, index) => {
+          const type = index === 0 && !property.reel_video_url ? "youtube" : "youtube";
+          addVideo(index === 0 ? "Property Video" : `Property Video ${index + 1}`, url, type);
+        });
+      }
+
+      addVideo("Property Video", property.main_video || property.video_url, "youtube");
+
+      return videos;
+    }
+
+    function renderPropertyMedia(property) {
+      const mediaBox = $("property-media-box");
+      const videoGrid = $("property-video-grid");
+      const socialLinks = $("property-social-links");
+      if (!mediaBox || !videoGrid || !socialLinks) return;
+
+      const videos = getPropertyVideos(property);
+      const instagramLink = safeUrl(property.instagram_link);
+      const youtubeLink = safeUrl(property.youtube_link);
+
+      videoGrid.innerHTML = videos.map((video) => `
+        <article class="property-video-card ${video.type}">
+          <div class="flex items-center justify-between gap-3 mb-3">
+            <h3 class="font-black text-[#082f5f]">${video.label}</h3>
+            <span class="text-xs font-black uppercase tracking-widest text-[#64748b]">${video.type === "reel" ? "9:16" : "16:9"}</span>
+          </div>
+          <video controls playsinline preload="metadata">
+            <source src="${video.url}">
+            Your browser does not support video.
+          </video>
+        </article>
+      `).join("");
+
+      const links = [];
+
+      if (instagramLink) {
+        links.push(`
+          <a class="property-link-btn" href="${instagramLink}" target="_blank" rel="noopener">
+            <span class="material-symbols-outlined text-[18px]">open_in_new</span>
+            Instagram Link
+          </a>
+        `);
+      }
+
+      if (youtubeLink) {
+        links.push(`
+          <a class="property-link-btn" href="${youtubeLink}" target="_blank" rel="noopener">
+            <span class="material-symbols-outlined text-[18px]">smart_display</span>
+            YouTube Link
+          </a>
+        `);
+      }
+
+      socialLinks.innerHTML = links.join("");
+      socialLinks.classList.toggle("hidden", links.length === 0);
+
+      if (videos.length || links.length) {
+        mediaBox.classList.remove("hidden");
+      } else {
+        mediaBox.classList.add("hidden");
+      }
+    }
+
     function renderProperty(property) {
       currentProperty = property;
 
@@ -1054,7 +1268,7 @@ async function initSaveProperty(property) {
       const title = property.title || "Property Details";
       const price = formatPrice(property.price);
       const locationText = [property.location, property.district].filter(Boolean).join(", ") || "Guntur";
-      const phone = cleanPhone(property.whatsapp_number || property.contact_phone);
+      const phone = cleanPhone(property.whatsapp_number || property.owner_phone || property.contact_phone || property.user_phone || DEFAULT_PHONE);
       const message = encodeURIComponent(`Hi Guntur Properties, I am interested in this property.\n\nProperty: ${title}\nPrice: ${price}\nLocation: ${locationText}\nProperty ID: ${getPropertyCode(property)}`);
 
       updateMeta(property, images);
@@ -1068,7 +1282,7 @@ async function initSaveProperty(property) {
 
       $("badge-property-type").textContent = titleCase(property.property_type || "Property");
       $("badge-listing-type").textContent = property.listing_type ? "For " + titleCase(property.listing_type) : "For Sale";
-      $("badge-status").textContent = titleCase(property.listing_status || "Available");
+      $("badge-status").textContent = titleCase(property.listing_status || property.status || "Available");
 
       $("spec-bhk").textContent = property.bedrooms ? property.bedrooms + " BHK" : (String(property.property_type || "").toLowerCase().includes("plot") ? "Plot" : "N/A");
       $("spec-bath").textContent = property.bathrooms ? property.bathrooms + " Bath" : "N/A";
@@ -1112,30 +1326,16 @@ if (mapHelpText) {
   mapHelpText.textContent = "Click below to open this property location in Google Maps.";
 }
 
-const videoBox = $("property-video-box");
-const videoPlayer = $("property-video-player");
-
-const videoUrl =
-  property.main_video ||
-  property.video_url ||
-  (Array.isArray(property.video_urls) ? property.video_urls[0] : "");
-
-if (videoUrl && videoBox && videoPlayer) {
-  videoPlayer.src = videoUrl;
-  videoBox.classList.remove("hidden");
-} else if (videoBox && videoPlayer) {
-  videoPlayer.removeAttribute("src");
-  videoBox.classList.add("hidden");
-}
+renderPropertyMedia(property);
 
       $("property-id").textContent = getPropertyCode(property);
       $("property-type").textContent = titleCase(property.property_type || "Property");
-      $("summary-status").textContent = titleCase(property.listing_status || "Available");
+      $("summary-status").textContent = titleCase(property.listing_status || property.status || "Available");
       $("summary-facing").textContent = property.facing || "N/A";
-      $("summary-listed-by").textContent = titleCase(property.seller_type || "Owner / Agent");
+      $("summary-listed-by").textContent = titleCase(property.seller_type || property.posted_by_role || "Owner / Agent");
 
       $("agent-name").textContent = property.contact_name || property.owner_name || "Guntur Properties Agent";
-      $("agent-role").textContent = titleCase(property.seller_type || "Property Consultant");
+      $("agent-role").textContent = titleCase(property.seller_type || property.posted_by_role || "Property Consultant");
 
       $("inquiry-message").value = `I am interested in ${title} located at ${locationText}.`;
       $("top-whatsapp").href = `https://wa.me/${phone}?text=${message}`;
@@ -1340,51 +1540,50 @@ showState("content");
     }
 
     function initHeaderSearch() {
-      const menu = $("header-location-menu");
-      const locationChip = $("header-location-chip");
-      const locationIcon = $("header-location-icon-button");
-      const selectedLocation = $("header-selected-location");
+  const buyBtn = $("header-buy-btn");
+  const buyMenu = $("header-buy-menu");
+  const selectedPurpose = $("header-selected-purpose");
+  const searchInput = $("header-property-search");
+  const searchButton = $("header-search-button");
 
-      [locationChip, locationIcon].forEach((button) => {
-        if (!button) return;
-        button.addEventListener("click", (event) => {
-          event.stopPropagation();
-          menu.classList.toggle("hidden");
-        });
-      });
+  let selectedPurposeValue = "buy";
 
-      document.querySelectorAll(".header-location-option").forEach((button) => {
-        button.addEventListener("click", () => {
-          selectedLocation.textContent = button.dataset.location;
-          menu.classList.add("hidden");
-        });
-      });
+  buyBtn?.addEventListener("click", function (event) {
+    event.stopPropagation();
+    buyMenu?.classList.toggle("hidden");
+  });
 
-      document.addEventListener("click", (event) => {
-        if (!event.target.closest("#header-search-wrap")) {
-          menu.classList.add("hidden");
-        }
-      });
+  document.querySelectorAll(".header-buy-option").forEach((button) => {
+    button.addEventListener("click", function () {
+      selectedPurposeValue = button.dataset.purpose || "buy";
+      selectedPurpose.textContent = button.dataset.label || "Buy in India";
+      buyMenu?.classList.add("hidden");
+    });
+  });
 
-    $("header-search-button").addEventListener("click", () => {
-  const q = $("header-property-search").value.trim();
-  const location = selectedLocation.textContent.trim();
-  const params = new URLSearchParams();
-
-  if (q) params.set("q", q);
-  if (location) params.set("location", location);
-
-  params.set("purpose", "buy");
-
-  window.location.href = "properties.html?" + params.toString();
-});
-
-      $("header-property-search").addEventListener("keydown", (event) => {
-        if (event.key === "Enter") {
-          $("header-search-button").click();
-        }
-      });
+  document.addEventListener("click", function (event) {
+    if (!event.target.closest("#header-buy-wrap")) {
+      buyMenu?.classList.add("hidden");
     }
+  });
+
+  searchButton?.addEventListener("click", function () {
+    const q = searchInput.value.trim();
+    const params = new URLSearchParams();
+
+    if (q) params.set("q", q);
+
+    params.set("purpose", selectedPurposeValue);
+
+    window.location.href = "properties.html?" + params.toString();
+  });
+
+  searchInput?.addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+      searchButton.click();
+    }
+  });
+}
 
     function initActiveSectionNav() {
       window.addEventListener("scroll", function () {
