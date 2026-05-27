@@ -58,8 +58,13 @@ body{margin:0;font-family:Manrope,sans-serif;background:#f9f9ff;color:#151c27}
       <textarea id="news-content" class="input" rows="9" placeholder="Full news content" required></textarea>
 
       <div class="rounded-2xl border border-[#cbd5e1] p-4 bg-[#f9f9ff]">
-        <label class="font-black text-[#082f5f] block mb-2">News Photo</label>
-        <input id="news-photo" type="file" accept="image/*" class="input"/>
+       <label class="font-black text-[#082f5f] block mb-2">News Photos</label>
+<input id="news-photos" type="file" accept="image/*" multiple class="input"/>
+<p class="text-sm text-[#476080] mt-2">Upload up to 4 photos.</p>
+
+<label class="font-black text-[#082f5f] block mt-5 mb-2">News Video</label>
+<input id="news-video" type="file" accept="video/*" class="input"/>
+<p class="text-sm text-[#476080] mt-2">Upload 1 video only.</p>
         <p class="text-sm text-[#476080] mt-2">
           While editing, click current photo or choose new file to replace photo.
         </p>
@@ -197,7 +202,29 @@ async function uploadToCloudinary(file){
     publicId: result.public_id
   };
 }
+async function uploadVideoToCloudinary(file){
+  if(!file) return null;
 
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+
+  const response = await fetch(
+    `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/video/upload`,
+    { method:"POST", body:formData }
+  );
+
+  const result = await response.json();
+
+  if(!response.ok){
+    throw new Error(result.error?.message || "Cloudinary video upload failed.");
+  }
+
+  return {
+    url: result.secure_url,
+    publicId: result.public_id
+  };
+}
 async function loadArticles(){
   const list = document.getElementById("articles-list");
   list.innerHTML = `<p class="text-[#476080] font-bold">Loading articles...</p>`;
@@ -333,19 +360,33 @@ async function saveNews(event){
     const category = document.getElementById("news-category").value;
     const summary = document.getElementById("news-summary").value.trim();
     const content = document.getElementById("news-content").value.trim();
-    const photo = document.getElementById("news-photo").files[0] || null;
+    const photos = Array.from(document.getElementById("news-photos").files || []);
+const video = document.getElementById("news-video").files[0] || null;
+
+if(photos.length > 4){
+  status.textContent = "You can upload maximum 4 photos only.";
+  return;
+}
 
     if(!title || !content){
       status.textContent = "Title and content are required.";
       return;
     }
 
-    let uploaded = null;
+   let uploadedImages = [];
+let uploadedVideo = null;
 
-    if(photo){
-      status.textContent = "Uploading photo to Cloudinary...";
-      uploaded = await uploadToCloudinary(photo);
-    }
+if(photos.length){
+  status.textContent = "Uploading photos to Cloudinary...";
+  uploadedImages = await Promise.all(
+    photos.map(file => uploadToCloudinary(file))
+  );
+}
+
+if(video){
+  status.textContent = "Uploading video to Cloudinary...";
+  uploadedVideo = await uploadVideoToCloudinary(video);
+}
 
     const payload = {
       title,
@@ -360,11 +401,19 @@ async function saveNews(event){
       payload.slug = slugify(title) + "-" + Date.now();
       payload.posted_by_phone = getAuthPhone();
     }
+if(uploadedImages.length){
+  payload.image_urls = uploadedImages.map(item => item.url);
+  payload.cloudinary_public_ids = uploadedImages.map(item => item.publicId);
 
-    if(uploaded){
-      payload.image_url = uploaded.url;
-      payload.cloudinary_public_id = uploaded.publicId;
-    }
+  // keep old single image column also working
+  payload.image_url = uploadedImages[0].url;
+  payload.cloudinary_public_id = uploadedImages[0].publicId;
+}
+
+if(uploadedVideo){
+  payload.video_url = uploadedVideo.url;
+  payload.video_public_id = uploadedVideo.publicId;
+}
 
     status.textContent = editingId ? "Saving changes to Supabase..." : "Saving news to Supabase...";
 
