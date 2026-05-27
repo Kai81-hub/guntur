@@ -46,6 +46,17 @@ body{font-family:'Manrope',sans-serif;background:var(--surface);color:var(--dark
 
 .hero-about{background:linear-gradient(135deg,rgba(21,28,39,.94),rgba(8,47,95,.78)),url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1800&q=80');background-size:cover;background-position:center}
 .media-img{height:260px;object-fit:cover}
+
+.mobile-header-actions{display:flex;align-items:center;gap:8px}
+.mobile-action-icon{width:38px;height:38px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;font-weight:900;box-shadow:0 8px 18px rgba(15,23,42,.10)}
+.mobile-action-icon.call{background:#eef6ff;color:#082f5f;border:1px solid rgba(15,76,129,.18)}
+.mobile-action-icon.whatsapp{background:#25D366;color:white}
+.about-video-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.about-video-card{background:#151c27;border-radius:24px;overflow:hidden;border:1px solid rgba(203,213,225,.35);box-shadow:0 15px 35px rgba(15,23,42,.10)}
+.about-video-card video,.about-video-card iframe{width:100%;aspect-ratio:16/9;display:block;background:#000}
+.about-video-card-title{padding:12px 14px;color:white;font-weight:900;font-size:14px}
+@media(max-width:900px){.about-video-grid{grid-template-columns:1fr}.about-video-card{border-radius:18px}}
+
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"AboutPage","name":"About Guntur Properties","url":"https://www.gunturproperties.in/about-us.html"}</script>
 </head>
@@ -120,8 +131,8 @@ body{font-family:'Manrope',sans-serif;background:var(--surface);color:var(--dark
     </div>
 
     <div class="flex items-center gap-3">
-      <a class="hidden sm:flex items-center gap-2 px-4 py-2 rounded-full border border-outline-variant text-on-surface font-semibold hover:bg-surface-container-low transition-all" href="tel:+919959919999"><span class="material-symbols-outlined text-sm">call</span><span class="text-sm">Call</span></a>
-      <a class="flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#25D366] text-white font-bold shadow-lg hover:brightness-110 transition-all active:scale-95 text-sm" href="https://wa.me/919959919999" target="_blank" rel="noopener"><span class="material-symbols-outlined text-sm">chat</span><span>WhatsApp</span></a>
+      <a class="hidden sm:flex items-center gap-2 px-4 py-2 rounded-full border border-outline-variant text-on-surface font-semibold hover:bg-surface-container-low transition-all" href="tel:8500720404"><span class="material-symbols-outlined text-sm">call</span><span class="text-sm">Call</span></a>
+      <a class="flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#25D366] text-white font-bold shadow-lg hover:brightness-110 transition-all active:scale-95 text-sm" href="https://wa.me/918500728484" target="_blank" rel="noopener"><span class="material-symbols-outlined text-sm">chat</span><span>WhatsApp</span></a>
     </div>
   </div>
 </nav>
@@ -132,7 +143,14 @@ body{font-family:'Manrope',sans-serif;background:var(--surface);color:var(--dark
       <img alt="Guntur Properties Logo" src="assets/images/guntur.png" onerror="this.src='https://placehold.co/80x80/0f4c81/ffffff?text=GP'"/>
       <span class="mobile-brand-title">Guntur<br/>Properties</span>
     </a>
-    <a href="contact.html" class="text-sm font-black text-[#082f5f]">Contact</a>
+    <div class="mobile-header-actions">
+      <a href="tel:8500720404" class="mobile-action-icon call" aria-label="Call 8500720404">
+        <span class="material-symbols-outlined text-[22px]">call</span>
+      </a>
+      <a href="https://wa.me/918500728484" target="_blank" rel="noopener" class="mobile-action-icon whatsapp" aria-label="WhatsApp 8500728484">
+        <span class="material-symbols-outlined text-[22px]">chat</span>
+      </a>
+    </div>
   </div>
 </header>
 
@@ -166,9 +184,14 @@ body{font-family:'Manrope',sans-serif;background:var(--surface);color:var(--dark
     </section>
 
     <section class="bg-white rounded-3xl border border-[#cbd5e1]/40 p-6 md:p-8 shadow-sm">
-      <h2 class="text-3xl font-extrabold mb-5">About Video</h2>
-      <p class="text-[#476080] mb-5">Video should be 3 minutes or less and can be changed from admin later.</p>
-      <div id="about-video-box" class="rounded-3xl overflow-hidden bg-[#151c27] aspect-video"></div>
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-3 mb-5">
+        <div>
+          <h2 class="text-3xl font-extrabold">About Videos</h2>
+          <p class="text-[#476080] mt-1">3 videos, up to 3 minutes each. Admin/staff can change these later.</p>
+        </div>
+        <span class="text-xs font-black text-[#082f5f] bg-[#0f4c81]/10 px-3 py-2 rounded-xl">Admin / Staff editable</span>
+      </div>
+      <div id="about-video-grid" class="about-video-grid"></div>
     </section>
   </div>
 
@@ -201,7 +224,7 @@ body{font-family:'Manrope',sans-serif;background:var(--surface);color:var(--dark
     </div>
     <div><h4 class="font-bold text-xs uppercase tracking-widest text-[#151c27] mb-4">Company</h4><ul class="space-y-3 text-sm text-[#476080] font-medium"><li><a href="about-us.html" class="hover:text-[#0f4c81]">About Us</a></li><li><a href="contact.html" class="hover:text-[#0f4c81]">Contact</a></li><li><a href="news.html" class="hover:text-[#0f4c81]">News & Updates</a></li></ul></div>
     <div><h4 class="font-bold text-xs uppercase tracking-widest text-[#151c27] mb-4">Services</h4><ul class="space-y-3 text-sm text-[#476080] font-medium"><li><a href="services.html" class="hover:text-[#0f4c81]">Service Hub</a></li><li><a href="services-details.html?service=property-management" class="hover:text-[#0f4c81]">Property Management</a></li><li><a href="services-details.html?service=interior-design" class="hover:text-[#0f4c81]">Interior Design</a></li></ul></div>
-    <div><h4 class="font-bold text-xs uppercase tracking-widest text-[#151c27] mb-4">Contact</h4><p class="text-sm text-[#476080] font-medium">Main Road, Brodipet, Guntur - 522002</p><p class="text-sm text-[#476080] font-medium mt-2">+91 99599 19999</p></div>
+    <div><h4 class="font-bold text-xs uppercase tracking-widest text-[#151c27] mb-4">Contact</h4><p class="text-sm text-[#476080] font-medium">Main Road, Brodipet, Guntur - 522002</p><p class="text-sm text-[#476080] font-medium mt-2">8500720404 / 8500728484</p></div>
   </div>
   <div class="max-w-7xl mx-auto px-6 border-t border-[#cbd5e1]/30 pt-6 flex flex-col sm:flex-row justify-between items-center gap-4">
     <p class="text-xs text-[#7f7663] font-semibold">Guntur Properties © 2026. All rights reserved.</p>
@@ -245,27 +268,111 @@ const fallbackAboutMedia = {
     "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=800&q=80",
     "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80"
   ],
-  video_url: "https://www.youtube.com/embed/ysz5S6PUM-U"
+  videos: [
+    { title: "About Guntur Properties Video 1", url: "https://res.cloudinary.com/demo/video/upload/sample.mp4" },
+    { title: "About Guntur Properties Video 2", url: "https://res.cloudinary.com/demo/video/upload/sample.mp4" },
+    { title: "About Guntur Properties Video 3", url: "https://res.cloudinary.com/demo/video/upload/sample.mp4" }
+  ]
 };
+
+function isYoutubeUrl(url){
+  const lower = String(url || "").toLowerCase();
+  return lower.includes("youtube.com") || lower.includes("youtu.be") || lower.includes("/embed/");
+}
+
+function getYoutubeEmbedUrl(url){
+  const text = String(url || "").trim();
+  try {
+    const parsed = new URL(text);
+
+    if (parsed.hostname.includes("youtu.be")) {
+      return `https://www.youtube.com/embed/${parsed.pathname.replace("/", "")}`;
+    }
+
+    if (parsed.hostname.includes("youtube.com")) {
+      const id = parsed.searchParams.get("v");
+      if (id) return `https://www.youtube.com/embed/${id}`;
+      if (parsed.pathname.includes("/shorts/")) {
+        return `https://www.youtube.com/embed/${parsed.pathname.split("/shorts/")[1].split("/")[0]}`;
+      }
+      if (parsed.pathname.includes("/embed/")) return text;
+    }
+  } catch(error) {}
+  return text;
+}
+
+function renderAboutVideoCard(item, index){
+  const url = item.url || item.media_url || "";
+  const title = item.title || `About Video ${index + 1}`;
+
+  if (!url) {
+    return `
+      <div class="about-video-card">
+        <div class="aspect-video flex items-center justify-center bg-[#151c27] text-white/70 font-bold">Video not added</div>
+        <div class="about-video-card-title">${title}</div>
+      </div>
+    `;
+  }
+
+  return `
+    <div class="about-video-card">
+      ${
+        isYoutubeUrl(url)
+          ? `<iframe src="${getYoutubeEmbedUrl(url)}" title="${title}" loading="lazy" allowfullscreen></iframe>`
+          : `<video src="${url}" controls preload="metadata"></video>`
+      }
+      <div class="about-video-card-title">${title}</div>
+    </div>
+  `;
+}
+
 async function loadAboutMedia(){
   let media = fallbackAboutMedia;
+
   if(supabaseClient){
     try{
-      const {data,error} = await supabaseClient.from("page_media").select("*").eq("page_key","about").eq("is_active",true).order("display_order",{ascending:true});
+      const {data,error} = await supabaseClient
+        .from("page_media")
+        .select("*")
+        .eq("page_key","about")
+        .eq("is_active",true)
+        .order("display_order",{ascending:true});
+
       if(error) throw error;
+
       if(data?.length){
+        const photos = data
+          .filter(x => x.media_type === "image")
+          .slice(0,3)
+          .map(x => x.media_url);
+
+        const videos = data
+          .filter(x => x.media_type === "video")
+          .slice(0,3)
+          .map((x, index) => ({
+            title: x.title || x.caption || `About Video ${index + 1}`,
+            url: x.media_url
+          }));
+
         media = {
-          photos: data.filter(x=>x.media_type==="image").slice(0,3).map(x=>x.media_url),
-          video_url: data.find(x=>x.media_type==="video")?.media_url || fallbackAboutMedia.video_url
+          photos: photos.length ? photos : fallbackAboutMedia.photos,
+          videos: videos.length ? videos : fallbackAboutMedia.videos
         };
       }
     }catch(e){console.warn("About media load failed",e)}
   }
-  document.getElementById("about-gallery").innerHTML = media.photos.slice(0,3).map((src,i)=>`<img class="media-img w-full rounded-2xl border border-[#cbd5e1]/40 shadow-sm" src="${src}" alt="Guntur Properties about photo ${i+1}" loading="lazy"/>`).join("");
-  document.getElementById("about-video-box").innerHTML = media.video_url.includes("youtube") || media.video_url.includes("embed")
-    ? `<iframe class="w-full h-full" src="${media.video_url}" title="Guntur Properties about video" loading="lazy" allowfullscreen></iframe>`
-    : `<video class="w-full h-full object-cover" src="${media.video_url}" controls preload="metadata"></video>`;
+
+  document.getElementById("about-gallery").innerHTML = media.photos
+    .slice(0,3)
+    .map((src,i)=>`<img class="media-img w-full rounded-2xl border border-[#cbd5e1]/40 shadow-sm" src="${src}" alt="Guntur Properties about photo ${i+1}" loading="lazy"/>`)
+    .join("");
+
+  document.getElementById("about-video-grid").innerHTML = media.videos
+    .slice(0,3)
+    .map(renderAboutVideoCard)
+    .join("");
 }
+
 document.addEventListener("DOMContentLoaded",loadAboutMedia);
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
