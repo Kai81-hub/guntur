@@ -1,0 +1,1340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Video Uploads | Guntur Properties</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script src="js/config.js"></script>
+  <script src="js/supabase.js"></script>
+
+  <style>
+    :root {
+      --gold: #d4af37;
+      --gold-dark: #735c00;
+      --navy: #0b2341;
+      --text: #151c27;
+      --muted: #64748b;
+      --line: rgba(208, 197, 175, 0.62);
+      --surface: #f9f9ff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at top left, rgba(212, 175, 55, 0.12), transparent 32%),
+        linear-gradient(180deg, #ffffff 0%, #f9f9ff 44%, #eef3fb 100%);
+      color: var(--text);
+      font-family: "Inter", "Segoe UI", Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 560, 'GRAD' 0, 'opsz' 24;
+    }
+
+    .page-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(208, 197, 175, 0.48);
+    }
+
+    .brand-logo {
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      object-fit: cover;
+      border: 1px solid rgba(212, 175, 55, 0.25);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex-shrink: 0;
+    }
+
+    .post-property-btn {
+      height: 42px;
+      padding: 0 18px;
+      border-radius: 10px;
+      background: #ffffff;
+      color: #17213a;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 15px;
+      font-weight: 900;
+      box-shadow: 0 8px 22px rgba(15, 23, 42, .14);
+      white-space: nowrap;
+      text-decoration: none;
+    }
+
+    .post-property-btn small {
+      background: #16a34a;
+      color: #ffffff;
+      font-size: 11px;
+      line-height: 1;
+      font-weight: 900;
+      padding: 4px 6px;
+      border-radius: 4px;
+    }
+
+    .profile-btn {
+      height: 38px;
+      min-width: 62px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      color: #151c27;
+      text-decoration: none;
+    }
+
+    .profile-avatar-text {
+      width: 38px;
+      height: 38px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #dcfce7;
+      color: #16a34a;
+      font-weight: 900;
+      font-size: 13px;
+    }
+
+    .profile-arrow {
+      font-size: 22px !important;
+      color: #476080;
+    }
+
+    .hero {
+      background:
+        linear-gradient(135deg, rgba(11, 35, 65, 0.98), rgba(21, 55, 94, 0.96)),
+        radial-gradient(circle at top right, rgba(212, 175, 55, 0.30), transparent 38%);
+      border: 1px solid rgba(212, 175, 55, 0.18);
+      box-shadow: 0 24px 70px rgba(15, 23, 42, 0.10);
+    }
+
+    .card {
+      background: #ffffff;
+      border: 1px solid var(--line);
+      box-shadow: 0 18px 44px rgba(15, 23, 42, 0.08);
+      border-radius: 24px;
+    }
+
+    .field-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 900;
+      color: var(--gold-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+
+    .input-field {
+      width: 100%;
+      border: 1px solid rgba(208, 197, 175, 0.85);
+      border-radius: 16px;
+      min-height: 52px;
+      padding: 12px 14px;
+      color: #151c27;
+      font-weight: 700;
+      background: #ffffff;
+      outline: none;
+      box-shadow: none;
+    }
+
+    .input-field:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.14);
+    }
+
+    .upload-choice {
+      border: 2px solid rgba(208, 197, 175, 0.70);
+      border-radius: 24px;
+      padding: 18px;
+      cursor: pointer;
+      background: #ffffff;
+      transition: 0.2s ease;
+    }
+
+    .upload-choice.active {
+      border-color: var(--gold);
+      background: #fff8dc;
+      box-shadow: 0 14px 34px rgba(212, 175, 55, 0.18);
+    }
+
+    .ratio-box {
+      margin: 0 auto;
+      border: 3px solid #0b2341;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #0b2341;
+      font-weight: 900;
+      text-align: center;
+    }
+
+    .ratio-box.reel {
+      width: 115px;
+      height: 205px;
+      border-radius: 18px;
+    }
+
+    .ratio-box.youtube {
+      width: 230px;
+      max-width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 18px;
+    }
+
+    .primary-btn {
+      min-height: 54px;
+      border-radius: 16px;
+      background: var(--gold);
+      color: #ffffff;
+      font-weight: 900;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      box-shadow: 0 14px 28px rgba(212, 175, 55, 0.28);
+    }
+
+    .primary-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .secondary-btn {
+      min-height: 44px;
+      border-radius: 13px;
+      background: #fff8dc;
+      color: var(--gold-dark);
+      border: 1px solid rgba(212, 175, 55, 0.42);
+      font-weight: 900;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 0 14px;
+    }
+
+    .danger-btn {
+      min-height: 40px;
+      border-radius: 12px;
+      background: #fee2e2;
+      color: #991b1b;
+      font-weight: 900;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 0 12px;
+    }
+
+    .video-thumb {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      background: #0f172a;
+      border-radius: 18px;
+    }
+
+
+    .table-wrap {
+      width: 100%;
+      overflow-x: auto;
+      border-radius: 18px;
+      border: 1px solid rgba(208, 197, 175, 0.55);
+    }
+
+    .video-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 860px;
+      background: #ffffff;
+    }
+
+    .video-table th {
+      text-align: left;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: #735c00;
+      background: #fff8dc;
+      padding: 14px;
+      border-bottom: 1px solid rgba(208, 197, 175, 0.65);
+      white-space: nowrap;
+    }
+
+    .video-table td {
+      padding: 14px;
+      border-bottom: 1px solid rgba(208, 197, 175, 0.35);
+      vertical-align: middle;
+      color: #151c27;
+      font-size: 14px;
+    }
+
+    .video-title-link {
+      color: #0b5cab;
+      font-weight: 900;
+      text-decoration: none;
+    }
+
+    .video-title-link:hover {
+      text-decoration: underline;
+      color: #735c00;
+    }
+
+    .type-pill {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 11px;
+      font-weight: 900;
+      background: #fff8dc;
+      color: #735c00;
+      white-space: nowrap;
+    }
+
+    .edit-btn {
+      min-height: 40px;
+      border-radius: 12px;
+      background: #dbeafe;
+      color: #1d4ed8;
+      font-weight: 900;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 0 12px;
+    }
+
+    .status {
+      display: none;
+      border-radius: 16px;
+      padding: 13px 15px;
+      font-weight: 800;
+      line-height: 1.5;
+    }
+
+    .status.show {
+      display: block;
+    }
+
+    .status.ok {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .status.err {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .status.info {
+      background: #e0f2fe;
+      color: #075985;
+    }
+
+    .hidden-access {
+      min-height: calc(100vh - 76px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .footer {
+      background: var(--navy);
+      color: rgba(255, 255, 255, 0.78);
+    }
+
+    @media (max-width: 640px) {
+      .brand-logo {
+        width: 40px;
+        height: 40px;
+      }
+
+      .header-actions {
+        gap: 8px;
+      }
+
+      .post-property-btn {
+        height: 38px;
+        padding: 0 10px;
+        font-size: 12px;
+      }
+
+      .post-property-btn small {
+        font-size: 9px;
+        padding: 3px 4px;
+      }
+
+      .profile-btn {
+        min-width: 38px;
+        gap: 0;
+      }
+
+      .profile-avatar-text {
+        width: 36px;
+        height: 36px;
+        font-size: 12px;
+      }
+
+      .profile-arrow {
+        display: none;
+      }
+
+      .hero {
+        border-radius: 22px;
+        padding: 22px 18px;
+      }
+
+      .hero h2 {
+        font-size: 28px;
+        line-height: 1.15;
+      }
+
+      .card {
+        border-radius: 20px;
+      }
+
+      .ratio-box.youtube {
+        width: 190px;
+      }
+    }
+
+    @media (max-width: 390px) {
+      .post-property-btn span {
+        display: none;
+      }
+
+      .post-property-btn {
+        width: 42px;
+        padding: 0;
+      }
+
+      .post-property-btn::before {
+        content: "Post";
+      }
+
+      .post-property-btn small {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="page-header">
+    <div class="max-w-7xl mx-auto px-4 md:px-6 h-[76px] flex items-center justify-between gap-3">
+      <a href="index.html" class="flex items-center gap-3 min-w-0">
+        <img src="assets/images/WhatsApp Image 2026-05-12 at 13.33.30.jpeg" class="brand-logo shrink-0" alt="Guntur Properties" />
+        <div class="min-w-0">
+          <h1 class="text-xl md:text-2xl font-black text-[#735c00] leading-none truncate">Guntur Properties</h1>
+          <p class="text-xs font-bold text-[#476080] mt-1 truncate">Video Uploads</p>
+        </div>
+      </a>
+
+      <div class="header-actions">
+        <a href="post-property.html" class="post-property-btn">
+          <span>Post property</span>
+          <small>FREE</small>
+        </a>
+
+        <a href="login.html" class="profile-btn" aria-label="Profile">
+          <span id="profile-avatar-text" class="profile-avatar-text">AU</span>
+          <span class="material-symbols-outlined profile-arrow">expand_more</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <div id="access-denied" class="hidden hidden-access">
+    <div class="card max-w-lg w-full p-7 text-center">
+      <div class="w-16 h-16 bg-red-100 text-red-700 rounded-full mx-auto flex items-center justify-center mb-4">
+        <span class="material-symbols-outlined text-[34px]">lock</span>
+      </div>
+      <h2 class="text-2xl font-black text-[#151c27]">Access denied</h2>
+      <p class="text-[#64748b] font-semibold mt-3 leading-7">
+        This page is only for admin and staff. Your browser does not have admin/staff login data.
+      </p>
+      <div class="flex flex-wrap justify-center gap-3 mt-6">
+        <a href="login.html" class="primary-btn px-6">Login</a>
+        <a href="admin-panel.html" class="secondary-btn">Admin dashboard</a><a href="staff-panel.html" class="secondary-btn">Staff dashboard</a>
+      </div>
+      <p class="text-xs text-[#94a3b8] font-bold mt-5">
+        Role checked from gp_auth_role / gp_role / logged-in Supabase profile.
+      </p>
+    </div>
+  </div>
+
+  <main id="page-content" class="hidden">
+    <section class="max-w-7xl mx-auto px-4 md:px-6 pt-8 md:pt-12">
+      <div class="hero rounded-[28px] p-6 md:p-10 text-white">
+        <div class="max-w-3xl">
+          <span class="inline-flex items-center gap-2 bg-white/12 border border-white/15 rounded-full px-4 py-2 text-xs font-black uppercase tracking-widest">
+            <span class="material-symbols-outlined text-[18px]">admin_panel_settings</span>
+            Admin / Staff
+          </span>
+          <h2 class="text-3xl md:text-5xl font-black mt-5 leading-tight">Manage gallery videos</h2>
+          <p class="text-white/75 font-semibold mt-4 leading-7">
+            Upload, edit, replace thumbnails/videos, check views, and manage reels or YouTube type videos.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="max-w-7xl mx-auto px-4 md:px-6 mt-8">
+      <form id="video-form" class="card p-5 md:p-7">
+        <div class="flex items-center justify-between gap-3 mb-6">
+          <div>
+            <h3 class="text-2xl font-black text-[#151c27]">Video details</h3>
+            <p class="text-sm text-[#64748b] font-semibold mt-1">Logged role: <b id="role-badge">Checking...</b></p>
+          </div>
+          <a href="gallery.html" class="secondary-btn">
+            <span class="material-symbols-outlined text-[18px]">smart_display</span>
+            Gallery
+          </a>
+        </div>
+
+        <div id="status-box" class="status mb-5"></div>
+
+        <div class="mb-6">
+          <label class="field-label">Select video layout *</label>
+          <div class="grid md:grid-cols-2 gap-4">
+            <button type="button" class="upload-choice active" data-video-type="reel">
+              <div class="ratio-box reel">
+                <div>
+                  <div class="text-3xl">9:16</div>
+                  <div class="text-sm mt-1">Smartphone<br>Reels</div>
+                </div>
+              </div>
+              <h4 class="text-lg font-black text-[#151c27] mt-4">Reels type</h4>
+              <p class="text-sm font-semibold text-[#64748b] mt-1">Instagram/Facebook reels vertical video.</p>
+            </button>
+
+            <button type="button" class="upload-choice" data-video-type="youtube">
+              <div class="ratio-box youtube">
+                <div>
+                  <div class="text-3xl">16:9</div>
+                  <div class="text-sm mt-1">YouTube Video</div>
+                </div>
+              </div>
+              <h4 class="text-lg font-black text-[#151c27] mt-4">YouTube type</h4>
+              <p class="text-sm font-semibold text-[#64748b] mt-1">Horizontal property video format.</p>
+            </button>
+          </div>
+        </div>
+
+        <input id="video-type" type="hidden" value="reel" />
+
+        <div class="grid md:grid-cols-2 gap-5">
+          <div class="md:col-span-2">
+            <label class="field-label" for="video-title">Video Title *</label>
+            <input id="video-title" class="input-field" type="text" placeholder="Example: New project walkthrough" required />
+          </div>
+
+          <div class="md:col-span-2">
+            <label class="field-label" for="video-description">Small Description</label>
+            <textarea id="video-description" class="input-field min-h-[105px]" placeholder="Write short details below the title..."></textarea>
+          </div>
+
+          <div>
+            <label class="field-label" for="video-file">Video Upload *</label>
+            <input id="video-file" class="input-field" type="file" accept="video/*" />
+            <p class="text-xs text-[#64748b] font-semibold mt-2">Maximum 2 minutes.</p>
+          </div>
+
+          <div>
+            <label class="field-label" for="thumbnail-file">Thumbnail Upload *</label>
+            <input id="thumbnail-file" class="input-field" type="file" accept="image/*" />
+            <p class="text-xs text-[#64748b] font-semibold mt-2">Use matching 9:16 or 16:9 thumbnail.</p>
+          </div>
+
+          <div>
+            <label class="field-label" for="video-url">Or Paste Video URL</label>
+            <input id="video-url" class="input-field" type="url" placeholder="Cloudinary / YouTube video URL" />
+          </div>
+
+          <div>
+            <label class="field-label" for="thumbnail-url">Or Paste Thumbnail URL</label>
+            <input id="thumbnail-url" class="input-field" type="url" placeholder="Thumbnail image URL" />
+          </div>
+
+          <div class="md:col-span-2">
+            <label class="field-label" for="external-url">One Link: YouTube / Instagram / Facebook</label>
+            <input id="external-url" class="input-field" type="url" placeholder="Paste one external video link" />
+          </div>
+
+          <div class="md:col-span-2">
+            <label class="field-label" for="link-description">Link Description</label>
+            <input id="link-description" class="input-field" type="text" placeholder="Example: Open this video on Instagram" />
+          </div>
+        </div>
+
+        <div class="grid sm:grid-cols-[1fr_auto] gap-3 mt-7">
+          <button id="save-btn" type="submit" class="primary-btn w-full">
+            <span class="material-symbols-outlined">cloud_upload</span>
+            Upload Video
+          </button>
+
+          <button id="cancel-edit-btn" type="button" class="secondary-btn hidden px-5">
+            Cancel Edit
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <section class="max-w-7xl mx-auto px-4 md:px-6 mt-8 mb-16">
+      <div class="card p-5 md:p-7">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+          <div>
+            <h3 class="text-2xl font-black text-[#151c27]">Uploaded videos</h3>
+            <p class="text-sm text-[#64748b] font-semibold mt-1">Latest uploaded video appears first.</p>
+          </div>
+          <button id="refresh-btn" type="button" class="secondary-btn">
+            <span class="material-symbols-outlined text-[18px]">refresh</span>
+            Refresh
+          </button>
+        </div>
+
+        <div id="video-list-status" class="text-center text-[#64748b] font-bold py-8">Loading videos...</div>
+
+        <div class="table-wrap">
+          <table class="video-table">
+            <thead>
+              <tr>
+                <th>Video Title</th>
+                <th>Type</th>
+                <th>Views</th>
+                <th>Description</th>
+                <th>Uploaded</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="uploaded-video-list">
+              <tr><td colspan="6">Loading videos...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer mt-14">
+    <div class="max-w-7xl mx-auto px-4 md:px-6 py-10 grid md:grid-cols-4 gap-8">
+      <div class="md:col-span-2">
+        <div class="flex items-center gap-3">
+          <img src="assets/images/WhatsApp Image 2026-05-12 at 13.33.30.jpeg" class="w-12 h-12 rounded-xl object-cover" alt="Guntur Properties" />
+          <div>
+            <h3 class="text-white text-2xl font-black leading-none">Guntur Properties</h3>
+            <p class="text-white/60 text-sm font-semibold mt-1">Your trusted property partner</p>
+          </div>
+        </div>
+        <p class="mt-5 max-w-xl leading-7">
+          Manage property videos, reels, gallery uploads and project updates.
+        </p>
+      </div>
+
+      <div>
+        <h4 class="text-white font-black mb-4">Dashboard</h4>
+        <div class="grid gap-3 font-bold">
+          <a href="admin-panel.html" class="hover:text-[#d4af37]">Admin Panel</a>
+          <a href="staff-panel.html" class="hover:text-[#d4af37]">Staff Panel</a>
+          <a href="gallery.html" class="hover:text-[#d4af37]">Video Gallery</a>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="text-white font-black mb-4">Contact</h4>
+        <div class="grid gap-3 font-bold">
+          <a href="tel:+918500720404" class="hover:text-[#d4af37]">+91 85007 20404</a>
+          <a href="https://wa.me/918500720404" target="_blank" rel="noopener noreferrer" class="hover:text-[#d4af37]">WhatsApp</a>
+          <a href="mailto:info@gunturproperties.in" class="hover:text-[#d4af37]">info@gunturproperties.in</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="border-t border-white/10 py-5 text-center text-sm font-bold text-white/60">
+      © <span id="footer-year"></span> Guntur Properties. All rights reserved.
+    </div>
+  </footer>
+
+  <script>
+    const VIDEO_TABLE = "video_gallery";
+
+    const pageContent = document.getElementById("page-content");
+    const accessDenied = document.getElementById("access-denied");
+    const roleBadge = document.getElementById("role-badge");
+    const profileAvatarText = document.getElementById("profile-avatar-text");
+    const form = document.getElementById("video-form");
+    const statusBox = document.getElementById("status-box");
+    const saveBtn = document.getElementById("save-btn");
+    const uploadedVideoList = document.getElementById("uploaded-video-list");
+    const videoListStatus = document.getElementById("video-list-status");
+    const refreshBtn = document.getElementById("refresh-btn");
+    const videoTypeInput = document.getElementById("video-type");
+    const cancelEditBtn = document.getElementById("cancel-edit-btn");
+
+    let currentUserRole = "";
+    let currentUserId = "";
+    let editingVideoId = "";
+    let loadedVideos = [];
+
+    document.getElementById("footer-year").textContent = new Date().getFullYear();
+
+    function getClient() {
+      return window.GP_SUPABASE_CLIENT || window.supabaseClient || null;
+    }
+
+    function showStatus(message, type = "info") {
+      statusBox.className = `status show ${type}`;
+      statusBox.textContent = message;
+    }
+
+    function clearStatus() {
+      statusBox.className = "status";
+      statusBox.textContent = "";
+    }
+
+    function safeText(value) {
+      return String(value || "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function normalizeRole(role) {
+      const value = String(role || "").trim().toLowerCase();
+      if (value === "administrator") return "admin";
+      if (value === "employee") return "staff";
+      return value;
+    }
+
+    function getNestedValue(obj, keys) {
+      for (const key of keys) {
+        if (obj && obj[key]) return obj[key];
+      }
+      return "";
+    }
+
+    function getStoredProfile() {
+      const profile = {
+        phone: localStorage.getItem("gp_auth_phone") || "",
+        role: normalizeRole(
+          localStorage.getItem("gp_auth_role") ||
+          localStorage.getItem("gp_role") ||
+          localStorage.getItem("user_role") ||
+          localStorage.getItem("role") ||
+          ""
+        ),
+        name: "",
+        id: ""
+      };
+
+      const possibleKeys = [
+        "gp_user",
+        "gp_current_user",
+        "currentUser",
+        "loggedInUser",
+        "profile",
+        "user",
+        "authUser"
+      ];
+
+      for (const key of possibleKeys) {
+        try {
+          const raw = localStorage.getItem(key);
+          if (!raw) continue;
+
+          const parsed = JSON.parse(raw);
+
+          profile.role = profile.role || normalizeRole(
+            parsed.role ||
+            parsed.user_role ||
+            parsed.auth_role ||
+            parsed.profile?.role ||
+            parsed.user?.role ||
+            parsed.user?.user_metadata?.role ||
+            ""
+          );
+
+          profile.name = profile.name || (
+            parsed.full_name ||
+            parsed.name ||
+            parsed.display_name ||
+            parsed.profile?.full_name ||
+            parsed.profile?.name ||
+            parsed.user?.full_name ||
+            parsed.user?.name ||
+            parsed.user?.user_metadata?.full_name ||
+            ""
+          );
+
+          profile.id = profile.id || (
+            parsed.id ||
+            parsed.user_id ||
+            parsed.profile?.id ||
+            parsed.user?.id ||
+            ""
+          );
+
+          profile.phone = profile.phone || (
+            parsed.phone ||
+            parsed.mobile ||
+            parsed.profile?.phone ||
+            parsed.user?.phone ||
+            ""
+          );
+        } catch (error) {}
+      }
+
+      return profile;
+    }
+
+    function initials(name, phone, role) {
+      if (name) {
+        return name
+          .split(" ")
+          .filter(Boolean)
+          .slice(0, 2)
+          .map(part => part[0])
+          .join("")
+          .toUpperCase();
+      }
+
+      if (role === "admin") return "AU";
+      if (role === "staff") return "ST";
+      if (phone) return "U";
+
+      return "AU";
+    }
+
+    async function getCurrentRole() {
+      const stored = getStoredProfile();
+
+      if (stored.id) currentUserId = stored.id;
+
+      if (stored.role) {
+        profileAvatarText.textContent = initials(stored.name, stored.phone, stored.role);
+        return stored.role;
+      }
+
+      const client = getClient();
+      if (!client || !client.auth) return "";
+
+      try {
+        const { data: userData } = await client.auth.getUser();
+        const user = userData?.user;
+
+        if (!user) return "";
+
+        currentUserId = user.id || "";
+
+        const metaRole = normalizeRole(
+          user.user_metadata?.role ||
+          user.app_metadata?.role ||
+          user.user_metadata?.gp_auth_role
+        );
+
+        if (metaRole) {
+          profileAvatarText.textContent = initials(user.user_metadata?.full_name, user.phone, metaRole);
+          return metaRole;
+        }
+
+        const profileTables = ["profiles", "users", "app_users", "members"];
+
+        for (const tableName of profileTables) {
+          try {
+            let query = client.from(tableName).select("*").limit(1);
+
+            if (user.id) {
+              query = query.eq("id", user.id);
+            }
+
+            const { data, error } = await query.maybeSingle();
+
+            if (!error && data) {
+              const foundRole = normalizeRole(data.role || data.user_role || data.auth_role);
+              if (foundRole) {
+                profileAvatarText.textContent = initials(data.full_name || data.name, data.phone, foundRole);
+                return foundRole;
+              }
+            }
+          } catch (error) {}
+        }
+      } catch (error) {
+        console.warn("Supabase auth role check failed:", error);
+      }
+
+      return "";
+    }
+
+    function cameFromDashboard() {
+      const flag = sessionStorage.getItem("gp_dashboard_video_access");
+      const time = Number(sessionStorage.getItem("gp_dashboard_video_access_time") || 0);
+      const now = Date.now();
+
+      /*
+        Only allow when dashboard link created this flag.
+        The flag is valid for 10 minutes.
+        Directly typing admin-staff-video.html will not have this flag.
+      */
+      return flag === "allowed" && time && (now - time < 10 * 60 * 1000);
+    }
+
+    function clearDashboardAccessFlag() {
+      sessionStorage.removeItem("gp_dashboard_video_access");
+      sessionStorage.removeItem("gp_dashboard_video_access_time");
+    }
+
+    async function guardAccess() {
+      const dashboardEntry = cameFromDashboard();
+      currentUserRole = await getCurrentRole();
+
+      if (!dashboardEntry) {
+        clearDashboardAccessFlag();
+        pageContent.classList.add("hidden");
+        accessDenied.classList.remove("hidden");
+
+        const deniedTitle = accessDenied.querySelector("h2");
+        const deniedText = accessDenied.querySelector("p");
+
+        if (deniedTitle) deniedTitle.textContent = "Open from dashboard only";
+        if (deniedText) {
+          deniedText.textContent = "This video upload page can only be opened from the admin/staff dashboard. Direct URL access is blocked.";
+        }
+
+        return;
+      }
+
+      if (["admin", "staff"].includes(currentUserRole)) {
+        roleBadge.textContent = currentUserRole;
+        pageContent.classList.remove("hidden");
+        accessDenied.classList.add("hidden");
+        loadUploadedVideos();
+      } else {
+        clearDashboardAccessFlag();
+        roleBadge.textContent = currentUserRole || "guest";
+        pageContent.classList.add("hidden");
+        accessDenied.classList.remove("hidden");
+      }
+    }
+
+    function getCloudinaryConfig() {
+      const cfg = window.GP_CONFIG || {};
+      return {
+        cloudName:
+          cfg.CLOUDINARY_CLOUD_NAME ||
+          cfg.CLOUDINARY?.cloudName ||
+          cfg.CLOUDINARY?.CLOUD_NAME ||
+          "",
+        uploadPreset:
+          cfg.CLOUDINARY_UPLOAD_PRESET ||
+          cfg.CLOUDINARY?.uploadPreset ||
+          cfg.CLOUDINARY?.UPLOAD_PRESET ||
+          ""
+      };
+    }
+
+    async function uploadToCloudinary(file, resourceType = "auto") {
+      const { cloudName, uploadPreset } = getCloudinaryConfig();
+
+      if (!cloudName || !uploadPreset) {
+        throw new Error("Cloudinary cloud name or upload preset missing in js/config.js.");
+      }
+
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset", uploadPreset);
+
+      const response = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/${resourceType}/upload`, {
+        method: "POST",
+        body: formData
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result?.error?.message || "Cloudinary upload failed.");
+      }
+
+      return result.secure_url;
+    }
+
+    function checkVideoDuration(file) {
+      return new Promise((resolve, reject) => {
+        if (!file) return resolve(true);
+
+        const video = document.createElement("video");
+        video.preload = "metadata";
+
+        video.onloadedmetadata = function () {
+          window.URL.revokeObjectURL(video.src);
+
+          if (video.duration > 120) {
+            reject(new Error("Video is longer than 2 minutes. Please upload a shorter video."));
+          } else {
+            resolve(true);
+          }
+        };
+
+        video.onerror = function () {
+          reject(new Error("Could not read video duration."));
+        };
+
+        video.src = URL.createObjectURL(file);
+      });
+    }
+
+    function getPlatform(url) {
+      const lower = String(url || "").toLowerCase();
+      if (lower.includes("youtube.com") || lower.includes("youtu.be")) return "YouTube";
+      if (lower.includes("instagram.com")) return "Instagram";
+      if (lower.includes("facebook.com") || lower.includes("fb.watch")) return "Facebook";
+      return "Video Link";
+    }
+
+    function formatDate(value) {
+      if (!value) return "";
+      try {
+        return new Date(value).toLocaleString("en-IN", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit"
+        });
+      } catch (error) {
+        return "";
+      }
+    }
+
+    function getVideoViews(video) {
+      return Number(
+        video.views ??
+        video.view_count ??
+        video.views_count ??
+        video.visitor_count ??
+        video.video_views ??
+        0
+      ) || 0;
+    }
+
+    function getGalleryVideoUrl(video) {
+      const id = encodeURIComponent(video.id || "");
+      return `gallery.html?video_id=${id}`;
+    }
+
+    function setSelectedVideoType(type) {
+      const finalType = String(type || "reel").toLowerCase() === "youtube" ? "youtube" : "reel";
+      videoTypeInput.value = finalType;
+
+      document.querySelectorAll(".upload-choice").forEach(item => {
+        item.classList.toggle("active", item.dataset.videoType === finalType);
+      });
+    }
+
+    function resetVideoForm() {
+      editingVideoId = "";
+      form.reset();
+      setSelectedVideoType("reel");
+      cancelEditBtn?.classList.add("hidden");
+      saveBtn.innerHTML = editingVideoId ? `<span class="material-symbols-outlined">save</span> Save Changes` : `<span class="material-symbols-outlined">cloud_upload</span> Upload Video`;
+      clearStatus();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function videoCard(video) {
+      const title = video.title || "Property Video";
+      const type = String(video.video_type || "youtube").toLowerCase();
+      const views = getVideoViews(video);
+      const shortDesc = String(video.description || "-");
+      const descText = shortDesc.length > 80 ? shortDesc.slice(0, 80) + "..." : shortDesc;
+
+      return `
+        <tr>
+          <td>
+            <a href="${safeText(getGalleryVideoUrl(video))}" target="_blank" class="video-title-link">
+              ${safeText(title)}
+            </a>
+            <div class="text-xs text-[#64748b] font-bold mt-1">${safeText(video.external_url ? getPlatform(video.external_url) : "Gallery video")}</div>
+          </td>
+
+          <td>
+            <span class="type-pill">${type === "reel" ? "Reels 9:16" : "YouTube 16:9"}</span>
+          </td>
+
+          <td>
+            <span class="font-black text-[#082f5f]">${views.toLocaleString("en-IN")}</span>
+            <div class="text-xs text-[#64748b] font-bold mt-1">views</div>
+          </td>
+
+          <td class="max-w-[260px]">
+            <span class="text-[#64748b] font-semibold">${safeText(descText)}</span>
+          </td>
+
+          <td>
+            <span class="text-xs text-[#64748b] font-bold">${formatDate(video.created_at)}</span>
+          </td>
+
+          <td>
+            <div class="flex flex-wrap gap-2">
+              <button type="button" class="edit-btn text-xs" onclick="editVideo('${safeText(video.id)}')">
+                <span class="material-symbols-outlined text-[16px]">edit</span>
+                Edit
+              </button>
+
+              <button type="button" class="danger-btn text-xs" onclick="deleteVideo('${safeText(video.id)}')">
+                <span class="material-symbols-outlined text-[16px]">delete</span>
+                Delete
+              </button>
+            </div>
+          </td>
+        </tr>
+      `;
+    }
+
+    async function loadUploadedVideos() {
+      const client = getClient();
+
+      if (!client) {
+        videoListStatus.textContent = "Supabase client not found.";
+        return;
+      }
+
+      videoListStatus.style.display = "block";
+      videoListStatus.textContent = "Loading videos...";
+      uploadedVideoList.innerHTML = `<tr><td colspan="6">Loading videos...</td></tr>`;
+
+      try {
+        const { data, error } = await client
+          .from(VIDEO_TABLE)
+          .select("*")
+          .in("uploaded_by_role", ["admin", "staff"])
+          .order("created_at", { ascending: false });
+
+        if (error) throw error;
+
+        if (!data || !data.length) {
+          videoListStatus.textContent = "No uploaded videos yet.";
+          uploadedVideoList.innerHTML = `<tr><td colspan="6">No uploaded videos yet.</td></tr>`;
+          return;
+        }
+
+        loadedVideos = Array.isArray(data) ? data : [];
+        videoListStatus.style.display = "none";
+        uploadedVideoList.innerHTML = loadedVideos.map(videoCard).join("");
+      } catch (error) {
+        console.error(error);
+        videoListStatus.textContent = "Could not load uploaded videos.";
+      }
+    }
+
+    function editVideo(id) {
+      const video = loadedVideos.find(item => String(item.id) === String(id));
+      if (!video) {
+        alert("Video not found.");
+        return;
+      }
+
+      editingVideoId = id;
+
+      document.getElementById("video-title").value = video.title || "";
+      document.getElementById("video-description").value = video.description || "";
+      document.getElementById("video-url").value = video.video_url || "";
+      document.getElementById("thumbnail-url").value = video.thumbnail_url || "";
+      document.getElementById("external-url").value = video.external_url || "";
+      document.getElementById("link-description").value = video.link_description || "";
+
+      document.getElementById("video-file").value = "";
+      document.getElementById("thumbnail-file").value = "";
+
+      setSelectedVideoType(video.video_type || "reel");
+
+      cancelEditBtn?.classList.remove("hidden");
+      saveBtn.innerHTML = `<span class="material-symbols-outlined">save</span> Save Changes`;
+      showStatus("Editing selected video. Upload new video/thumbnail only if you want to replace them.", "info");
+
+      form.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    window.editVideo = editVideo;
+
+    async function deleteVideo(id) {
+      if (!confirm("Delete this video from gallery?")) return;
+
+      const client = getClient();
+
+      try {
+        const { error } = await client
+          .from(VIDEO_TABLE)
+          .delete()
+          .eq("id", id);
+
+        if (error) throw error;
+
+        loadUploadedVideos();
+      } catch (error) {
+        console.error(error);
+        alert("Could not delete video.");
+      }
+    }
+
+    window.deleteVideo = deleteVideo;
+
+    document.querySelectorAll(".upload-choice").forEach(button => {
+      button.addEventListener("click", function () {
+        document.querySelectorAll(".upload-choice").forEach(item => item.classList.remove("active"));
+        button.classList.add("active");
+        videoTypeInput.value = button.dataset.videoType || "reel";
+      });
+    });
+
+    form.addEventListener("submit", async function (event) {
+      event.preventDefault();
+      clearStatus();
+
+      if (!["admin", "staff"].includes(currentUserRole)) {
+        showStatus("Only admin and staff can upload videos.", "err");
+        return;
+      }
+
+      const client = getClient();
+
+      if (!client) {
+        showStatus("Supabase client not found. Check js/config.js and js/supabase.js.", "err");
+        return;
+      }
+
+      const title = document.getElementById("video-title").value.trim();
+      const description = document.getElementById("video-description").value.trim();
+      const videoType = videoTypeInput.value || "reel";
+      const externalUrl = document.getElementById("external-url").value.trim();
+      const linkDescription = document.getElementById("link-description").value.trim();
+      const videoUrlInput = document.getElementById("video-url").value.trim();
+      const thumbnailUrlInput = document.getElementById("thumbnail-url").value.trim();
+      const videoFile = document.getElementById("video-file").files[0];
+      const thumbnailFile = document.getElementById("thumbnail-file").files[0];
+
+      if (!title) {
+        showStatus("Please enter video title.", "err");
+        return;
+      }
+
+      if (!videoFile && !videoUrlInput && !externalUrl) {
+        showStatus("Upload video file or paste video/external URL.", "err");
+        return;
+      }
+
+      saveBtn.disabled = true;
+      saveBtn.innerHTML = `<span class="material-symbols-outlined">hourglass_top</span> Uploading...`;
+
+      try {
+        let finalVideoUrl = videoUrlInput;
+        let finalThumbnailUrl = thumbnailUrlInput;
+
+        if (videoFile) {
+          showStatus("Checking video duration...", "info");
+          await checkVideoDuration(videoFile);
+
+          showStatus("Uploading video to Cloudinary...", "info");
+          finalVideoUrl = await uploadToCloudinary(videoFile, "video");
+        }
+
+        if (thumbnailFile) {
+          showStatus("Uploading thumbnail to Cloudinary...", "info");
+          finalThumbnailUrl = await uploadToCloudinary(thumbnailFile, "image");
+        }
+
+        showStatus("Saving video details...", "info");
+
+        const payload = {
+          title,
+          description,
+          video_url: finalVideoUrl,
+          thumbnail_url: finalThumbnailUrl,
+          video_type: videoType,
+          external_url: externalUrl,
+          link_description: linkDescription,
+          uploaded_by_role: currentUserRole
+        };
+
+        if (currentUserId) {
+          payload.uploaded_by = currentUserId;
+        }
+
+        let error = null;
+
+        if (editingVideoId) {
+          const result = await client
+            .from(VIDEO_TABLE)
+            .update(payload)
+            .eq("id", editingVideoId);
+
+          error = result.error;
+        } else {
+          const result = await client
+            .from(VIDEO_TABLE)
+            .insert(payload);
+
+          error = result.error;
+        }
+
+        if (error) throw error;
+
+        showStatus(editingVideoId ? "Video updated successfully." : "Video uploaded successfully.", "ok");
+        editingVideoId = "";
+        form.reset();
+        setSelectedVideoType("reel");
+        cancelEditBtn?.classList.add("hidden");
+        loadUploadedVideos();
+
+      } catch (error) {
+        console.error(error);
+        showStatus(error.message || "Video upload failed.", "err");
+      } finally {
+        saveBtn.disabled = false;
+        saveBtn.innerHTML = editingVideoId ? `<span class="material-symbols-outlined">save</span> Save Changes` : `<span class="material-symbols-outlined">cloud_upload</span> Upload Video`;
+      }
+    });
+
+    refreshBtn.addEventListener("click", loadUploadedVideos);
+    cancelEditBtn?.addEventListener("click", resetVideoForm);
+
+    guardAccess();
+  </script>
+</body>
+</html>

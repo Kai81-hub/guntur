@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Video Gallery | Guntur Properties</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Your existing config + Supabase helper -->
+  <script src="js/config.js"></script>
+  <script src="js/supabase.js"></script>
+
+  <style>
+    :root {
+      --gold: #d4af37;
+      --gold-dark: #735c00;
+      --navy: #0b2341;
+      --text: #151c27;
+      --muted: #64748b;
+      --surface: #f9f9ff;
+      --line: rgba(212, 175, 55, 0.22);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at top left, rgba(212, 175, 55, 0.10), transparent 32%),
+        linear-gradient(180deg, #ffffff 0%, #f9f9ff 42%, #eef3fb 100%);
+      color: var(--text);
+      font-family: "Inter", "Segoe UI", Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 520, 'GRAD' 0, 'opsz' 24;
+    }
+
+    .page-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.90);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(208, 197, 175, 0.45);
+    }
+
+    .brand-logo {
+      width: 46px;
+      height: 46px;
+      object-fit: cover;
+      border-radius: 12px;
+      border: 1px solid rgba(212, 175, 55, 0.22);
+    }
+
+    .hero-card {
+      border: 1px solid rgba(212, 175, 55, 0.18);
+      box-shadow: 0 24px 70px rgba(15, 23, 42, 0.10);
+      background:
+        linear-gradient(135deg, rgba(11, 35, 65, 0.97), rgba(16, 48, 86, 0.94)),
+        radial-gradient(circle at top right, rgba(212, 175, 55, 0.28), transparent 35%);
+    }
+
+    .search-box {
+      background: #ffffff;
+      border: 1px solid rgba(208, 197, 175, 0.58);
+      box-shadow: 0 14px 35px rgba(15, 23, 42, 0.08);
+    }
+
+    .filter-btn {
+      border: 1px solid rgba(208, 197, 175, 0.7);
+      background: #ffffff;
+      color: #476080;
+      transition: 0.18s ease;
+    }
+
+    .filter-btn.active,
+    .filter-btn:hover {
+      background: #fff8dc;
+      color: var(--gold-dark);
+      border-color: rgba(212, 175, 55, 0.75);
+    }
+
+    .video-card {
+      background: #ffffff;
+      border: 1px solid rgba(208, 197, 175, 0.56);
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 16px 38px rgba(15, 23, 42, 0.08);
+      transition: 0.22s ease;
+    }
+
+    .video-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 22px 55px rgba(15, 23, 42, 0.13);
+    }
+
+    .thumb-wrap {
+      position: relative;
+      background: #0f172a;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .thumb-wrap.reel {
+      aspect-ratio: 9 / 16;
+    }
+
+    .thumb-wrap.youtube {
+      aspect-ratio: 16 / 9;
+    }
+
+    .thumb-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.24s ease;
+    }
+
+    .video-card:hover .thumb-img {
+      transform: scale(1.04);
+    }
+
+    .play-button {
+      position: absolute;
+      inset: 0;
+      margin: auto;
+      width: 64px;
+      height: 64px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(212, 175, 55, 0.94);
+      color: #ffffff;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.30);
+    }
+
+    .play-button .material-symbols-outlined {
+      font-size: 38px;
+      margin-left: 3px;
+      font-variation-settings: 'FILL' 1, 'wght' 700, 'GRAD' 0, 'opsz' 24;
+    }
+
+    .type-badge {
+      position: absolute;
+      left: 12px;
+      top: 12px;
+      background: rgba(255, 255, 255, 0.92);
+      color: #0b2341;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 11px;
+      font-weight: 900;
+      backdrop-filter: blur(10px);
+    }
+
+    .external-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      color: #0b5cab;
+      font-weight: 900;
+      font-size: 13px;
+    }
+
+    .external-link:hover {
+      color: var(--gold-dark);
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: none;
+      background: rgba(3, 7, 18, 0.84);
+      backdrop-filter: blur(8px);
+      padding: 24px;
+    }
+
+    .modal.active {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-panel {
+      width: min(1180px, 100%);
+      max-height: calc(100vh - 48px);
+      background: #151922;
+      color: #ffffff;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 26px 90px rgba(0, 0, 0, 0.45);
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(330px, 0.75fr);
+    }
+
+    .modal-media {
+      background: #05070c;
+      min-height: 520px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-media.reel {
+      min-height: 650px;
+    }
+
+    .modal-media video,
+    .modal-media iframe {
+      width: 100%;
+      height: 100%;
+      max-height: calc(100vh - 48px);
+      border: 0;
+      display: block;
+      background: #000000;
+    }
+
+    .modal-media.reel video,
+    .modal-media.reel iframe {
+      width: auto;
+      max-width: 100%;
+      aspect-ratio: 9 / 16;
+    }
+
+    .modal-media.youtube video,
+    .modal-media.youtube iframe {
+      aspect-ratio: 16 / 9;
+      height: auto;
+    }
+
+    .modal-info {
+      background: #1f232c;
+      border-left: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 28px;
+      overflow: auto;
+      max-height: calc(100vh - 48px);
+    }
+
+    .modal-close {
+      position: fixed;
+      right: 26px;
+      top: 22px;
+      width: 44px;
+      height: 44px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.12);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+    }
+
+    .modal-close:hover {
+      background: rgba(255, 255, 255, 0.22);
+    }
+
+    .footer {
+      background: #0b2341;
+      color: rgba(255, 255, 255, 0.80);
+    }
+
+    @media (max-width: 900px) {
+      .modal {
+        padding: 12px;
+      }
+
+      .modal-panel {
+        grid-template-columns: 1fr;
+        max-height: calc(100vh - 24px);
+        overflow: auto;
+      }
+
+      .modal-media,
+      .modal-media.reel {
+        min-height: auto;
+      }
+
+      .modal-media video,
+      .modal-media iframe {
+        max-height: 70vh;
+      }
+
+      .modal-media.reel video,
+      .modal-media.reel iframe {
+        height: 70vh;
+      }
+
+      .modal-info {
+        max-height: none;
+        border-left: 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+      }
+    }
+  
+    html,
+    body {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+
+    img,
+    video,
+    iframe {
+      max-width: 100%;
+    }
+
+    #video-grid,
+    main,
+    section,
+    header,
+    footer {
+      max-width: 100%;
+    }
+
+    @media (max-width: 640px) {
+      .page-header .h-\[76px\] {
+        height: 68px !important;
+      }
+
+      .brand-logo {
+        width: 40px;
+        height: 40px;
+      }
+
+      .hero-card {
+        border-radius: 22px;
+        padding: 22px 18px;
+      }
+
+      .hero-card h2 {
+        font-size: 28px;
+        line-height: 1.12;
+      }
+
+      .hero-card p {
+        font-size: 14px;
+        line-height: 1.65;
+      }
+
+      .search-box {
+        border-radius: 20px;
+        padding: 14px;
+      }
+
+      #video-grid {
+        grid-template-columns: minmax(0, 1fr) !important;
+        gap: 18px;
+      }
+
+      .video-card {
+        border-radius: 20px;
+        width: 100%;
+        min-width: 0;
+      }
+
+      .modal-close {
+        right: 14px;
+        top: 14px;
+      }
+    }
+
+  
+    @media (max-width: 420px) {
+      .page-header .h-\[76px\] {
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+        gap: 8px !important;
+      }
+
+      .page-header h1 {
+        font-size: 17px !important;
+      }
+
+      .page-header p {
+        font-size: 10px !important;
+      }
+
+      .page-header a[href="post-property.html"] {
+        width: 42px !important;
+        height: 42px !important;
+        padding: 0 !important;
+      }
+
+      .page-header a[href="login.html"] {
+        width: 42px !important;
+        height: 42px !important;
+      }
+    }
+
+  
+    .gallery-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex-shrink: 0;
+    }
+
+    .gallery-post-property-btn {
+      height: 42px;
+      padding: 0 18px;
+      border-radius: 10px;
+      background: #ffffff;
+      color: #17213a;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 15px;
+      font-weight: 900;
+      box-shadow: 0 8px 22px rgba(15, 23, 42, .14);
+      white-space: nowrap;
+      text-decoration: none;
+    }
+
+    .gallery-post-property-btn small {
+      background: #16a34a;
+      color: #ffffff;
+      font-size: 11px;
+      line-height: 1;
+      font-weight: 900;
+      padding: 4px 6px;
+      border-radius: 4px;
+    }
+
+    .gallery-profile-btn {
+      height: 38px;
+      min-width: 62px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      color: #151c27;
+      text-decoration: none;
+    }
+
+    .gallery-profile-btn .profile-avatar-text {
+      width: 38px;
+      height: 38px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #dcfce7;
+      color: #16a34a;
+      font-weight: 900;
+      font-size: 13px;
+    }
+
+    .gallery-profile-btn .profile-arrow {
+      font-size: 22px !important;
+      color: #476080;
+    }
+
+    @media (max-width: 520px) {
+      .gallery-header-actions {
+        gap: 8px;
+      }
+
+      .gallery-post-property-btn {
+        height: 38px;
+        padding: 0 10px;
+        font-size: 12px;
+        border-radius: 10px;
+      }
+
+      .gallery-post-property-btn small {
+        font-size: 9px;
+        padding: 3px 4px;
+      }
+
+      .gallery-profile-btn {
+        min-width: 42px;
+        gap: 0;
+      }
+
+      .gallery-profile-btn .profile-avatar-text {
+        width: 36px;
+        height: 36px;
+        font-size: 12px;
+      }
+
+      .gallery-profile-btn .profile-arrow {
+        display: none;
+      }
+    }
+
+    @media (max-width: 390px) {
+      .gallery-post-property-btn span {
+        display: none;
+      }
+
+      .gallery-post-property-btn {
+        width: 42px;
+        padding: 0;
+      }
+
+      .gallery-post-property-btn::before {
+        content: "Post";
+      }
+
+      .gallery-post-property-btn small {
+        display: none;
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+  <header class="page-header">
+    <div class="max-w-7xl mx-auto px-4 md:px-6 h-[76px] flex items-center justify-between gap-3">
+      <a href="index.html" class="flex items-center gap-3 min-w-0">
+        <img src="assets/images/WhatsApp Image 2026-05-12 at 13.33.30.jpeg" class="brand-logo shrink-0" alt="Guntur Properties" />
+        <div class="min-w-0">
+          <h1 class="text-xl md:text-2xl font-black text-[#735c00] leading-none truncate">Guntur Properties</h1>
+          <p class="text-xs font-bold text-[#476080] mt-1 truncate">Videos & Property Gallery</p>
+        </div>
+      </a>
+
+      <div class="gallery-header-actions">
+        <a href="post-property.html" class="gallery-post-property-btn">
+          <span>Post property</span>
+          <small>FREE</small>
+        </a>
+
+        <a href="login.html" class="gallery-profile-btn" aria-label="Profile">
+          <span class="profile-avatar-text">AU</span>
+          <span class="material-symbols-outlined profile-arrow">expand_more</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="max-w-7xl mx-auto px-4 md:px-6 pt-8 md:pt-12">
+      <div class="hero-card rounded-[28px] p-6 md:p-10 text-white">
+        <div class="max-w-3xl">
+          <span class="inline-flex items-center gap-2 bg-white/12 border border-white/15 rounded-full px-4 py-2 text-xs font-black uppercase tracking-widest">
+            <span class="material-symbols-outlined text-[18px]">smart_display</span>
+            Video Gallery
+          </span>
+          <h2 class="text-3xl md:text-5xl font-black mt-5 leading-tight">Property videos, reels and project updates</h2>
+          <p class="text-white/75 font-semibold mt-4 leading-7">
+            Watch short uploaded videos and open related YouTube, Instagram, or Facebook links when available.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="max-w-7xl mx-auto px-4 md:px-6 mt-8">
+      <div class="search-box rounded-[24px] p-4 md:p-5">
+        <div class="grid lg:grid-cols-[1fr_220px] gap-4">
+          <label class="flex items-center gap-3 bg-[#f8fafc] border border-[#d0c5af]/60 rounded-2xl px-4 h-[58px]">
+            <span class="material-symbols-outlined text-[#735c00]">search</span>
+            <input id="video-search" type="text" placeholder="Search video title..." class="w-full border-0 bg-transparent outline-none ring-0 focus:ring-0 font-bold text-[#151c27]" />
+          </label>
+
+          <select id="video-sort" class="h-[58px] rounded-2xl border-[#d0c5af] font-extrabold text-[#476080] focus:border-[#d4af37] focus:ring-[#d4af37]">
+            <option value="latest">Latest to Oldest</option>
+            <option value="oldest">Oldest to Latest</option>
+          </select>
+        </div>
+
+        <div class="flex flex-wrap gap-2 mt-4">
+          <button class="filter-btn active px-4 py-2 rounded-full font-black text-sm" data-filter="all">All</button>
+          <button class="filter-btn px-4 py-2 rounded-full font-black text-sm" data-filter="reel">Reels 9:16</button>
+          <button class="filter-btn px-4 py-2 rounded-full font-black text-sm" data-filter="youtube">YouTube 16:9</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="max-w-7xl mx-auto px-4 md:px-6 mt-8 mb-16">
+      <div id="video-status" class="text-center text-[#64748b] font-bold py-10">Loading videos...</div>
+      <div id="video-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
+    </section>
+  </main>
+
+  <div id="video-modal" class="modal" aria-hidden="true">
+    <button id="modal-close" class="modal-close" type="button" aria-label="Close video">
+      <span class="material-symbols-outlined">close</span>
+    </button>
+
+    <div class="modal-panel">
+      <div id="modal-media" class="modal-media youtube"></div>
+
+      <div class="modal-info">
+        <div class="flex items-center gap-3 mb-5">
+          <img src="assets/images/WhatsApp Image 2026-05-12 at 13.33.30.jpeg" class="w-11 h-11 object-cover rounded-full" alt="Guntur Properties" />
+          <div>
+            <p class="font-black">Guntur Properties</p>
+            <p id="modal-date" class="text-sm text-white/55 font-semibold"></p>
+          </div>
+        </div>
+
+        <h3 id="modal-title" class="text-2xl font-black leading-tight"></h3>
+        <p id="modal-description" class="text-white/72 font-medium leading-7 mt-4"></p>
+
+        <div id="modal-link-wrap" class="mt-6"></div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer mt-14">
+    <div class="max-w-7xl mx-auto px-4 md:px-6 py-10 grid md:grid-cols-4 gap-8">
+      <div class="md:col-span-2">
+        <div class="flex items-center gap-3">
+          <img src="assets/images/WhatsApp Image 2026-05-12 at 13.33.30.jpeg" class="w-12 h-12 rounded-xl object-cover" alt="Guntur Properties" />
+          <div>
+            <h3 class="text-white text-2xl font-black leading-none">Guntur Properties</h3>
+            <p class="text-white/60 text-sm font-semibold mt-1">Your trusted property partner</p>
+          </div>
+        </div>
+        <p class="mt-5 max-w-xl leading-7">
+          Find properties, services, project updates and trusted local real estate videos in one place.
+        </p>
+      </div>
+
+      <div>
+        <h4 class="text-white font-black mb-4">Quick Links</h4>
+        <div class="grid gap-3 font-bold">
+          <a href="index.html" class="hover:text-[#d4af37]">Home</a>
+          <a href="properties.html" class="hover:text-[#d4af37]">Properties</a>
+          <a href="services.html" class="hover:text-[#d4af37]">Services</a>
+          <a href="contact.html" class="hover:text-[#d4af37]">Contact</a>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="text-white font-black mb-4">Contact</h4>
+        <div class="grid gap-3 font-bold">
+          <a href="tel:+918500720404" class="hover:text-[#d4af37]">+91 85007 20404</a>
+          <a href="https://wa.me/918500720404" target="_blank" rel="noopener noreferrer" class="hover:text-[#d4af37]">WhatsApp</a>
+          <a href="mailto:info@gunturproperties.in" class="hover:text-[#d4af37]">info@gunturproperties.in</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="border-t border-white/10 py-5 text-center text-sm font-bold text-white/60">
+      © <span id="footer-year"></span> Guntur Properties. All rights reserved.
+    </div>
+  </footer>
+
+  <script>
+    const VIDEO_TABLE = "video_gallery";
+
+    let allVideos = [];
+    let currentFilter = "all";
+
+    const videoGrid = document.getElementById("video-grid");
+    const videoStatus = document.getElementById("video-status");
+    const videoSearch = document.getElementById("video-search");
+    const videoSort = document.getElementById("video-sort");
+    const filterButtons = document.querySelectorAll(".filter-btn");
+
+    const modal = document.getElementById("video-modal");
+    const modalClose = document.getElementById("modal-close");
+    const modalMedia = document.getElementById("modal-media");
+    const modalTitle = document.getElementById("modal-title");
+    const modalDescription = document.getElementById("modal-description");
+    const modalDate = document.getElementById("modal-date");
+    const modalLinkWrap = document.getElementById("modal-link-wrap");
+
+    document.getElementById("footer-year").textContent = new Date().getFullYear();
+
+    function safeText(value) {
+      return String(value || "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function getVideoType(video) {
+      const type = String(video.video_type || video.type || "").toLowerCase();
+      if (type.includes("reel") || type.includes("9:16") || type.includes("short")) return "reel";
+      return "youtube";
+    }
+
+    function getPlatform(url) {
+      const lower = String(url || "").toLowerCase();
+
+      if (lower.includes("youtube.com") || lower.includes("youtu.be")) return "YouTube";
+      if (lower.includes("instagram.com")) return "Instagram";
+      if (lower.includes("facebook.com") || lower.includes("fb.watch")) return "Facebook";
+
+      return "Video Link";
+    }
+
+    function getYouTubeEmbed(url) {
+      const text = String(url || "").trim();
+
+      try {
+        const parsed = new URL(text);
+
+        if (parsed.hostname.includes("youtu.be")) {
+          return `https://www.youtube.com/embed/${parsed.pathname.replace("/", "")}`;
+        }
+
+        if (parsed.hostname.includes("youtube.com")) {
+          const id = parsed.searchParams.get("v");
+          if (id) return `https://www.youtube.com/embed/${id}`;
+
+          if (parsed.pathname.includes("/shorts/")) {
+            return `https://www.youtube.com/embed/${parsed.pathname.split("/shorts/")[1].split("/")[0]}`;
+          }
+
+          if (parsed.pathname.includes("/embed/")) {
+            return text;
+          }
+        }
+      } catch (error) {}
+
+      return "";
+    }
+
+    function formatDate(value) {
+      if (!value) return "";
+      try {
+        return new Date(value).toLocaleDateString("en-IN", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric"
+        });
+      } catch (error) {
+        return "";
+      }
+    }
+
+    function renderExternalLink(video, isModal = false) {
+      const url = video.external_url || "";
+      if (!url) return "";
+
+      const platform = getPlatform(url);
+
+      if (isModal) {
+        return `
+          <a href="${safeText(url)}" target="_blank" rel="noopener noreferrer"
+             class="inline-flex items-center gap-2 bg-[#d4af37] text-white px-5 py-3 rounded-xl font-black hover:brightness-105">
+            <span class="material-symbols-outlined text-[18px]">open_in_new</span>
+            Open in ${platform}
+          </a>
+
+          ${video.link_description ? `
+            <p class="mt-3 text-white/62 font-semibold leading-6">${safeText(video.link_description)}</p>
+          ` : ""}
+        `;
+      }
+
+      return `
+        <a href="${safeText(url)}" target="_blank" rel="noopener noreferrer" class="external-link mt-4">
+          <span class="material-symbols-outlined text-[17px]">open_in_new</span>
+          Open in ${platform}
+        </a>
+      `;
+    }
+
+    function videoCard(video) {
+      const type = getVideoType(video);
+      const title = video.title || "Property Video";
+      const description = video.description || "";
+      const thumbnail = video.thumbnail_url || "assets/images/og-image.jpg";
+
+      return `
+        <article class="video-card" data-id="${safeText(video.id)}">
+          <div class="thumb-wrap ${type}" role="button" tabindex="0" onclick="openVideoById('${safeText(video.id)}')">
+            <img class="thumb-img" src="${safeText(thumbnail)}" alt="${safeText(title)}" loading="lazy" />
+            <span class="type-badge">${type === "reel" ? "Reel 9:16" : "Video 16:9"}</span>
+            <span class="play-button">
+              <span class="material-symbols-outlined">play_arrow</span>
+            </span>
+          </div>
+
+          <div class="p-5">
+            <h3 class="text-lg font-black text-[#151c27] leading-snug">${safeText(title)}</h3>
+            ${description ? `<p class="text-sm text-[#64748b] font-semibold leading-6 mt-2">${safeText(description)}</p>` : ""}
+            ${renderExternalLink(video)}
+          </div>
+        </article>
+      `;
+    }
+
+    function getFilteredVideos() {
+      const q = videoSearch.value.trim().toLowerCase();
+      const sort = videoSort.value;
+
+      let items = allVideos.filter(video => {
+        const type = getVideoType(video);
+        const title = String(video.title || "").toLowerCase();
+
+        const matchesFilter = currentFilter === "all" || type === currentFilter;
+        const matchesSearch = !q || title.includes(q);
+
+        return matchesFilter && matchesSearch;
+      });
+
+      items.sort((a, b) => {
+        const aTime = new Date(a.created_at || 0).getTime();
+        const bTime = new Date(b.created_at || 0).getTime();
+
+        return sort === "oldest" ? aTime - bTime : bTime - aTime;
+      });
+
+      return items;
+    }
+
+    function renderVideos() {
+      const items = getFilteredVideos();
+
+      if (!items.length) {
+        videoStatus.style.display = "block";
+        videoStatus.textContent = "No videos found.";
+        videoGrid.innerHTML = "";
+        return;
+      }
+
+      videoStatus.style.display = "none";
+      videoGrid.innerHTML = items.map(videoCard).join("");
+    }
+
+    function openVideoById(id) {
+      const video = allVideos.find(item => String(item.id) === String(id));
+      if (!video) return;
+
+      const type = getVideoType(video);
+      const title = video.title || "Property Video";
+      const description = video.description || "";
+      const videoUrl = video.video_url || "";
+      const externalUrl = video.external_url || "";
+      const youtubeEmbed = getYouTubeEmbed(videoUrl || externalUrl);
+
+      modalMedia.className = `modal-media ${type}`;
+      modalMedia.innerHTML = "";
+
+      if (youtubeEmbed) {
+        modalMedia.innerHTML = `
+          <iframe
+            src="${safeText(youtubeEmbed)}?autoplay=1&rel=0"
+            allow="autoplay; encrypted-media; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+        `;
+      } else if (videoUrl) {
+        modalMedia.innerHTML = `
+          <video controls autoplay playsinline>
+            <source src="${safeText(videoUrl)}" />
+            Your browser does not support video.
+          </video>
+        `;
+      } else if (externalUrl) {
+        modalMedia.innerHTML = `
+          <div class="p-8 text-center">
+            <p class="text-white/75 font-bold mb-4">This video is available on ${getPlatform(externalUrl)}.</p>
+            <a href="${safeText(externalUrl)}" target="_blank" rel="noopener noreferrer"
+               class="inline-flex items-center gap-2 bg-[#d4af37] text-white px-5 py-3 rounded-xl font-black">
+              <span class="material-symbols-outlined">open_in_new</span>
+              Open in ${getPlatform(externalUrl)}
+            </a>
+          </div>
+        `;
+      } else {
+        modalMedia.innerHTML = `<p class="text-white/70 font-bold p-8">Video not available.</p>`;
+      }
+
+      modalTitle.textContent = title;
+      modalDescription.textContent = description;
+      modalDate.textContent = formatDate(video.created_at);
+      modalLinkWrap.innerHTML = renderExternalLink(video, true);
+
+      modal.classList.add("active");
+      modal.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeModal() {
+      modal.classList.remove("active");
+      modal.setAttribute("aria-hidden", "true");
+      modalMedia.innerHTML = "";
+      document.body.style.overflow = "";
+    }
+
+    window.openVideoById = openVideoById;
+
+    modalClose.addEventListener("click", closeModal);
+
+    modal.addEventListener("click", function (event) {
+      if (event.target === modal) closeModal();
+    });
+
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape") closeModal();
+    });
+
+    videoSearch.addEventListener("input", renderVideos);
+    videoSort.addEventListener("change", renderVideos);
+
+    filterButtons.forEach(button => {
+      button.addEventListener("click", function () {
+        filterButtons.forEach(item => item.classList.remove("active"));
+        button.classList.add("active");
+        currentFilter = button.dataset.filter || "all";
+        renderVideos();
+      });
+    });
+
+
+    function openVideoFromUrlWhenReady() {
+      const params = new URLSearchParams(window.location.search);
+      const videoId = params.get("video_id") || params.get("id");
+
+      if (!videoId) return;
+
+      let tries = 0;
+      const timer = setInterval(() => {
+        tries++;
+
+        if (typeof window.openVideoById === "function") {
+          const exists = allVideos.some(item => String(item.id) === String(videoId));
+
+          if (exists) {
+            window.openVideoById(videoId);
+            clearInterval(timer);
+          }
+        }
+
+        if (tries > 30) clearInterval(timer);
+      }, 300);
+    }
+
+    async function loadVideos() {
+      videoStatus.style.display = "block";
+      videoStatus.textContent = "Loading videos...";
+
+      try {
+        const client = window.GP_SUPABASE_CLIENT || window.supabaseClient || null;
+
+        if (!client) {
+          throw new Error("Supabase client not found. Check js/config.js and js/supabase.js.");
+        }
+
+        const { data, error } = await client
+          .from(VIDEO_TABLE)
+          .select("*")
+          .in("uploaded_by_role", ["admin", "staff"])
+          .order("created_at", { ascending: false });
+
+        if (error) throw error;
+
+        allVideos = Array.isArray(data) ? data : [];
+        renderVideos();
+        openVideoFromUrlWhenReady();
+
+      } catch (error) {
+        console.error(error);
+        videoStatus.textContent = "Could not load videos. Please check Supabase table and config.";
+        videoGrid.innerHTML = "";
+      }
+    }
+
+    loadVideos();
+  </script>
+</body>
+</html>
