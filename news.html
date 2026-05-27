@@ -87,6 +87,33 @@ body{margin:0;font-family:'Manrope',sans-serif;background:#f9f9ff;color:#151c27}
     </div>
   </div>
 
+  <div class="flex flex-col md:flex-row md:items-center gap-3 mb-6">
+    <label class="flex-1 relative">
+      <span class="sr-only">Search news</span>
+      <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-[#7f7663] text-xl">search</span>
+      <input
+        id="news-search"
+        type="search"
+        placeholder="Search by title or article text..."
+        class="w-full pl-12 pr-4 py-3 rounded-xl border border-[#cbd5e1] bg-white font-semibold text-[#151c27] focus:ring-2 focus:ring-[#0f4c81]/20 focus:border-[#0f4c81]"
+        autocomplete="off"
+      />
+    </label>
+
+    <label class="shrink-0 flex flex-col gap-1">
+      <span class="text-xs font-black text-[#7f7663] uppercase tracking-wide">Sort</span>
+      <select
+        id="news-sort"
+        class="min-w-[180px] px-4 py-3 rounded-xl border border-[#cbd5e1] bg-white font-black text-[#082f5f] focus:ring-2 focus:ring-[#0f4c81]/20"
+      >
+        <option value="new-old">New to Old</option>
+        <option value="old-new">Old to New</option>
+      </select>
+    </label>
+  </div>
+
+  <p id="news-results-meta" class="hidden text-sm font-bold text-[#476080] mb-4"></p>
+
   <section id="loading-state" class="bg-white rounded-3xl border border-[#cbd5e1]/50 p-12 text-center">
     <span class="material-symbols-outlined text-6xl text-[#0f4c81] animate-pulse">database</span>
     <h3 class="text-2xl font-black mt-4">Loading news...</h3>
@@ -127,8 +154,12 @@ const supabaseClient = window.supabase.createClient(
   window.GP_CONFIG.SUPABASE_ANON_KEY
 );
 
+const NEWS_TABLE = window.GP_CONFIG?.TABLES?.newsUpdates || "news_updates";
+
 let allNews = [];
 let activeCategory = "all";
+let searchQuery = "";
+let sortOrder = "new-old";
 
 function fmtDate(value){
   return value ? new Date(value).toLocaleDateString("en-IN", {day:"numeric", month:"short", year:"numeric"}) : "";
@@ -142,13 +173,61 @@ function fallbackImage(){
   return "https://placehold.co/1000x650/0f4c81/ffffff?text=Guntur+Properties+News";
 }
 
+function normalizeText(value) {
+  return String(value || "")
+    .toLowerCase()
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function matchesSearch(item) {
+  const q = normalizeText(searchQuery);
+  if (!q) return true;
+
+  const haystack = normalizeText(
+    [item.title, item.summary, item.content].filter(Boolean).join(" ")
+  );
+
+  return haystack.includes(q);
+}
+
+function getVisibleNews() {
+  let rows = activeCategory === "all"
+    ? [...allNews]
+    : allNews.filter((item) => item.category === activeCategory);
+
+  rows = rows.filter(matchesSearch);
+
+  rows.sort((a, b) => {
+    const ta = new Date(a.created_at || 0).getTime();
+    const tb = new Date(b.created_at || 0).getTime();
+    return sortOrder === "old-new" ? ta - tb : tb - ta;
+  });
+
+  return rows;
+}
+
+function readCategoryFromUrl() {
+  const category = new URLSearchParams(window.location.search).get("category");
+  if (!category) return;
+
+  activeCategory = category;
+
+  document.querySelectorAll(".category-btn").forEach((btn) => {
+    const active = btn.dataset.category === category;
+    btn.className = active
+      ? "category-btn btn-gold px-4 py-2 rounded-xl font-black"
+      : "category-btn px-4 py-2 rounded-xl border border-[#cbd5e1] font-black bg-white";
+  });
+}
+
 async function loadNews(){
   const loading = document.getElementById("loading-state");
   const empty = document.getElementById("empty-state");
 
   try{
     const { data, error } = await supabaseClient
-      .from(window.GP_CONFIG.TABLES.newsUpdates)
+     .from(NEWS_TABLE) 
       .select("*")
       .eq("status", "published")
       .order("created_at", { ascending:false });
@@ -172,9 +251,20 @@ async function loadNews(){
 
 function renderNews(){
   const grid = document.getElementById("news-grid");
-  const rows = activeCategory === "all"
-    ? allNews
-    : allNews.filter(item => item.category === activeCategory);
+  const meta = document.getElementById("news-results-meta");
+  const rows = getVisibleNews();
+
+  if (meta) {
+    if (allNews.length && (searchQuery || activeCategory !== "all")) {
+      meta.textContent = `Showing ${rows.length} of ${allNews.length} articles`;
+      meta.classList.remove("hidden");
+    } else if (allNews.length) {
+      meta.textContent = `Showing ${allNews.length} articles`;
+      meta.classList.remove("hidden");
+    } else {
+      meta.classList.add("hidden");
+    }
+  }
 
   grid.innerHTML = rows.map(item => `
     <article class="news-card bg-white rounded-3xl border border-[#cbd5e1]/45 overflow-hidden shadow-sm cursor-pointer" data-id="${item.id}">
@@ -192,8 +282,14 @@ function renderNews(){
   `).join("");
 
   if (!rows.length) {
+    const emptyTitle = searchQuery
+      ? "No articles match your search"
+      : activeCategory === "all"
+        ? "No news posted yet"
+        : "No updates in this category";
+
     grid.innerHTML = `<div class="md:col-span-2 xl:col-span-3 bg-white rounded-3xl p-10 text-center border border-[#cbd5e1]/50">
-      <h3 class="text-2xl font-black">No updates in this category</h3>
+      <h3 class="text-2xl font-black">${emptyTitle}</h3>
     </div>`;
   }
 
@@ -213,6 +309,31 @@ function openNews(item){
   document.getElementById("modal-category").textContent = titleCase(item.category);
   document.getElementById("modal-date").textContent = fmtDate(item.created_at);
   document.getElementById("modal-content").textContent = item.content || item.summary || "";
+
+  const mediaWrapId = "modal-media-extra";
+  let mediaWrap = document.getElementById(mediaWrapId);
+
+  if(!mediaWrap){
+    mediaWrap = document.createElement("div");
+    mediaWrap.id = mediaWrapId;
+    mediaWrap.className = "grid md:grid-cols-2 gap-4 mt-6";
+    document.getElementById("modal-content").after(mediaWrap);
+  }
+
+  const images = Array.isArray(item.image_urls) ? item.image_urls : [];
+
+  mediaWrap.innerHTML = `
+    ${images.map(url => `
+      <img src="${url}" class="w-full h-52 object-cover rounded-2xl border border-[#cbd5e1]" />
+    `).join("")}
+
+    ${item.video_url ? `
+      <video controls class="w-full rounded-2xl border border-[#cbd5e1] md:col-span-2">
+        <source src="${item.video_url}">
+      </video>
+    ` : ""}
+  `;
+
   document.getElementById("news-modal").classList.add("active");
 }
 
@@ -237,6 +358,17 @@ document.querySelectorAll(".category-btn").forEach(btn => {
   });
 });
 
+document.getElementById("news-search")?.addEventListener("input", (event) => {
+  searchQuery = event.target.value.trim();
+  renderNews();
+});
+
+document.getElementById("news-sort")?.addEventListener("change", (event) => {
+  sortOrder = event.target.value;
+  renderNews();
+});
+
+readCategoryFromUrl();
 loadNews();
 </script>
 </body>
