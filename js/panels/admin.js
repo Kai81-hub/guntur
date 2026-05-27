@@ -7,9 +7,41 @@ const tbl = () => window.GP_CONFIG?.TABLES || {};
 const money = (v) => window.GP_UTILS?.formatPrice ? window.GP_UTILS.formatPrice(v) : (v || "-");
 const dateIN = (v) => v ? new Date(v).toLocaleDateString("en-IN") : "-";
 const toast = (m,t="info") => window.GP_TOAST?.[t]?.(m) || console.log(m);
-const requireRole = (roles) => window.GP_AUTH?.requireRole ? window.GP_AUTH.requireRole(roles) : true;
+const requireRole = (roles) => {
+  const role = String(
+    localStorage.getItem("gp_auth_role") ||
+    localStorage.getItem("gp_role") ||
+    ""
+  ).toLowerCase();
+
+  const phoneValue =
+    localStorage.getItem("gp_auth_phone") ||
+    localStorage.getItem("gp_phone") ||
+    "";
+
+  if (!phoneValue || !roles.includes(role)) {
+    alert("Admin login required.");
+    location.href = "login.html?next=admin-panel.html";
+    return false;
+  }
+
+  return true;
+};
 const phone = () => window.GP_AUTH?.getPhone?.() || localStorage.getItem("gp_auth_phone") || "";
-const logout = () => window.GP_AUTH?.logout ? window.GP_AUTH.logout() : (localStorage.clear(), location.href="login.html");
+const logout = () => {
+  if (window.GP_AUTH?.logout) {
+    window.GP_AUTH.logout();
+    return;
+  }
+
+  localStorage.removeItem("gp_auth_phone");
+  localStorage.removeItem("gp_auth_role");
+  localStorage.removeItem("gp_user");
+  localStorage.removeItem("gp_role");
+  localStorage.removeItem("gp_phone");
+
+  location.href = "login.html";
+};
 async function rows(table, options={}) { return window.GP_SUPABASE.select(table, options); }
 async function add(table, payload) { return window.GP_SUPABASE.insert(table, payload); }
 async function edit(table, id, payload) { return window.GP_SUPABASE.update(table, id, payload); }
