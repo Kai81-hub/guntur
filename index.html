@@ -5892,26 +5892,96 @@
   visibility: visible !important;
 }
 </style>
-  <script type="application/ld+json">
+<script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "RealEstateAgent",
-  "name": "Guntur Properties",
-  "url": "https://gunturproperties.in/",
-  "logo": "https://gunturproperties.in/assets/images/WhatsApp Image 2026-05-12 at 13.33.30.jpeg",
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "Krishna Nagar 1st Line, Opp. Pattabhipuram Main Road Masjid",
-    "addressLocality": "Guntur",
-    "addressRegion": "Andhra Pradesh",
-    "postalCode": "522006",
-    "addressCountry": "IN"
-  },
-  "areaServed": ["Guntur", "Vijayawada", "Tenali"],
-  "telephone": "+91-8500720404"
+  "@graph": [
+    {
+      "@type": "RealEstateAgent",
+      "@id": "https://www.gunturproperties.in/#organization",
+      "name": "Guntur Properties",
+      "url": "https://www.gunturproperties.in/",
+      "logo": "https://www.gunturproperties.in/assets/images/logo.png",
+      "image": "https://www.gunturproperties.in/assets/images/og-image.jpg",
+      "description": "Guntur Properties is a real estate platform for searching and listing houses, flats, plots, lands, rentals, commercial properties, projects and property services across India, with main focus on Andhra Pradesh and Telangana.",
+      "telephone": "+91-8500720404",
+      "areaServed": [
+        {
+          "@type": "Country",
+          "name": "India"
+        },
+        {
+          "@type": "State",
+          "name": "Andhra Pradesh"
+        },
+        {
+          "@type": "State",
+          "name": "Telangana"
+        },
+        {
+          "@type": "City",
+          "name": "Guntur"
+        },
+        {
+          "@type": "City",
+          "name": "Vijayawada"
+        },
+        {
+          "@type": "City",
+          "name": "Tenali"
+        },
+        {
+          "@type": "City",
+          "name": "Mangalagiri"
+        },
+        {
+          "@type": "City",
+          "name": "Amaravati"
+        }
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Krishna Nagar 1st Line opp. Pattabhipuram Main Road Masjid",
+        "addressLocality": "Guntur",
+        "addressRegion": "Andhra Pradesh",
+        "postalCode": "522006",
+        "addressCountry": "IN"
+      },
+      "contactPoint": [
+        {
+          "@type": "ContactPoint",
+          "telephone": "+91-8500720404",
+          "contactType": "customer support",
+          "areaServed": "IN",
+          "availableLanguage": ["English", "Telugu", "Hindi"]
+        },
+        {
+          "@type": "ContactPoint",
+          "telephone": "+91-8500728484",
+          "contactType": "customer support",
+          "areaServed": "IN",
+          "availableLanguage": ["English", "Telugu", "Hindi"]
+        }
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://www.gunturproperties.in/#website",
+      "url": "https://www.gunturproperties.in/",
+      "name": "Guntur Properties",
+      "description": "Search properties, houses, flats, plots, lands, rentals, commercial spaces, projects and property services across India, Andhra Pradesh and Telangana.",
+      "publisher": {
+        "@id": "https://www.gunturproperties.in/#organization"
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://www.gunturproperties.in/properties.html?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+  ]
 }
-</script>
-  </script>
+</script>  so remove the schema.json and keep this in head of index page right 
 </head>
 
 <body class="font-body text-on-surface">
@@ -6962,7 +7032,6 @@
           </button>
         </div>
       </div>
-
   </main>
   <!-- Footer -->
   <footer class="footer-desktop bg-surface-container-low border-t border-outline-variant/30 pt-16 pb-8">
@@ -6995,7 +7064,7 @@
         <div>
           <h4 class="font-bold text-on-surface mb-6 uppercase tracking-wider text-xs">Company</h4>
           <ul class="space-y-4">
-            <li><a class="text-secondary text-sm hover:text-[#d4af37]" href="about.html">About Us</a></li>
+            <li><a class="text-secondary text-sm hover:text-[#d4af37]" href="about-us.html">About Us</a></li>
             <li><a class="text-secondary text-sm hover:text-[#d4af37]" href="properties.html?type=project">Our Projects</a></li>
             <li><a class="text-secondary text-sm hover:text-[#d4af37]" href="news.html">News & Updates</a></li>
             <li><a class="text-secondary text-sm hover:text-[#d4af37]" href="contact.html">Contact Us</a></li>
@@ -7004,11 +7073,11 @@
         <div>
           <h4 class="font-bold text-on-surface mb-6 uppercase tracking-wider text-xs">Legal</h4>
           <ul class="space-y-4">
-            <li><a class="text-secondary text-sm hover:text-[#d4af37]" href="privacy-policy.html">Privacy Policy</a>
+            <li><a class="text-secondary text-sm hover:text-[#d4af37]"href="legal.html#privacy">Privacy Policy</a>
             </li>
-            <li><a class="text-secondary text-sm hover:text-[#d4af37]" href="terms.html">Terms of Service</a></li>
-            <li><a class="text-secondary text-sm hover:text-[#d4af37]" href="cookie-policy.html">Cookie Policy</a></li>
-            <li><a class="text-secondary text-sm hover:text-[#d4af37]" href="disclaimer.html">Disclaimer</a></li>
+            <li><a class="text-secondary text-sm hover:text-[#d4af37]"href="legal.html#terms">Terms of Service</a></li>
+            <li><a class="text-secondary text-sm hover:text-[#d4af37]"href="legal.html#cookies">Cookie Policy</a></li>
+            <li><a class="text-secondary text-sm hover:text-[#d4af37]"href="legal.html#disclaimer">Disclaimer</a></li>
           </ul>
         </div>
         <div>
