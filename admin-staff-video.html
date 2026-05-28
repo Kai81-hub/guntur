@@ -1215,13 +1215,24 @@
 
     window.deleteVideo = deleteVideo;
 
-    document.querySelectorAll(".upload-choice").forEach(button => {
-      button.addEventListener("click", function () {
-        document.querySelectorAll(".upload-choice").forEach(item => item.classList.remove("active"));
-        button.classList.add("active");
-        videoTypeInput.value = button.dataset.videoType || "reel";
-      });
+   document.querySelectorAll(".upload-choice").forEach(button => {
+  button.addEventListener("click", function () {
+    const selectedType = button.dataset.videoType || "reel";
+
+    document.querySelectorAll(".upload-choice").forEach(item => {
+      item.classList.remove("active");
     });
+
+    button.classList.add("active");
+    videoTypeInput.value = selectedType;
+
+    const videoFileInput = document.getElementById("video-file");
+
+    if (videoFileInput) {
+      videoFileInput.click();
+    }
+  });
+});
 
     form.addEventListener("submit", async function (event) {
       event.preventDefault();
@@ -1330,7 +1341,6 @@
         saveBtn.innerHTML = editingVideoId ? `<span class="material-symbols-outlined">save</span> Save Changes` : `<span class="material-symbols-outlined">cloud_upload</span> Upload Video`;
       }
     });
-
     refreshBtn.addEventListener("click", loadUploadedVideos);
     cancelEditBtn?.addEventListener("click", resetVideoForm);
 
