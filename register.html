@@ -50,54 +50,187 @@ body{font-family:'Manrope',sans-serif;background:linear-gradient(135deg,#f9f9ff,
 .captured-img{width:100%;aspect-ratio:4/3;background:#f3f4f6;border-radius:18px;object-fit:cover;border:1px solid rgba(208,197,175,.55)}
 .mobile-header{display:none}
 @media(max-width:1023px){.desktop-header{display:none}.mobile-header{display:block;position:sticky;top:0;z-index:1000;background:#fff;border-bottom:1px solid #ececec}.mobile-header-inner{height:66px;padding:0 16px;display:flex;align-items:center;justify-content:space-between}.mobile-brand{display:flex;align-items:center;gap:10px}.mobile-brand img{width:34px;height:34px;border-radius:9px;object-fit:cover}.mobile-brand-title{font-weight:900;color:#082f5f;font-size:18px;line-height:1.05}.auth-wrap{padding-top:28px!important}}
+.call-btn{
+  width:48px;
+  height:48px;
+  overflow:hidden;
+  white-space:nowrap;
+  color:#082f5f;
+  transition:all .3s ease;
+}
+
+.call-btn .call-number{
+  max-width:0;
+  opacity:0;
+  overflow:hidden;
+  margin-left:0;
+  transition:all .3s ease;
+}
+
+.call-btn:hover{
+  width:180px;
+  padding:0 16px;
+  background:#0f4c81;
+  color:#fff;
+}
+
+.call-btn:hover .call-number{
+  max-width:120px;
+  opacity:1;
+  margin-left:8px;
+}
+.call-wrapper{
+    position:relative;
+}
+
+.call-icon{
+    transition:.25s;
+}
+
+.call-icon:hover{
+    background:#0f4c81;
+    color:#fff;
+}
+
+.call-popup{
+    position:absolute;
+    top:60px;
+    right:0;
+    width:300px;
+    background:#fff;
+    border-radius:20px;
+    padding:20px;
+    box-shadow:0 20px 50px rgba(0,0,0,.15);
+
+    opacity:0;
+    visibility:hidden;
+    transform:translateY(10px);
+
+    transition:.25s;
+    z-index:9999;
+}
+
+.call-wrapper:hover .call-popup{
+    opacity:1;
+    visibility:visible;
+    transform:translateY(0);
+}
+
+.call-row{
+    display:flex;
+    gap:12px;
+    align-items:center;
+    margin:16px 0;
+}
+
+.call-row strong{
+    display:block;
+    font-size:24px;
+    color:#082f5f;
+}
+
+.call-action{
+    display:block;
+    text-align:center;
+    background:#0f4c81;
+    color:#fff;
+    padding:14px;
+    border-radius:12px;
+    font-weight:800;
+    text-decoration:none;
+}
 </style>
 </head>
 <body>
 
-<nav class="desktop-header fixed top-0 w-full">
-  <div class="max-w-7xl mx-auto px-6 h-full flex justify-between items-center">
-    <a href="index.html" class="flex items-center gap-3 shrink-0">
-      <img alt="Guntur Properties Logo" class="w-11 h-11 rounded-lg object-cover" src="assets/images/guntur.png" onerror="this.src='https://placehold.co/80x80/0f4c81/ffffff?text=GP'"/>
-      <div class="flex flex-col">
-        <span class="text-xl font-extrabold tracking-tight text-[#0f4c81]">Guntur<br class="hidden xl:block"/> Properties</span>
-        <span class="text-[10px] text-outline leading-tight font-semibold">Trusted. Transparent. Together.</span>
-        <span class="mt-1 inline-flex w-fit items-center gap-1 text-[11px] font-bold text-[#082f5f]"><span class="material-symbols-outlined text-[14px]">location_on</span> Guntur</span>
-      </div>
-    </a>
-
-    <div class="main-nav hidden lg:flex items-center h-full">
-      <div class="group h-full flex items-center">
-        <a class="nav-link">Buy <span class="material-symbols-outlined text-sm">expand_more</span></a>
-        <div class="mega-menu"><div class="mega-menu-content">
-          <div class="mega-card"><h4>Property Type</h4><ul><li><a href="properties.html?purpose=buy&type=flats"><span class="material-symbols-outlined">apartment</span>Flats</a></li><li><a href="properties.html?purpose=buy&type=houses"><span class="material-symbols-outlined">home</span>Houses</a></li><li><a href="properties.html?purpose=buy&type=villas"><span class="material-symbols-outlined">villa</span>Villas</a></li><li><a href="properties.html?purpose=buy&type=plots"><span class="material-symbols-outlined">landscape</span>Plots</a></li><li><a href="properties.html?purpose=buy&type=commercial"><span class="material-symbols-outlined">corporate_fare</span>Commercial</a></li></ul></div>
-          <div class="mega-card"><h4>Popular Areas</h4><ul><li><a href="properties.html?area=brodipet">Brodipet</a></li><li><a href="properties.html?area=arundelpet">Arundelpet</a></li><li><a href="properties.html?area=lakshmipuram">Lakshmipuram</a></li><li><a href="properties.html?area=amaravati-road">Amaravati Road</a></li></ul></div>
-          <div class="mega-card"><h4>Budget</h4><ul><li><a href="properties.html?budget=under-50-lakhs">Under ₹50 Lakhs</a></li><li><a href="properties.html?budget=50-lakhs-1-cr">₹50 Lakhs - ₹1 Cr</a></li><li><a href="properties.html?budget=1-cr-2-cr">₹1 Cr - ₹2 Cr</a></li><li><a href="properties.html?budget=above-2-cr">Above ₹2 Cr</a></li></ul></div>
-          <div class="mega-card mega-promo"><h4>Home Loan</h4><p class="text-sm text-secondary leading-relaxed mb-5">Find properties and plan finance with local support.</p><a href="home-loan.html" class="justify-center bg-[#0f4c81] text-white hover:text-white">Check Eligibility</a></div>
-        </div></div>
-      </div>
-      <div class="group h-full flex items-center"><a class="nav-link">Rent <span class="material-symbols-outlined text-sm">expand_more</span></a><div class="mega-menu"><div class="mega-menu-content"><div class="mega-card"><h4>Residential Rent</h4><ul><li><a href="properties.html?purpose=rent&type=flats">Flats for Rent</a></li><li><a href="properties.html?purpose=rent&type=independent-house">Independent House</a></li><li><a href="properties.html?purpose=rent&type=gated-community">Gated Community</a></li></ul></div><div class="mega-card"><h4>Commercial Rent</h4><ul><li><a href="properties.html?purpose=rent&type=office-space">Office Space</a></li><li><a href="properties.html?purpose=rent&type=shop-showroom">Shop / Showroom</a></li><li><a href="properties.html?purpose=rent&type=warehouse">Warehouse</a></li></ul></div><div class="mega-card"><h4>Rent Range</h4><ul><li><a href="properties.html?purpose=rent&budget=under-10000">Under ₹10,000</a></li><li><a href="properties.html?purpose=rent&budget=10000-20000">₹10k - ₹20k</a></li><li><a href="properties.html?purpose=rent&budget=above-30000">Above ₹30k</a></li></ul></div><div class="mega-card mega-promo"><h4>Rental Support</h4><p class="text-sm text-secondary leading-relaxed mb-5">Shortlist rentals and communicate through the platform.</p><a href="properties.html?purpose=rent" class="justify-center bg-[#0f4c81] text-white hover:text-white">Explore Rentals</a></div></div></div></div>
-      <div class="group h-full flex items-center"><a class="nav-link">Projects <span class="material-symbols-outlined text-sm">expand_more</span></a><div class="mega-menu"><div class="mega-menu-content"><div class="mega-card"><h4>Ongoing Projects</h4><ul><li><a href="projects.html?type=luxury-apartments">Luxury Apartments</a></li><li><a href="projects.html?type=premium-villas">Premium Villas</a></li><li><a href="projects.html?type=gated-townships">Gated Townships</a></li></ul></div><div class="mega-card"><h4>New Launches</h4><ul><li><a href="projects.html?project=amaravati-smart-city">Amaravati Smart City</a></li><li><a href="projects.html?project=gorantla-heights">Gorantla Heights</a></li></ul></div><div class="mega-card"><h4>Project Types</h4><ul><li><a href="projects.html?type=apartments">Apartments</a></li><li><a href="projects.html?type=villas">Villas</a></li><li><a href="projects.html?type=ventures">Ventures</a></li></ul></div><div class="mega-card mega-promo"><h4>Developer Listing</h4><p class="text-sm text-secondary leading-relaxed mb-5">Developers can list projects after approval.</p><a href="register.html?role=developer" class="justify-center bg-[#0f4c81] text-white hover:text-white">Join Developer</a></div></div></div></div>
-      <div class="group h-full flex items-center"><a class="nav-link">Services <span class="material-symbols-outlined text-sm">expand_more</span></a><div class="mega-menu"><div class="mega-menu-content"><div class="mega-card"><h4>Worker Services</h4><ul><li><a href="services-details.html?service=plumbing"><span class="material-symbols-outlined">plumbing</span>Plumbing</a></li><li><a href="services-details.html?service=electrician"><span class="material-symbols-outlined">electrical_services</span>Electrician</a></li><li><a href="services-details.html?service=painting"><span class="material-symbols-outlined">format_paint</span>Painting</a></li><li><a href="services-details.html?service=construction-workers"><span class="material-symbols-outlined">engineering</span>Construction Workers</a></li></ul></div><div class="mega-card"><h4>Professional Services</h4><ul><li><a href="services-details.html?service=property-management"><span class="material-symbols-outlined">real_estate_agent</span>Property Management</a></li><li><a href="services-details.html?service=interior-design"><span class="material-symbols-outlined">chair</span>Interior Design</a></li><li><a href="services-details.html?service=architectural-design"><span class="material-symbols-outlined">architecture</span>Architectural Design</a></li><li><a href="services-details.html?service=vastu"><span class="material-symbols-outlined">explore</span>Vastu</a></li></ul></div><div class="mega-card"><h4>Join as Provider</h4><ul><li><a href="services.html#enroll">Plumber Enrollment</a></li><li><a href="services.html#enroll">Electrician Enrollment</a></li><li><a href="services.html#enroll">Painter Enrollment</a></li><li><a href="services.html#enroll">Construction Worker Enrollment</a></li></ul></div><div class="mega-card mega-promo"><h4>Service Hub</h4><p class="text-sm text-secondary leading-relaxed mb-5">Service providers can apply.</p><a href="services.html" class="justify-center bg-[#0f4c81] text-white hover:text-white">Explore Services</a></div></div></div></div>
-      <div class="group h-full flex items-center"><a class="nav-link">For Sellers <span class="material-symbols-outlined text-sm">expand_more</span></a><div class="mega-menu"><div class="mega-menu-content"><div class="mega-card"><h4>Sell With Us</h4><ul><li><a href="post-property.html">Post Property for Free</a></li><li><a href="seller-packages.html">Seller Packages</a></li><li><a href="photoshoot.html">Request Photoshoot</a></li></ul></div><div class="mega-card"><h4>Join Us</h4><ul><li><a href="register.html?role=owner">Owners</a></li><li><a href="register.html?role=broker">Brokers</a></li><li><a href="register.html?role=developer">Developers</a></li></ul></div><div class="mega-card"><h4>Listing Tools</h4><ul><li><a href="login.html">Login to Panel</a></li><li><a href="register.html">Create Account</a></li><li><a href="contact.html">Talk to Staff</a></li></ul></div><div class="mega-card mega-promo"><h4>Upload Multiple Properties</h4><p class="text-sm text-secondary leading-relaxed mb-5">Manage panel after approval.</p><a href="register.html" class="justify-center bg-[#0f4c81] text-white hover:text-white">Join Now</a></div></div></div></div>
-      <div class="group h-full flex items-center"><a class="nav-link">News & Updates <span class="material-symbols-outlined text-sm">expand_more</span></a><div class="mega-menu"><div class="mega-menu-content"><div class="mega-card"><h4>Latest News</h4><ul><li><a href="news.html?category=market-trends">Market Trends</a></li><li><a href="news.html?category=registration-updates">Registration Updates</a></li><li><a href="news.html?category=guntur-real-estate-news">Guntur Real Estate News</a></li></ul></div><div class="mega-card"><h4>Insights</h4><ul><li><a href="insights.html?topic=buying-guide">Buying Guide</a></li><li><a href="insights.html?topic=rental-guide">Rental Guide</a></li><li><a href="insights.html?topic=legal-checklist">Legal Checklist</a></li></ul></div><div class="mega-card"><h4>Local Updates</h4><ul><li><a href="news.html?area=amaravati-road">Amaravati Road</a></li><li><a href="news.html?area=brodipet">Brodipet</a></li><li><a href="news.html?area=lakshmipuram">Lakshmipuram</a></li></ul></div><div class="mega-card mega-promo"><h4>Stay Updated</h4><p class="text-sm text-secondary leading-relaxed mb-5">Read property trends and updates.</p><a href="news.html" class="justify-center bg-[#0f4c81] text-white hover:text-white">Read News</a></div></div></div></div>
-    </div>
-
-    <div class="flex items-center gap-3">
-      <a class="hidden sm:flex items-center gap-2 px-4 py-2 rounded-full border border-outline-variant text-on-surface font-semibold hover:bg-surface-container-low transition-all" href="tel:+919959919999"><span class="material-symbols-outlined text-sm">call</span><span class="text-sm">Call</span></a>
-      <a id="profile-link" class="flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#0f4c81] text-white font-bold shadow-lg hover:brightness-110 transition-all active:scale-95 text-sm" href="login.html"><span class="material-symbols-outlined text-sm">person</span><span>Profile</span></a>
-    </div>
-  </div>
-</nav>
-
 <header class="mobile-header">
   <div class="mobile-header-inner">
+
     <a href="index.html" class="mobile-brand">
-      <img alt="Guntur Properties Logo" src="assets/images/WhatsApp Image 2026-05-12 at 13.33.30.jpeg" onerror="this.src='https://placehold.co/80x80/0f4c81/ffffff?text=GP'"/>
-      <span class="mobile-brand-title">Guntur<br/>Properties</span>
+      <img src="assets/images/guntur.png" alt="Guntur Properties">
+      <div>
+        <div class="mobile-brand-title">Guntur Properties</div>
+      </div>
     </a>
-    <a href="login.html" class="text-sm font-black text-[#082f5f]">Login</a>
+
+    <div class="flex items-center gap-2">
+
+      <a href="index.html"
+         class="w-10 h-10 rounded-full border border-[#0f4c81] flex items-center justify-center text-[#0f4c81]">
+        <span class="material-symbols-outlined">home</span>
+      </a>
+
+      <a href="login.html"
+         class="px-4 py-2 rounded-full bg-[#0f4c81] text-white font-bold text-sm">
+        Login
+      </a>
+
+    </div>
+
   </div>
 </header>
+
+<nav class="desktop-header fixed top-0 w-full">
+  <div class="max-w-7xl mx-auto px-6 h-full flex justify-between items-center">
+
+    <a href="index.html" class="flex items-center gap-3 shrink-0">
+      <img alt="Guntur Properties Logo"
+           class="w-11 h-11 rounded-lg object-cover"
+           src="assets/images/guntur.png">
+
+      <div class="flex flex-col">
+        <span class="text-xl font-extrabold text-[#0f4c81]">
+          Guntur Properties
+        </span>
+
+        <span class="text-[10px] text-outline leading-tight font-semibold">
+          Trusted. Transparent. Together.
+        </span>
+
+        <span class="mt-1 inline-flex items-center gap-1 text-[11px] font-bold text-[#082f5f]">
+          <span class="material-symbols-outlined text-[14px]">location_on</span>
+          Guntur
+        </span>
+      </div>
+    </a>
+
+    <div class="flex items-center gap-3">
+
+      <div class="call-wrapper relative">
+
+  <a href="tel:8500728484"
+     class="call-icon flex items-center justify-center w-12 h-12 rounded-full border border-[#0f4c81] text-[#0f4c81]">
+    <span class="material-symbols-outlined">call</span>
+  </a>
+
+  <div class="call-popup">
+      <h3>CONTACT US</h3>
+
+      <div class="call-row">
+          <span class="material-symbols-outlined">call</span>
+          <div>
+              <small>Property Support</small>
+              <strong>8500728484</strong>
+          </div>
+      </div>
+
+      <a href="contact.html" class="call-action">
+    Contact Us
+</a>
+  </div>
+
+</div>
+
+      <a href="index.html"
+         class="flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#0f4c81] text-white font-bold">
+        <span class="material-symbols-outlined">home</span>
+        <span>Home</span>
+      </a>
+
+    </div>
+
+  </div>
+</nav>
 
 <main class="auth-wrap min-h-screen pt-[120px] pb-16 px-4">
   <section class="max-w-7xl mx-auto grid lg:grid-cols-[.9fr_1.1fr] gap-8 items-start">
@@ -337,8 +470,16 @@ body{font-family:'Manrope',sans-serif;background:linear-gradient(135deg,#f9f9ff,
       <h4 class="font-extrabold text-[#0f4c81] mb-4">Contact</h4>
       <ul class="space-y-3 text-sm text-white/70">
         <li class="flex gap-2"><span class="material-symbols-outlined text-[#0f4c81] text-lg">location_on</span> Guntur, Andhra Pradesh</li>
-        <li><a href="tel:+919959919999" class="hover:text-[#0f4c81] flex gap-2"><span class="material-symbols-outlined text-[#0f4c81] text-lg">call</span> +91 99599 19999</a></li>
-        <li><a href="https://wa.me/919959919999" class="hover:text-[#0f4c81] flex gap-2"><span class="material-symbols-outlined text-[#0f4c81] text-lg">chat</span> WhatsApp</a></li>
+        <li><a href="tel:+918500728484"
+   class="hover:text-[#0f4c81] flex gap-2">
+  <span class="material-symbols-outlined text-[#0f4c81] text-lg">call</span>
+  +91 8500728484
+</a></li>
+        <li><a href="https://wa.me/918500728484"
+   class="hover:text-[#0f4c81] flex gap-2">
+  <span class="material-symbols-outlined text-[#0f4c81] text-lg">chat</span>
+  WhatsApp
+</a></li>
         <li><a href="contact.html" class="hover:text-[#0f4c81] flex gap-2"><span class="material-symbols-outlined text-[#0f4c81] text-lg">support_agent</span> Contact Us</a></li>
       </ul>
     </div>
@@ -468,6 +609,15 @@ function setRole(role){
   document.getElementById("developer-fields").classList.toggle("hidden", role !== "developer");
 
   document.getElementById("selfie-section").classList.toggle("active", needsSelfie);
+  const sendOtpBtn = document.getElementById("send-register-otp-btn");
+
+if (needsSelfie) {
+  sendOtpBtn.disabled = true;
+  sendOtpBtn.classList.add("opacity-50","cursor-not-allowed");
+} else {
+  sendOtpBtn.disabled = false;
+  sendOtpBtn.classList.remove("opacity-50","cursor-not-allowed");
+}
 }
 
 async function startCamera(){
@@ -482,14 +632,32 @@ async function startCamera(){
 function captureSelfie(){
   const video = document.getElementById("camera-preview");
   const status = document.getElementById("selfie-status");
-  if(!video.srcObject){status.textContent="Start camera first."; return;}
+
+  if(!video.srcObject){
+    status.textContent = "Start camera first.";
+    return;
+  }
+
   const canvas = document.createElement("canvas");
   canvas.width = video.videoWidth || 640;
   canvas.height = video.videoHeight || 480;
-  canvas.getContext("2d").drawImage(video,0,0,canvas.width,canvas.height);
+
+  canvas.getContext("2d").drawImage(
+    video,
+    0,
+    0,
+    canvas.width,
+    canvas.height
+  );
+
   selfieDataUrl = canvas.toDataURL("image/jpeg",0.86);
+
   document.getElementById("selfie-image").src = selfieDataUrl;
-  status.textContent = "Selfie captured for verification.";
+  status.textContent = "Camera verification completed.";
+
+  const sendOtpBtn = document.getElementById("send-register-otp-btn");
+  sendOtpBtn.disabled = false;
+  sendOtpBtn.classList.remove("opacity-50","cursor-not-allowed");
 }
 
 function setRegisterDisabled(disabled){
@@ -541,10 +709,20 @@ if(selectedRole !== "owner"){
   delete data.preferred_contact_time;
 }
 
-  if(["owner","broker","developer"].includes(selectedRole) && !selfieDataUrl){
-    status.textContent = "Selfie camera verification is required for owner, broker and developer.";
+  if (["owner", "broker", "developer"].includes(selectedRole)) {
+
+  if (!selfieDataUrl) {
+    status.textContent = "Please complete camera verification before sending OTP.";
+
+    document.getElementById("selfie-section").scrollIntoView({
+      behavior: "smooth",
+      block: "center"
+    });
+
     return;
   }
+
+}
 
   try {
     pendingRegisterData = data;
