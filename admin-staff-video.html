@@ -11,7 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/config.js"></script>
   <script src="js/supabase.js"></script>
 
@@ -267,7 +267,6 @@
       border-radius: 18px;
     }
 
-
     .table-wrap {
       width: 100%;
       overflow-x: auto;
@@ -508,7 +507,7 @@
           </span>
           <h2 class="text-3xl md:text-5xl font-black mt-5 leading-tight">Manage gallery videos</h2>
           <p class="text-white/75 font-semibold mt-4 leading-7">
-            Upload, edit, replace thumbnails/videos, check views, and manage reels or YouTube type videos.
+            Select video layout to upload video, upload thumbnail, check views, and manage reels or YouTube type videos.
           </p>
         </div>
       </div>
@@ -557,6 +556,7 @@
         </div>
 
         <input id="video-type" type="hidden" value="reel" />
+        <input id="video-file" type="file" accept="video/*" hidden />
 
         <div class="grid md:grid-cols-2 gap-5">
           <div class="md:col-span-2">
@@ -567,12 +567,6 @@
           <div class="md:col-span-2">
             <label class="field-label" for="video-description">Small Description</label>
             <textarea id="video-description" class="input-field min-h-[105px]" placeholder="Write short details below the title..."></textarea>
-          </div>
-
-          <div>
-            <label class="field-label" for="video-file">Video Upload *</label>
-            <input id="video-file" class="input-field" type="file" accept="video/*" />
-            <p class="text-xs text-[#64748b] font-semibold mt-2">Maximum 2 minutes.</p>
           </div>
 
           <div>
@@ -680,7 +674,7 @@
         <div class="grid gap-3 font-bold">
           <a href="tel:+918500720404" class="hover:text-[#d4af37]">+91 85007 20404</a>
           <a href="https://wa.me/918500720404" target="_blank" rel="noopener noreferrer" class="hover:text-[#d4af37]">WhatsApp</a>
-          <a href="mailto:info@gunturproperties.in" class="hover:text-[#d4af37]">info@gunturproperties.in</a>
+          <a href="mailto:contact@gunturproperties.in" class="hover:text-[#d4af37]">Contact@gunturproperties.in</a>
         </div>
       </div>
     </div>
@@ -713,9 +707,29 @@
 
     document.getElementById("footer-year").textContent = new Date().getFullYear();
 
-    function getClient() {
-      return window.GP_SUPABASE_CLIENT || window.supabaseClient || null;
-    }
+   function getClient() {
+  if (window.GP_SUPABASE_CLIENT) return window.GP_SUPABASE_CLIENT;
+  if (window.supabaseClient) return window.supabaseClient;
+
+  if (window.GP_SUPABASE && typeof window.GP_SUPABASE.createClient === "function") {
+    return window.GP_SUPABASE.createClient();
+  }
+
+  if (
+    window.supabase &&
+    window.GP_CONFIG &&
+    window.GP_CONFIG.SUPABASE_URL &&
+    window.GP_CONFIG.SUPABASE_ANON_KEY
+  ) {
+    window.GP_SUPABASE_CLIENT = window.supabase.createClient(
+      window.GP_CONFIG.SUPABASE_URL,
+      window.GP_CONFIG.SUPABASE_ANON_KEY
+    );
+    return window.GP_SUPABASE_CLIENT;
+  }
+
+  return null;
+}
 
     function showStatus(message, type = "info") {
       statusBox.className = `status show ${type}`;
@@ -907,11 +921,6 @@
       const time = Number(sessionStorage.getItem("gp_dashboard_video_access_time") || 0);
       const now = Date.now();
 
-      /*
-        Only allow when dashboard link created this flag.
-        The flag is valid for 10 minutes.
-        Directly typing admin-staff-video.html will not have this flag.
-      */
       return flag === "allowed" && time && (now - time < 10 * 60 * 1000);
     }
 
@@ -1215,24 +1224,24 @@
 
     window.deleteVideo = deleteVideo;
 
-   document.querySelectorAll(".upload-choice").forEach(button => {
-  button.addEventListener("click", function () {
-    const selectedType = button.dataset.videoType || "reel";
+    document.querySelectorAll(".upload-choice").forEach(button => {
+      button.addEventListener("click", function () {
+        const selectedType = button.dataset.videoType || "reel";
 
-    document.querySelectorAll(".upload-choice").forEach(item => {
-      item.classList.remove("active");
+        document.querySelectorAll(".upload-choice").forEach(item => {
+          item.classList.remove("active");
+        });
+
+        button.classList.add("active");
+        videoTypeInput.value = selectedType;
+
+        const videoFileInput = document.getElementById("video-file");
+
+        if (videoFileInput) {
+          videoFileInput.click();
+        }
+      });
     });
-
-    button.classList.add("active");
-    videoTypeInput.value = selectedType;
-
-    const videoFileInput = document.getElementById("video-file");
-
-    if (videoFileInput) {
-      videoFileInput.click();
-    }
-  });
-});
 
     form.addEventListener("submit", async function (event) {
       event.preventDefault();
@@ -1270,6 +1279,11 @@
         return;
       }
 
+      if (!thumbnailFile && !thumbnailUrlInput && !editingVideoId) {
+        showStatus("Please upload thumbnail or paste thumbnail URL.", "err");
+        return;
+      }
+
       saveBtn.disabled = true;
       saveBtn.innerHTML = `<span class="material-symbols-outlined">hourglass_top</span> Uploading...`;
 
@@ -1302,10 +1316,6 @@
           link_description: linkDescription,
           uploaded_by_role: currentUserRole
         };
-
-        if (currentUserId) {
-          payload.uploaded_by = currentUserId;
-        }
 
         let error = null;
 
@@ -1341,6 +1351,7 @@
         saveBtn.innerHTML = editingVideoId ? `<span class="material-symbols-outlined">save</span> Save Changes` : `<span class="material-symbols-outlined">cloud_upload</span> Upload Video`;
       }
     });
+
     refreshBtn.addEventListener("click", loadUploadedVideos);
     cancelEditBtn?.addEventListener("click", resetVideoForm);
 
